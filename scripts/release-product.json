@@ -1,0 +1,12 @@
+{
+  "product": "Ineed LinkLab",
+  "slug": "ineed-linklab",
+  "identifiers": {
+    "electron": "com.ineedfull.dev-tool.electron",
+    "tauri": "com.ineedfull.dev-tool"
+  },
+  "runtimeDirectories": {
+    "electron": "apps/electron",
+    "tauri": "apps/tauri"
+  }
+}

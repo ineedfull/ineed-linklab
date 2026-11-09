@@ -1,0 +1,86 @@
+[
+  {
+    "args": [
+      {
+        "endpointId": "tcp-route",
+        "bytes": [
+          0,
+          0,
+          0,
+          4,
+          112,
+          105,
+          110,
+          103
+        ],
+        "target": {
+          "endpointId": "tcp-route"
+        },
+        "framing": "length-prefix"
+      }
+    ]
+  },
+  {
+    "args": [
+      {
+        "endpointId": "tcp-route",
+        "bytes": [
+          0,
+          0,
+          0,
+          4,
+          112,
+          105,
+          110,
+          103
+        ],
+        "target": {
+          "endpointId": "tcp-route"
+        },
+        "framing": "length-prefix"
+      }
+    ]
+  },
+  {
+    "args": [
+      {
+        "endpointId": "tcp-route",
+        "bytes": [
+          0,
+          0,
+          0,
+          4,
+          112,
+          105,
+          110,
+          103
+        ],
+        "target": {
+          "endpointId": "tcp-route"
+        },
+        "framing": "length-prefix"
+      }
+    ]
+  },
+  {
+    "args": [
+      {
+        "endpointId": "tcp-route",
+        "bytes": [
+          0,
+          0,
+          0,
+          4,
+          112,
+          105,
+          110,
+          103
+        ],
+        "target": {
+          "endpointId": "tcp-route"
+        },
+        "framing": "length-prefix"
+      }
+    ]
+  }
+]

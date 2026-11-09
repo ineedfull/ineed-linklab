@@ -1,0 +1,87 @@
+import { mount, flushPromises } from '@vue/test-utils';
+import { afterEach, expect, test, vi } from 'vitest';
+import { defineComponent } from 'vue';
+import EndpointDialog from '../../src/components/EndpointDialog.vue';
+import SendPanel from '../../src/components/SendPanel.vue';
+import { createUnavailableRuntimeAdapter } from '@ineed-linklab/runtime-contract';
+const wrappers = [];
+afterEach(() => { wrappers.splice(0).forEach(w => w.unmount()); document.body.innerHTML = ''; });
+const PayloadEditorStub = defineComponent({ props: { modelValue: { type: String, default: '' }, mode: { type: String, default: 'text' } }, emits: ['update:modelValue'], template: '<textarea class="payload-stub" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />' });
+test('WS client form saves config and transient headers separately, with no stream framing', async () => {
+  const save = vi.fn(async () => ({ ok: true }));
+  const wrapper = mount(EndpointDialog, { attachTo: document.body, props: { open: true, saveCommand: save } }); wrappers.push(wrapper);
+  await flushPromises();
+  const transport = document.querySelector('[name="endpoint-transport"]');
+  expect([...transport.options].some(o => o.value === 'websocket-client')).toBe(true);
+  transport.value = 'websocket-client'; transport.dispatchEvent(new Event('change', { bubbles: true })); await flushPromises();
+  expect(document.querySelector('[name="receive-framing-mode"]')).toBeNull();
+  const input = (name, value) => { const el = document.querySelector(`[name="${name}"]`); el.value = value; el.dispatchEvent(new Event('input', { bubbles: true })); };
+  input('websocket-url', 'wss://localhost/socket');
+  input('websocket-subprotocols', 'chat, telemetry');
+  input('websocket-header-name-0', 'Authorization'); input('websocket-header-value-0', 'Bearer secret');
+  document.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })); await flushPromises();
+  expect(save).toHaveBeenCalledTimes(1);
+  const [draft, options] = save.mock.calls[0];
+  expect(draft.config).toMatchObject({ url: 'wss://localhost/socket', subprotocols: ['chat', 'telemetry'], messageType: 'text', heartbeat: { enabled: false, intervalMs: 30000, timeoutMs: 10000 } });
+  expect(JSON.stringify(draft)).not.toContain('Bearer');
+  expect(options).toEqual({ websocketHeaders: [{ name: 'Authorization', value: 'Bearer secret' }] });
+});
+for (const transport of ['websocket-client', 'websocket-server']) {
+  test(`${transport} sends one typed message, ignores stale CRLF/framing and supports explicit type`, async () => {
+    const endpoint = { id: 'ws', name: 'WS', transport, config: {} };
+    const send = vi.fn(async () => ({ ok: true }));
+    const wrapper = mount(SendPanel, { props: { endpoint, activeEndpointId: 'ws', operation: { endpointId: 'ws', operationId: 'o', sessionId: 's' }, statusEvent: { endpointId: 'ws', operationId: 'o', sessionId: 's', status: transport.endsWith('server') ? 'listening' : 'open' }, peers: [{ id: 'a' }, { id: 'b' }], draftStore: new Map([['ws', { payload: 'hi', mode: 'text', appendCrlf: true, framing: 'length-prefix' }]]), sendCommand: send, scheduledSender: { getStatus: () => ({}), subscribe: () => () => {} }, runtime: createUnavailableRuntimeAdapter('test') }, global: { stubs: { PayloadEditor: PayloadEditorStub } } }); wrappers.push(wrapper);
+    await flushPromises();
+    expect(wrapper.text()).not.toContain('追加 CRLF');
+    expect(wrapper.find('[aria-label="发送分帧"]').exists()).toBe(false);
+    await wrapper.get('.send-panel__footer .command-button').trigger('click'); await flushPromises();
+    expect(send.mock.calls[0][0]).toMatchObject({ framing: 'websocket', messageType: 'text' });
+    expect([...send.mock.calls[0][0].bytes]).toEqual([104, 105]);
+    await wrapper.get('[role="radio"]:nth-child(2)').trigger('click');
+    await wrapper.get('.payload-stub').setValue('00 FF');
+    await wrapper.get('.send-panel__footer .command-button').trigger('click'); await flushPromises();
+    expect(send.mock.calls[1][0]).toMatchObject({ messageType: 'binary' });
+    expect([...send.mock.calls[1][0].bytes]).toEqual([0, 255]);
+    await wrapper.get('[aria-label="WebSocket 消息类型"]').setValue('binary');
+    await wrapper.get('[role="radio"]:first-child').trigger('click');
+    await wrapper.get('.payload-stub').setValue('hi');
+    await wrapper.get('.send-panel__footer .command-button').trigger('click'); await flushPromises();
+    expect(send.mock.calls[2][0].messageType).toBe('binary');
+    await wrapper.setProps({ endpoint: { ...endpoint, id: 'another' }, activeEndpointId: 'another' });
+    await wrapper.setProps({ endpoint, activeEndpointId: 'ws' });
+    expect(wrapper.get('[aria-label="WebSocket 消息类型"]').element.value).toBe('binary');
+    if (transport.endsWith('server')) expect(send.mock.calls[0][0].target).toEqual({ type: 'broadcast' });
+  });
+}
+test('WS close code/reason remains visible in the status bar', async () => {
+  const { default: SessionStatusBar } = await import('../../src/components/SessionStatusBar.vue');
+  const wrapper = mount(SessionStatusBar, { props: { endpoint: { id: 'ws', name: 'WS', transport: 'websocket-client' }, counters: {}, statusEvent: { status: 'closed', log: { details: { closeCode: 1001, closeReason: 'server stopping' } } } } }); wrappers.push(wrapper);
+  expect(wrapper.text()).toContain('1001'); expect(wrapper.text()).toContain('server stopping');
+});
+test('WS template snapshot preserves an explicit binary message after loading again', async () => {
+  const { default: SendLibraryPanel } = await import('../../src/components/SendLibraryPanel.vue');
+  const runtime = createUnavailableRuntimeAdapter('test'); runtime.template.list = async () => [];
+  const send = vi.fn(async () => ({ ok: true }));
+  const wrapper = mount(SendPanel, { props: { endpoint: { id: 'ws', name: 'WS', transport: 'websocket-client', config: {} }, activeEndpointId: 'ws', operation: { endpointId: 'ws', operationId: 'o', sessionId: 's' }, statusEvent: { endpointId: 'ws', operationId: 'o', sessionId: 's', status: 'open' }, sendCommand: send, scheduledSender: { getStatus: () => ({}), subscribe: () => () => {} }, runtime }, global: { stubs: { PayloadEditor: PayloadEditorStub } } }); wrappers.push(wrapper);
+  await flushPromises();
+  await wrapper.get('.payload-stub').setValue('hi');
+  await wrapper.get('[aria-label="WebSocket 消息类型"]').setValue('binary');
+  await wrapper.get('[aria-label="发送模板"]').trigger('click'); await flushPromises();
+  const library = wrapper.findComponent(SendLibraryPanel);
+  const snapshot = library.props('snapshot');
+  expect(snapshot).toMatchObject({ format: 'hex', framing: 'websocket', payloadBase64: 'aGk=' });
+  // An existing explicit selection must not override a saved text message on load.
+  library.vm.$emit('load', { format: 'text', framing: 'websocket', payloadBase64: 'aGk=' }); await flushPromises();
+  await wrapper.get('.send-panel__footer .command-button').trigger('click'); await flushPromises();
+  expect(send.mock.calls[0][0].messageType).toBe('text');
+  await wrapper.get('[role="radio"]:nth-child(2)').trigger('click');
+  await wrapper.get('.payload-stub').setValue('68 69');
+  await wrapper.get('[aria-label="WebSocket 消息类型"]').setValue('text');
+  await wrapper.get('[aria-label="发送模板"]').trigger('click'); await flushPromises();
+  const textLibrary = wrapper.findComponent(SendLibraryPanel);
+  expect(textLibrary.props('snapshot')).toMatchObject({ format: 'text', framing: 'websocket', payloadBase64: 'aGk=' });
+  textLibrary.vm.$emit('load', snapshot); await flushPromises();
+  await wrapper.get('.send-panel__footer .command-button').trigger('click'); await flushPromises();
+  expect(send.mock.calls[1][0].messageType).toBe('binary');
+  expect([...send.mock.calls[1][0].bytes]).toEqual([104, 105]);
+});

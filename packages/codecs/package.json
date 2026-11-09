@@ -1,0 +1,17 @@
+{
+  "name": "@ineed-linklab/codecs",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "files": ["src/"],
+  "exports": {
+    "./industrial/bytes.js": "./src/industrial/bytes.js",
+    "./industrial/numbers.js": "./src/industrial/numbers.js",
+    "./industrial/text.js": "./src/industrial/text.js",
+    "./industrial/checksums.js": "./src/industrial/checksums.js",
+    "./dlt645.js": "./src/dlt645.js",
+    "./payloadCodec.js": "./src/payloadCodec.js",
+    "./framers.js": "./src/framers.js"
+  }
+}

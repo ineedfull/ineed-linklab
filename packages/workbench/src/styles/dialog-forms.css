@@ -1,0 +1,99 @@
+/* Form sections share edges; the fieldset describes parameters, not a second card. */
+:root { --form-control-height: 32px; }
+:root.large-font { --form-control-height: 36px; }
+
+.dialog-form-section,
+.endpoint-dialog__body > fieldset {
+  --option-control-height: var(--form-control-height);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.dialog-form-section > legend,
+.endpoint-dialog__body > fieldset > legend {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 0 0 8px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-muted);
+  font-size: var(--font-size-control);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.endpoint-parameter-section {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 15px;
+}
+
+.endpoint-parameter-section__toggle {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  align-self: end;
+  gap: 6px;
+  min-height: var(--option-control-height);
+  color: var(--text-muted);
+  font-size: var(--font-size-control);
+}
+
+.endpoint-parameter-section__toggle input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+
+/* Reserve the label line when a checkbox shares a row with a labelled input. */
+.endpoint-parameter-section__toggle--field-row {
+  align-self: start;
+  min-height: calc(var(--option-control-height) + 1.5em + 5px);
+  padding-top: calc(1.5em + 5px);
+}
+
+
+.dialog-form-wide { grid-column: 1 / -1; }
+.dialog-form-stack { display: grid; min-width: 0; gap: 16px; }
+.dialog-form-section__fields,
+.modbus-group-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 15px;
+}
+
+.modbus-group-fields > label,
+.modbus-group-point__grid > label { min-width: 0; line-height: 1.5; }
+.modbus-group-fields :is(input:not([type="checkbox"]), select),
+.modbus-group-point__grid :is(input:not([type="checkbox"]), select) {
+  height: var(--form-control-height);
+}
+.modbus-group-fields > .checkbox-control { min-height: var(--form-control-height); }
+.modbus-group-dialog__body { padding: 15px 16px; }
+.modbus-group-point__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.dialog-form-point-identity { grid-column: span 2; }
+
+.acceptance-panel .acceptance-fields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.acceptance-panel :is(input:not([type="file"]), select) { height: var(--form-control-height); }
+.acceptance-panel label { line-height: 1.5; }
+.acceptance-panel button.icon-button {
+  flex: none;
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0;
+}
+.acceptance-panel button.icon-button > svg { flex: none; }
+.acceptance-panel .dialog-form-section { margin-block: 16px; }
+.acceptance-panel .dialog-form-section > .acceptance-fields { margin: 0; }
+.acceptance-panel .dialog-form-section > .acceptance-actions:last-child { margin-bottom: 0; }
+
+@media (max-width: 700px) {
+  .modbus-group-point__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dialog-form-section__fields,
+  .modbus-group-fields,
+  .acceptance-panel .acceptance-fields { grid-template-columns: minmax(0, 1fr); }
+}

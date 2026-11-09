@@ -1,0 +1,66 @@
+appId: com.ineedfull.dev-tool.electron
+productName: Ineed LinkLab
+electronVersion: 43.1.0
+asar: true
+afterPack: "./scripts/verifyArchive.mjs"
+asarUnpack:
+  - "node_modules/**/*.node"
+npmRebuild: true
+directories:
+  output: release
+  buildResources: build
+files:
+  - "dist/**/*"
+  - "electron/**/*"
+  - package.json
+  - "!node_modules/@ineed-linklab/workbench/**/*"
+  - "!**/test-results/**/*"
+  - "!**/playwright-report/**/*"
+extraResources:
+  - from: "../../packages/persistence-contract/migrations/001-initial.sql"
+    to: "contracts/persistence-contract/migrations/001-initial.sql"
+  - from: "../../packages/persistence-contract/migrations/002-modbus-endpoints.sql"
+    to: "contracts/persistence-contract/migrations/002-modbus-endpoints.sql"
+  - from: "../../packages/persistence-contract/migrations/003-modbus-point-history.sql"
+    to: "contracts/persistence-contract/migrations/003-modbus-point-history.sql"
+  - from: "../../packages/persistence-contract/migrations/004-dlt645-endpoints.sql"
+    to: "contracts/persistence-contract/migrations/004-dlt645-endpoints.sql"
+  - from: "../../packages/persistence-contract/migrations/005-dlt645-simulator-endpoints.sql"
+    to: "contracts/persistence-contract/migrations/005-dlt645-simulator-endpoints.sql"
+  - from: "../../packages/persistence-contract/migrations/006-websocket-endpoints.sql"
+    to: "contracts/persistence-contract/migrations/006-websocket-endpoints.sql"
+  - from: "../../packages/runtime-contract/src/settingsSchema.json"
+    to: "contracts/runtime-contract/src/settingsSchema.json"
+mac:
+  extendInfo:
+    CFBundleName: Ineed LinkLab
+    CFBundleDisplayName: Ineed LinkLab
+  category: public.app-category.developer-tools
+  icon: build/icon.icns
+  identity: null
+  target: dmg
+dmg:
+  artifactName: "${productName}-Electron_${version}_${arch}.${ext}"
+
+win:
+  icon: build/icon.ico
+  target: nsis
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  deleteAppDataOnUninstall: false
+  installerLanguages: ["zh_CN", "en_US"]
+  displayLanguageSelector: true
+  artifactName: "${productName}-${version}-windows-${arch}-setup.${ext}"
+linux:
+  target: ["deb", "AppImage"]
+  icon: "electron/assets/icon.png"
+  category: "Development"
+  maintainer: "Ineed"
+  vendor: "Ineed"
+  executableName: "ineed-linklab"
+  artifactName: "${productName}-${version}-linux-${arch}.${ext}"

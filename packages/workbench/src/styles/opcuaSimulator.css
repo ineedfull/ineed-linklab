@@ -1,0 +1,8 @@
+.opcua-simulator-editor { display: grid; grid-template-columns: minmax(140px, 210px) minmax(0, 1fr); gap: 16px; align-items: start; }
+.opcua-simulator-nodes { display: flex; flex-direction: column; gap: 6px; max-height: 520px; overflow: auto; }
+.opcua-simulator-nodes button { text-align: left; white-space: normal; overflow-wrap: anywhere; }
+.opcua-simulator-nodes button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.opcua-simulator-fields { min-width: 0; border: 0; margin: 0; padding: 0; }
+.opcua-simulator-fields legend { margin-bottom: 12px; color: var(--text-muted); font-size: var(--font-size-small); }
+.opcua-simulator-wide { grid-column: 1 / -1; }
+@media (max-width: 900px) { .opcua-simulator-editor { grid-template-columns: minmax(0, 1fr); } .opcua-simulator-nodes { flex-direction: row; max-height: 150px; } .opcua-simulator-nodes button { min-width: 150px; } }

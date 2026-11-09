@@ -1,0 +1,62 @@
+[
+  {
+    "product": "Ineed LinkLab",
+    "runtime": "electron",
+    "architecture": "arm64",
+    "bundleArchitecture": "arm64",
+    "identifier": "com.ineedfull.dev-tool.electron",
+    "version": "0.1.0",
+    "minimumSystemVersion": "12.0",
+    "artifact": "/Users/pangzhigang/develop/com.ineedfull/ineed-linklab/release/desktop/0.1.0-20260921T012913798Z-50508ebc/ineed-linklab-0.1.0-electron-macos-arm64.dmg",
+    "sha256": "cf8131652abd10af4b3ca9c7dd958082f85c3c16b06f0e37e876ac462c4c61bb",
+    "bundleMetadata": "passed",
+    "applicationLaunch": "not-run",
+    "installation": "not-run",
+    "codeSigning": "not-verified"
+  },
+  {
+    "product": "Ineed LinkLab",
+    "runtime": "electron",
+    "architecture": "x64",
+    "bundleArchitecture": "x86_64",
+    "identifier": "com.ineedfull.dev-tool.electron",
+    "version": "0.1.0",
+    "minimumSystemVersion": "12.0",
+    "artifact": "/Users/pangzhigang/develop/com.ineedfull/ineed-linklab/release/desktop/0.1.0-20260921T012913798Z-50508ebc/ineed-linklab-0.1.0-electron-macos-x64.dmg",
+    "sha256": "3784d8f128cd83d88103cb250dc3cfec9335ce7bfe50a87ebbc1afabc88b7ded",
+    "bundleMetadata": "passed",
+    "applicationLaunch": "not-run",
+    "installation": "not-run",
+    "codeSigning": "not-verified"
+  },
+  {
+    "product": "Ineed LinkLab",
+    "runtime": "tauri",
+    "architecture": "arm64",
+    "bundleArchitecture": "arm64",
+    "identifier": "com.ineedfull.dev-tool",
+    "version": "0.1.0",
+    "minimumSystemVersion": "10.13",
+    "artifact": "/Users/pangzhigang/develop/com.ineedfull/ineed-linklab/release/desktop/0.1.0-20260921T013014924Z-83296f98/ineed-linklab-0.1.0-tauri-macos-arm64.dmg",
+    "sha256": "2e04913cc4c4a397fcfc11a2bddebc75fc33694804d1dc158d67e3bdec9ecaa7",
+    "bundleMetadata": "passed",
+    "applicationLaunch": "not-run",
+    "installation": "not-run",
+    "codeSigning": "not-verified"
+  },
+  {
+    "product": "Ineed LinkLab",
+    "runtime": "tauri",
+    "architecture": "x64",
+    "bundleArchitecture": "x86_64",
+    "identifier": "com.ineedfull.dev-tool",
+    "version": "0.1.0",
+    "minimumSystemVersion": "10.13",
+    "artifact": "/Users/pangzhigang/develop/com.ineedfull/ineed-linklab/release/desktop/0.1.0-20260921T023155614Z-e78995b8/ineed-linklab-0.1.0-tauri-macos-x64.dmg",
+    "sha256": "07656f4d4b60a99a389506fb61577906e4c7d9d8d4421d1ec6cda62a7c17dac1",
+    "bundleMetadata": "passed",
+    "applicationLaunch": "not-run",
+    "installation": "not-run",
+    "codeSigning": "not-verified"
+  }
+]

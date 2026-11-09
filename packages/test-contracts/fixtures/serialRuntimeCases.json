@@ -1,0 +1,566 @@
+{
+  "schemaVersion": 1,
+  "errorCodes": [
+    "PORT_NOT_FOUND",
+    "PORT_BUSY",
+    "PERMISSION_DENIED",
+    "OPEN_CANCELLED",
+    "DEVICE_REMOVED",
+    "IO_ERROR"
+  ],
+  "port": {
+    "valid": [
+      {
+        "name": "minimal port metadata",
+        "input": { "path": "/dev/ttyUSB0" },
+        "expected": {
+          "path": "/dev/ttyUSB0",
+          "manufacturer": null,
+          "serialNumber": null,
+          "vendorId": null,
+          "productId": null
+        }
+      },
+      {
+        "name": "complete port metadata",
+        "input": {
+          "path": "COM3",
+          "manufacturer": "Ineed Lab",
+          "serialNumber": "SN-1",
+          "vendorId": "1209",
+          "productId": "0001"
+        },
+        "expected": {
+          "path": "COM3",
+          "manufacturer": "Ineed Lab",
+          "serialNumber": "SN-1",
+          "vendorId": "1209",
+          "productId": "0001"
+        }
+      }
+    ],
+    "invalid": [
+      { "name": "missing path", "input": {} },
+      { "name": "blank path", "input": { "path": " " } },
+      { "name": "non-string metadata", "input": { "path": "COM3", "manufacturer": 42 } },
+      { "name": "unknown metadata", "input": { "path": "COM3", "friendlyName": "alias" } }
+    ]
+  },
+  "status": {
+    "valid": [
+      {
+        "name": "opening without session",
+        "input": {
+          "endpointId": "serial-1",
+          "operationId": "open-1",
+          "sessionId": null,
+          "status": "opening",
+          "error": null,
+          "createdAt": 1,
+          "log": null
+        }
+      },
+      {
+        "name": "open with session",
+        "input": {
+          "endpointId": "serial-1",
+          "operationId": "open-1",
+          "sessionId": "session-1",
+          "status": "open",
+          "error": null,
+          "createdAt": 2,
+          "log": {
+            "level": "info",
+            "source": "serial",
+            "code": null,
+            "message": "串口已打开: /dev/ttyUSB0",
+            "details": { "path": "/dev/ttyUSB0", "settings": [115200, true, null] },
+            "createdAt": 2
+          }
+        }
+      },
+      {
+        "name": "closing with session",
+        "input": {
+          "endpointId": "serial-1",
+          "operationId": "open-1",
+          "sessionId": "session-1",
+          "status": "closing",
+          "error": null,
+          "createdAt": 3,
+          "log": null
+        }
+      },
+      {
+        "name": "closed without terminal error",
+        "input": {
+          "endpointId": "serial-1",
+          "operationId": "open-1",
+          "sessionId": null,
+          "status": "closed",
+          "error": null,
+          "createdAt": 4,
+          "log": null
+        }
+      },
+      {
+        "name": "closed with terminal cancellation error",
+        "input": {
+          "endpointId": "serial-1",
+          "operationId": "open-1",
+          "sessionId": null,
+          "status": "closed",
+          "error": { "code": "OPEN_CANCELLED", "message": "Serial open cancelled" },
+          "createdAt": 5,
+          "log": null
+        }
+      },
+      {
+        "name": "open failure error without session",
+        "input": {
+          "endpointId": "serial-1",
+          "operationId": "open-1",
+          "sessionId": null,
+          "status": "error",
+          "error": { "code": "PORT_BUSY", "message": "Port is busy" },
+          "createdAt": 6,
+          "log": null
+        }
+      },
+      {
+        "name": "device error with session",
+        "input": {
+          "endpointId": "serial-1",
+          "operationId": "open-1",
+          "sessionId": "session-1",
+          "status": "error",
+          "error": { "code": "DEVICE_REMOVED", "message": "Device was removed" },
+          "createdAt": 7,
+          "log": null
+        }
+      },
+      {
+        "name": "tcp server listening with session",
+        "input": {
+          "endpointId": "tcp-server-1",
+          "operationId": "open-tcp-server-1",
+          "sessionId": "tcp-server-1-session",
+          "status": "listening",
+          "error": null,
+          "createdAt": 1720000000000,
+          "log": {
+            "level": "info",
+            "source": "tcp",
+            "code": null,
+            "message": "TCP 服务已监听: 127.0.0.1:41000",
+            "details": { "listenHost": "127.0.0.1", "listenPort": 41000 },
+            "createdAt": 1720000000000
+          }
+        }
+      }
+    ],
+    "invalid": [
+      {
+        "name": "opening retains session",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "opening", "error": null, "createdAt": 1, "log": null
+        }
+      },
+      {
+        "name": "open lacks session",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": null,
+          "status": "open", "error": null, "createdAt": 1, "log": null
+        }
+      },
+      {
+        "name": "closing lacks session",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": null,
+          "status": "closing", "error": null, "createdAt": 1, "log": null
+        }
+      },
+      {
+        "name": "listening lacks session",
+        "input": {
+          "endpointId": "tcp-server-1", "operationId": "open-tcp-server-1", "sessionId": null,
+          "status": "listening", "error": null, "createdAt": 1, "log": null
+        }
+      },
+      {
+        "name": "listening lacks log",
+        "input": {
+          "endpointId": "tcp-server-1", "operationId": "open-tcp-server-1",
+          "sessionId": "tcp-server-1-session",
+          "status": "listening", "error": null, "createdAt": 1, "log": null
+        }
+      },
+      {
+        "name": "closed retains session",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "closed", "error": null, "createdAt": 1, "log": null
+        }
+      },
+      {
+        "name": "opening carries error",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": null,
+          "status": "opening", "error": { "code": "IO_ERROR", "message": "failed" }, "createdAt": 1,
+          "log": null
+        }
+      },
+      {
+        "name": "open carries error",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "open", "error": { "code": "IO_ERROR", "message": "failed" }, "createdAt": 1,
+          "log": null
+        }
+      },
+      {
+        "name": "closing carries error",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "closing", "error": { "code": "IO_ERROR", "message": "failed" }, "createdAt": 1,
+          "log": null
+        }
+      },
+      {
+        "name": "listening carries error",
+        "input": {
+          "endpointId": "tcp-server-1", "operationId": "open-tcp-server-1",
+          "sessionId": "tcp-server-1-session",
+          "status": "listening", "error": { "code": "IO_ERROR", "message": "failed" },
+          "createdAt": 1, "log": null
+        }
+      },
+      {
+        "name": "error status lacks error",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": null,
+          "status": "error", "error": null, "createdAt": 1, "log": null
+        }
+      },
+      {
+        "name": "missing log field",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "open", "error": null, "createdAt": 1
+        }
+      },
+      {
+        "name": "unknown log level",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "open", "error": null, "createdAt": 1,
+          "log": {
+            "level": "notice", "source": "serial", "code": null, "message": "opened",
+            "details": null, "createdAt": 1
+          }
+        }
+      },
+      {
+        "name": "blank log source",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "open", "error": null, "createdAt": 1,
+          "log": {
+            "level": "info", "source": " ", "code": null, "message": "opened",
+            "details": null, "createdAt": 1
+          }
+        }
+      },
+      {
+        "name": "blank log message",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "open", "error": null, "createdAt": 1,
+          "log": {
+            "level": "info", "source": "serial", "code": null, "message": " ",
+            "details": null, "createdAt": 1
+          }
+        }
+      },
+      {
+        "name": "non-string log code",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "open", "error": null, "createdAt": 1,
+          "log": {
+            "level": "info", "source": "serial", "code": 5, "message": "opened",
+            "details": null, "createdAt": 1
+          }
+        }
+      },
+      {
+        "name": "blank log code",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "open", "error": null, "createdAt": 1,
+          "log": {
+            "level": "info", "source": "serial", "code": " ", "message": "opened",
+            "details": null, "createdAt": 1
+          }
+        }
+      },
+      {
+        "name": "unsafe log timestamp",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "open", "error": null, "createdAt": 1,
+          "log": {
+            "level": "info", "source": "serial", "code": null, "message": "opened",
+            "details": null, "createdAt": 9007199254740992
+          }
+        }
+      },
+      {
+        "name": "extra log field",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "open", "error": null, "createdAt": 1,
+          "log": {
+            "level": "info", "source": "serial", "code": null, "message": "opened",
+            "details": null, "createdAt": 1, "extra": true
+          }
+        }
+      },
+      {
+        "name": "unsafe details number",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "open", "error": null, "createdAt": 1,
+          "log": {
+            "level": "info", "source": "serial", "code": null, "message": "opened",
+            "details": { "count": 9007199254740992 }, "createdAt": 1
+          }
+        }
+      },
+      {
+        "name": "status log source is unsupported",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "open", "error": null, "createdAt": 1,
+          "log": {
+            "level": "info", "source": "transport", "code": null, "message": "opened",
+            "details": null, "createdAt": 1
+          }
+        }
+      },
+      {
+        "name": "listening log is not info without code",
+        "input": {
+          "endpointId": "tcp-server-1", "operationId": "open-tcp-server-1",
+          "sessionId": "tcp-server-1-session",
+          "status": "listening", "error": null, "createdAt": 1,
+          "log": {
+            "level": "debug", "source": "tcp", "code": "IO_ERROR", "message": "listening",
+            "details": null, "createdAt": 1
+          }
+        }
+      },
+      {
+        "name": "status and log timestamps differ",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "open", "error": null, "createdAt": 1,
+          "log": {
+            "level": "info", "source": "serial", "code": null, "message": "opened",
+            "details": null, "createdAt": 2
+          }
+        }
+      },
+      {
+        "name": "opening log is not debug without code",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": null,
+          "status": "opening", "error": null, "createdAt": 1,
+          "log": {
+            "level": "info", "source": "serial", "code": "IO_ERROR", "message": "opening",
+            "details": null, "createdAt": 1
+          }
+        }
+      },
+      {
+        "name": "normal closed log is not info without code",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": null,
+          "status": "closed", "error": null, "createdAt": 1,
+          "log": {
+            "level": "debug", "source": "serial", "code": "IO_ERROR", "message": "closed",
+            "details": null, "createdAt": 1
+          }
+        }
+      },
+      {
+        "name": "device removed error log is not warn with matching code",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "error", "error": { "code": "DEVICE_REMOVED", "message": "removed" },
+          "createdAt": 1,
+          "log": {
+            "level": "error", "source": "serial", "code": "IO_ERROR", "message": "removed",
+            "details": null, "createdAt": 1
+          }
+        }
+      },
+      {
+        "name": "other error log is not error with matching code",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "status": "error", "error": { "code": "IO_ERROR", "message": "failed" },
+          "createdAt": 1,
+          "log": {
+            "level": "warn", "source": "serial", "code": "DEVICE_REMOVED", "message": "failed",
+            "details": null, "createdAt": 1
+          }
+        }
+      },
+      {
+        "name": "failure terminal closed status repeats a log",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": null,
+          "status": "closed", "error": { "code": "IO_ERROR", "message": "failed" },
+          "createdAt": 1,
+          "log": {
+            "level": "info", "source": "serial", "code": null, "message": "closed",
+            "details": null, "createdAt": 1
+          }
+        }
+      }
+    ]
+  },
+  "frame": {
+    "valid": [
+      {
+        "name": "wire byte arrays",
+        "input": {
+          "endpointId": "serial-1",
+          "operationId": "open-1",
+          "sessionId": "session-1",
+          "frames": [
+            { "direction": "in", "bytes": [0, 128, 255], "createdAt": 8 },
+            { "direction": "out", "bytes": [], "createdAt": 9 }
+          ]
+        }
+      }
+    ],
+    "invalid": [
+      {
+        "name": "invalid direction",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "frames": [{ "direction": "sideways", "bytes": [1], "createdAt": 1 }]
+        }
+      },
+      {
+        "name": "negative byte",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "frames": [{ "direction": "in", "bytes": [-1], "createdAt": 1 }]
+        }
+      },
+      {
+        "name": "byte above 255",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "frames": [{ "direction": "in", "bytes": [256], "createdAt": 1 }]
+        }
+      },
+      {
+        "name": "fractional byte",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "frames": [{ "direction": "in", "bytes": [1.5], "createdAt": 1 }]
+        }
+      },
+      {
+        "name": "missing bytes",
+        "input": {
+          "endpointId": "serial-1", "operationId": "open-1", "sessionId": "session-1",
+          "frames": [{ "direction": "in", "createdAt": 1 }]
+        }
+      }
+    ]
+  },
+  "cancel": {
+    "valid": [
+      {
+        "name": "opening cancellation acknowledged",
+        "input": { "endpointId": "serial-1", "operationId": "open-1", "cancelled": true }
+      }
+    ],
+    "invalid": [
+      {
+        "name": "cancellation not acknowledged",
+        "input": { "endpointId": "serial-1", "operationId": "open-1", "cancelled": false }
+      },
+      {
+        "name": "missing cancellation flag",
+        "input": { "endpointId": "serial-1", "operationId": "open-1" }
+      }
+    ]
+  },
+  "error": {
+    "valid": [
+      { "name": "port not found", "input": { "code": "PORT_NOT_FOUND", "message": "Port not found" } },
+      { "name": "port busy", "input": { "code": "PORT_BUSY", "message": "Port busy" } },
+      { "name": "permission denied", "input": { "code": "PERMISSION_DENIED", "message": "Permission denied" } },
+      { "name": "open cancelled", "input": { "code": "OPEN_CANCELLED", "message": "Open cancelled" } },
+      { "name": "device removed", "input": { "code": "DEVICE_REMOVED", "message": "Device removed" } },
+      { "name": "I/O error", "input": { "code": "IO_ERROR", "message": "I/O failed" } }
+    ],
+    "invalid": [
+      { "name": "unknown code", "input": { "code": "UNKNOWN", "message": "Unknown" } },
+      { "name": "blank message", "input": { "code": "IO_ERROR", "message": " " } },
+      { "name": "extra field", "input": { "code": "IO_ERROR", "message": "failed", "errno": 5 } },
+      { "name": "missing code", "input": { "message": "failed" } }
+    ]
+  },
+  "peer": {
+    "valid": [
+      {
+        "name": "tcp server peer records",
+        "input": {
+          "endpointId": "tcp-server-1",
+          "operationId": "open-tcp-server-1",
+          "sessionId": "tcp-server-1-session",
+          "peers": [
+            {
+              "id": "peer-1",
+              "remoteAddress": "127.0.0.1:51000",
+              "connectedAt": 1720000000001
+            }
+          ]
+        }
+      }
+    ],
+    "invalid": [
+      {
+        "name": "peer missing connectedAt",
+        "input": {
+          "endpointId": "tcp-server-1",
+          "operationId": "open-tcp-server-1",
+          "sessionId": "tcp-server-1-session",
+          "peers": [{ "id": "peer-1", "remoteAddress": "127.0.0.1:51000" }]
+        }
+      },
+      {
+        "name": "peer has unknown field",
+        "input": {
+          "endpointId": "tcp-server-1",
+          "operationId": "open-tcp-server-1",
+          "sessionId": "tcp-server-1-session",
+          "peers": [{
+            "id": "peer-1",
+            "remoteAddress": "127.0.0.1:51000",
+            "connectedAt": 1720000000001,
+            "label": "client"
+          }]
+        }
+      }
+    ]
+  }
+}

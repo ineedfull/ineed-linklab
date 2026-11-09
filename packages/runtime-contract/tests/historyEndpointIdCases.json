@@ -1,0 +1,22 @@
+{
+  "accepted": [
+    "Unicode-中文",
+    "space value",
+    "a&b",
+    "a.b",
+    "a_b",
+    "a:b",
+    "%",
+    "#",
+    "?"
+  ],
+  "rejected": [
+    "",
+    "   ",
+    "../settings",
+    "x/y",
+    "x\\y",
+    "control\u0000value",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  ]
+}

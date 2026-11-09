@@ -1,0 +1,164 @@
+/* Desktop assistant design: keep these semantic values aligned with MQTT Tool. */
+:root {
+  --endpoint-tree-width: 240px;
+  --status-bar-height: 48px;
+  --frame-toolbar-height: auto;
+  --send-panel-height: 220px;
+  --line: #c7d2e3;
+  --line-soft: #d5deeb;
+  --surface: #fff;
+  --surface-muted: #f1f4f9;
+  --surface-control: #f6f8fc;
+  --text: #233047;
+  --text-muted: #536176;
+  --accent: #3159da;
+  --accent-strong: #3159da;
+  --accent-soft: #e7edff;
+  --on-accent: #fff;
+  --success: #147650;
+  --warning: #855600;
+  --danger: #b42332;
+  --control-height: 32px;
+  --row-height: 40px;
+}
+[data-theme="dark"] {
+  --line: #465873;
+  --line-soft: #36445a;
+  --surface: #1e2838;
+  --surface-muted: #182231;
+  --surface-control: #263247;
+  --text: #e1e8f5;
+  --text-muted: #afbdd2;
+  --accent: #94b4ff;
+  --accent-strong: #94b4ff;
+  --accent-soft: #293e67;
+  --on-accent: #16233d;
+  --success: #83d9b1;
+  --warning: #f3cf86;
+  --danger: #ffabb3;
+}
+.linklab-shell[data-density="compact"] { --control-height: 28px; --row-height: 32px; }
+.linklab-shell { position: relative; }
+.linklab-shell .linklab-shell__tree { grid-template-rows: 48px auto minmax(0, 1fr) 42px; background: var(--surface-muted); border-color: var(--line); }
+.linklab-shell.tree-collapsed .linklab-shell__tree { grid-template-rows: 64px minmax(0, 1fr) 112px; }
+.linklab-shell .linklab-shell__brand { font-size: var(--font-size-heading); }
+.linklab-shell .linklab-shell__runtime { background: var(--surface-muted); border-top: 1px solid var(--line); gap: 4px; }
+.linklab-shell .linklab-shell__runtime .icon-button { width: auto; min-height: 32px; display: inline-flex; align-items: center; flex: none; gap: 5px; padding: 4px 6px; white-space: nowrap; }
+.linklab-shell .linklab-shell__runtime .icon-button svg { flex-shrink: 0; }
+.linklab-shell.tree-collapsed .linklab-shell__runtime { flex-direction: column; padding: 4px; gap: 4px; }
+.linklab-shell .resource-resizer { position: absolute; left: calc(var(--endpoint-tree-width) - 3px); width: 6px; top: 0; bottom: 0; cursor: col-resize; z-index: 7; }
+.linklab-shell .resource-resizer:hover { background: var(--accent); opacity: .45; }
+.linklab-shell .endpoint-tree__group h2, .linklab-shell .endpoint-row__secondary, .linklab-shell .endpoint-tree__peers button, .linklab-shell .linklab-shell__tree-heading { color: var(--text-muted); font-size: var(--font-size-small); }
+.linklab-shell .endpoint-row { background: transparent; border: 1px solid transparent; border-radius: 5px; }
+.linklab-shell .endpoint-row:hover { background: var(--surface-control); }
+.linklab-shell .endpoint-row.selected { background: var(--accent-soft); border-color: var(--accent); }
+.linklab-shell .endpoint-row__select { min-height: 54px; }
+.linklab-shell .endpoint-row__primary { font-size: var(--font-size); }
+.linklab-shell .endpoint-initials, .linklab-shell .endpoint-tree__filter-select { color: var(--text); background: var(--surface); border-color: var(--line); }
+.linklab-shell .endpoint-tree__peers button.active { color: var(--accent); background: var(--accent-soft); }
+.linklab-shell .endpoint-row__menu { color: var(--text); background: var(--surface); border-color: var(--line); }
+.linklab-shell .linklab-shell__main { position: relative; grid-template-rows: 48px auto minmax(0, 1fr) auto; }
+.linklab-shell .session-status-bar { min-height: 48px; height: 48px; padding-inline: 16px; }
+.linklab-shell .session-status-bar__identity strong { font-size: var(--font-size-heading); max-width: 240px; }
+.linklab-shell .session-status-bar__stats { font-size: var(--font-size-small); }
+.linklab-shell .transport-badge { color: var(--accent); border-color: var(--line); background: var(--accent-soft); font-size: var(--font-size-small); font-weight: 500; }
+.linklab-shell .session-state { color: var(--text-muted); background: var(--surface-muted); border-color: var(--line); font-size: var(--font-size-small); font-weight: 500; }
+.linklab-shell :is(.session-state--open, .session-state--connected, .session-state--listening) { color: var(--success); background: var(--surface-muted); }
+.linklab-shell .workspace-tabs { display: flex; justify-content: space-between; align-items: center; min-height: 40px; border-bottom: 1px solid var(--line); padding: 0 16px; }
+.linklab-shell .workspace-tabs > div { display: flex; gap: 8px; }
+.linklab-shell .workspace-tabs button { min-height: 32px; padding: 4px 8px; display: inline-flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; font-size: var(--font-size-control); background: none; color: var(--text-muted); cursor: pointer; }
+.linklab-shell .workspace-tabs button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.linklab-shell .frame-toolbar { min-height: 48px; height: auto; padding: 8px 16px; gap: 8px; background: var(--surface); flex-wrap: wrap; }
+.linklab-shell .frame-toolbar :is(input, select) { color: var(--text); background: var(--surface); font-size: var(--font-size-control); }
+.linklab-shell .frame-toolbar .compact-search, .linklab-shell .toolbar-select select { height: var(--control-height); border-color: var(--line); background: var(--surface); }
+.linklab-shell .follow-button { display: inline-flex; gap: 5px; align-items: center; min-height: var(--control-height); padding: 4px 8px; font-size: var(--font-size-control); color: var(--text-muted); background: var(--surface); border: 1px solid var(--line); border-radius: 5px; white-space: nowrap; cursor: pointer; }
+.linklab-shell .follow-button[aria-pressed="true"] { color: var(--accent); background: var(--accent-soft); }
+.linklab-shell .linklab-shell__stream { position: static; display: flex; min-height: 0; background: var(--surface); }
+.linklab-shell .frame-workspace { display: flex; flex-direction: column; flex: 1; min-width: 0; min-height: 0; }
+.linklab-shell .frame-list { overflow: auto; min-height: 0; padding: 0; flex: 1; display: block; }
+.linklab-shell .message-columns, .linklab-shell .frame-list__item { display: grid; grid-template-columns: 114px 44px minmax(115px, 23%) minmax(0, 1fr) 42px 28px; align-items: center; gap: 10px; padding: 0 16px; }
+.linklab-shell .message-columns { min-height: 32px; font-size: var(--font-size-small); color: var(--text-muted); background: var(--surface-muted); border-bottom: 1px solid var(--line); }
+.linklab-shell .message-columns span:nth-last-child(2) { text-align: right; }
+.linklab-shell .frame-list__item { min-height: var(--row-height); width: 100%; max-width: none; margin: 0; border: 0; border-bottom: 1px solid var(--line-soft); background: var(--surface); border-radius: 0; box-shadow: none; }
+.linklab-shell .frame-list__item:hover { background: var(--surface-control); }
+.linklab-shell .frame-list__item > time { color: var(--text-muted); font: var(--font-size-small) ui-monospace, SFMono-Regular, Consolas, monospace; white-space: nowrap; }
+.linklab-shell .frame-peer { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: var(--font-size-control) ui-monospace, SFMono-Regular, Consolas, monospace; }
+.linklab-shell .frame-direction { font-size: var(--font-size-small); font-weight: 500; }
+.linklab-shell .frame-preview { display: block; min-width: 0; width: 100%; padding: 6px 0; background: none; color: var(--text); border: 0; cursor: pointer; text-align: left; }
+.linklab-shell .frame-preview pre { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: var(--font-size); color: var(--text); }
+.linklab-shell .frame-bytes { text-align: right; color: var(--text-muted); font: var(--font-size-small) ui-monospace, SFMono-Regular, Consolas, monospace; }
+.linklab-shell .new-records { position: absolute; z-index: 3; right: 28px; top: 146px; padding: 6px 12px; color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 5px; cursor: pointer; }
+.linklab-shell .message-inspector { position: absolute; z-index: 6; top: 48px; bottom: 0; right: 0; width: min(360px, 65%); overflow: auto; padding: 16px; color: var(--text); background: var(--surface); border-left: 1px solid var(--line); box-shadow: -8px 0 24px #10203018; }
+.linklab-shell .message-inspector header, .linklab-shell .message-inspector__actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.linklab-shell .message-inspector dl { display: grid; grid-template-columns: 45px minmax(0, 1fr); gap: 10px; font-size: var(--font-size-control); }
+.linklab-shell .message-inspector dt { color: var(--text-muted); }
+.linklab-shell .message-inspector dd { margin: 0; overflow-wrap: anywhere; }
+.linklab-shell .message-inspector__actions { font-size: var(--font-size-small); }
+.linklab-shell .message-inspector select { color: var(--text); background: var(--surface-control); border: 1px solid var(--line); padding: 5px; }
+.linklab-shell .message-inspector pre { font: var(--font-size)/1.7 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--surface-muted); padding: 12px; border: 1px solid var(--line); border-radius: 5px; }
+.linklab-shell .log-list { flex: 1; min-height: 0; color: var(--text); background: var(--surface); }
+.linklab-shell .log-list__row { min-height: var(--row-height); border-color: var(--line-soft); }
+.linklab-shell .log-list__row time { font-size: var(--font-size-small); }
+.linklab-shell .send-panel { max-height: 55vh; min-height: 180px; background: var(--surface); grid-template-rows: auto minmax(40px, 1fr) auto; }
+.linklab-shell .send-panel__toolbar { min-height: 40px; padding: 6px 16px; flex-wrap: wrap; gap: 8px; overflow: visible; }
+.linklab-shell .send-panel__editor { padding: 4px 16px; }
+.linklab-shell .send-panel__footer { min-height: 40px; padding: 4px 16px; overflow: visible; flex-wrap: wrap; }
+.linklab-shell .send-panel__actions { flex-wrap: wrap; justify-content: flex-end; margin-left: auto; }
+.linklab-shell .send-shortcut { font: var(--font-size-small) ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--text-muted); }
+.linklab-shell .send-panel__manual-send { min-width: 80px; order: 3; }
+.linklab-shell .send-panel__schedule { order: 1; }
+.linklab-shell .send-panel__schedule--expanded { flex-wrap: wrap; }
+.linklab-shell .send-panel__schedule-field input, .linklab-shell .send-panel__schedule-field select { color: var(--text); background: var(--surface-control); border-color: var(--line); }
+.linklab-shell .send-panel__peer-options { color: var(--text); background: var(--surface); }
+:is(.linklab-shell, .dialog-backdrop, .history-window) .command-button { min-height: 32px; color: var(--on-accent); background: var(--accent); border-color: var(--accent); font-size: var(--font-size-control); }
+:is(.linklab-shell, .dialog-backdrop, .history-window) .command-button--quiet { color: var(--text); background: var(--surface); border-color: var(--line); }
+:is(.linklab-shell, .dialog-backdrop, .history-window) .command-button--danger { color: var(--danger); background: var(--surface); border-color: var(--danger); }
+:is(.linklab-shell, .dialog-backdrop, .history-window) :is(.compact-search, .field-control input, .field-control select, .history-filters input, .history-filters select) { color: var(--text); background: var(--surface); border-color: var(--line); }
+:is(.linklab-shell, .dialog-backdrop, .history-window) .icon-button { color: var(--text-muted); }
+:is(.linklab-shell, .dialog-backdrop, .history-window) .segmented-control { background: var(--surface-control); border-color: var(--line); }
+:is(.linklab-shell, .dialog-backdrop, .history-window) .segmented-control button { color: var(--text-muted); }
+:is(.linklab-shell, .dialog-backdrop, .history-window) .segmented-control button.active { color: var(--accent); background: var(--accent-soft); box-shadow: none; }
+.settings-panel { grid-template-rows: 48px minmax(0, 1fr) auto auto; width: min(700px, calc(100vw - 32px)); }
+.settings-panel .settings-discard { display: flex; align-items: center; gap: 8px; padding: 8px 16px; color: var(--warning); }
+.settings-panel .settings-discard > span { margin-right: auto; }
+.settings-panel .settings-discard + footer { grid-row: 4; }
+.settings-panel .settings-section h3 { font-size: var(--font-size); }
+.linklab-shell :is(.modbus-master-panel, .dlt645-panel, .dlt645-simulator-panel, .modbus-panel) { color: var(--text); background: var(--surface); }
+.linklab-shell :is(.modbus-master-tabs, .dlt645-tabs, .modbus-panel__tabs) { min-height: 40px; background: var(--surface); border-color: var(--line); }
+.linklab-shell .modbus-master-tabs button { font-size: var(--font-size-control); color: var(--text-muted); }
+.linklab-shell .modbus-master-tabs button.active { color: var(--accent); background: var(--accent-soft); }
+.linklab-shell :is(.modbus-result-table th, .modbus-data-table th, .modbus-register-table th) { background: var(--surface-muted); color: var(--text-muted); }
+.linklab-shell :is(.modbus-request-group, .modbus-live-group, .modbus-write-command, .modbus-master-summary section) { background: var(--surface); border-color: var(--line); }
+.linklab-shell .modbus-write-confirmation { position: sticky; bottom: 8px; z-index: 4; background: var(--surface); color: var(--text); border-color: var(--warning); }
+.large-font .linklab-shell { --status-bar-height: 48px; --frame-toolbar-height: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+:is(button, input, select, [tabindex]):focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+@media (max-width: 1200px) {
+  .linklab-shell .session-status-bar__stats > span:not(.session-status-bar__error) { display: none; }
+  .linklab-shell .frame-list__item, .linklab-shell .message-columns { grid-template-columns: 105px 35px minmax(100px, 22%) minmax(0, 1fr) 35px 25px; gap: 8px; }
+  .linklab-shell .session-status-bar__identity strong { max-width: 160px; }
+}
+@media (max-width: 850px) {
+  .linklab-shell .frame-toolbar, .linklab-shell .workspace-tabs { padding-inline: 10px; }
+  .linklab-shell .workspace-tabs__actions svg { display: none; }
+  .linklab-shell .frame-list__item, .linklab-shell .message-columns { grid-template-columns: 92px 28px minmax(75px, 20%) minmax(0, 1fr) 32px 24px; gap: 6px; padding-inline: 8px; }
+  .linklab-shell .send-shortcut { display: none; }
+}
+
+.settings-panel fieldset.settings-panel__body { margin: 0; border: 0; min-width: 0; }
+
+/* Anchor mixed options to the input row even when validation adds a note below. */
+.field-control > span:first-child { line-height: 1.5; }
+.history-filters :is(input, select) { height: var(--control-height, 32px); }
+
+:root { --payload-key: #3159da; --payload-string: #147650; --payload-value: #8a3c93; --payload-punctuation: #536176; }
+:root[data-theme="dark"] { --payload-key: #adc5ff; --payload-string: #a1e7c4; --payload-value: #e6b3ee; --payload-punctuation: #ced8e9; }
+
+/* Latin and CJK form labels need one line box above paired protocol controls. */
+.linklab-shell :is(.opcua-panel, .stomp-panel) label { line-height: 1.5; }
+/* Explicit single-line sizing also applies in WebKit's native select renderer. */
+.linklab-shell :is(.opcua-panel, .stomp-panel) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select) {
+  height: var(--control-height, 32px);
+  line-height: normal;
+}
+.dialog-backdrop :is(.toolbox-panel, .acceptance-panel) select { height: 32px; }

@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "endpointId": "fixture-master",
+  "range": { "from": 1000, "to": 1100, "bucketCount": 1 },
+  "pointIdentities": [
+    { "requestGroupId": "environment", "requestId": "holding", "pointId": "numeric" },
+    { "requestGroupId": "environment", "requestId": "holding", "pointId": "switch" },
+    { "requestGroupId": "environment", "requestId": "holding", "pointId": "label" }
+  ],
+  "validRows": [
+    {
+      "endpointId": "fixture-master", "requestGroupId": "environment",
+      "requestId": "holding", "pointId": "numeric", "pointKey": "temperature",
+      "pointName": "Temperature", "dataType": "float32", "unit": "C",
+      "raw": [16680, 0], "value": 10.5, "numericValue": 10.5,
+      "displayValue": "10.5", "quality": "good", "reason": null, "createdAt": 1000
+    },
+    {
+      "endpointId": "fixture-master", "requestGroupId": "environment",
+      "requestId": "holding", "pointId": "numeric", "pointKey": "temperature",
+      "pointName": "Temperature", "dataType": "float32", "unit": "C",
+      "raw": [16884, 0], "value": 30.5, "numericValue": 30.5,
+      "displayValue": "30.5", "quality": "good", "reason": null, "createdAt": 1010
+    },
+    {
+      "endpointId": "fixture-master", "requestGroupId": "environment",
+      "requestId": "holding", "pointId": "numeric", "pointKey": "temperature",
+      "pointName": "Temperature", "dataType": "float32", "unit": "C",
+      "raw": [], "value": null, "numericValue": null, "displayValue": "—",
+      "quality": "bad-communication", "reason": "timeout", "createdAt": 1020
+    },
+    {
+      "endpointId": "fixture-master", "requestGroupId": "environment",
+      "requestId": "holding", "pointId": "numeric", "pointKey": "temperature",
+      "pointName": "Temperature", "dataType": "float32", "unit": "C",
+      "raw": [16804, 0], "value": 20.5, "numericValue": 20.5,
+      "displayValue": "20.5", "quality": "good", "reason": null, "createdAt": 1030
+    },
+    {
+      "endpointId": "fixture-master", "requestGroupId": "environment",
+      "requestId": "holding", "pointId": "switch", "pointKey": "running",
+      "pointName": "Running", "dataType": "boolean", "unit": "",
+      "raw": [false], "value": false, "numericValue": 0,
+      "displayValue": "OFF", "quality": "good", "reason": null, "createdAt": 1000
+    },
+    {
+      "endpointId": "fixture-master", "requestGroupId": "environment",
+      "requestId": "holding", "pointId": "switch", "pointKey": "running",
+      "pointName": "Running", "dataType": "boolean", "unit": "",
+      "raw": [false], "value": false, "numericValue": 0,
+      "displayValue": "OFF", "quality": "good", "reason": null, "createdAt": 1010
+    },
+    {
+      "endpointId": "fixture-master", "requestGroupId": "environment",
+      "requestId": "holding", "pointId": "switch", "pointKey": "running",
+      "pointName": "Running", "dataType": "boolean", "unit": "",
+      "raw": [true], "value": true, "numericValue": 1,
+      "displayValue": "ON", "quality": "good", "reason": null, "createdAt": 1020
+    },
+    {
+      "endpointId": "fixture-master", "requestGroupId": "environment",
+      "requestId": "holding", "pointId": "label", "pointKey": "batch",
+      "pointName": "Batch", "dataType": "string", "unit": "",
+      "raw": [16640], "value": "A", "numericValue": null,
+      "displayValue": "A", "quality": "good", "reason": null, "createdAt": 1000
+    },
+    {
+      "endpointId": "fixture-master", "requestGroupId": "environment",
+      "requestId": "holding", "pointId": "label", "pointKey": "batch",
+      "pointName": "Batch", "dataType": "string", "unit": "",
+      "raw": [16640], "value": "A", "numericValue": null,
+      "displayValue": "A", "quality": "good", "reason": null, "createdAt": 1010
+    },
+    {
+      "endpointId": "fixture-master", "requestGroupId": "environment",
+      "requestId": "holding", "pointId": "label", "pointKey": "batch",
+      "pointName": "Batch", "dataType": "string", "unit": "",
+      "raw": [16896], "value": "B", "numericValue": null,
+      "displayValue": "B", "quality": "good", "reason": null, "createdAt": 1020
+    }
+  ],
+  "invalidRows": [
+    {
+      "name": "unknown quality",
+      "row": {
+        "endpointId": "fixture-master", "requestGroupId": "environment",
+        "requestId": "holding", "pointId": "invalid-quality", "pointKey": "invalid_quality",
+        "pointName": "Invalid quality", "dataType": "uint16", "unit": "",
+        "raw": [1], "value": 1, "numericValue": 1,
+        "displayValue": "1", "quality": "unknown", "reason": null, "createdAt": 1040
+      }
+    },
+    {
+      "name": "unsafe timestamp",
+      "row": {
+        "endpointId": "fixture-master", "requestGroupId": "environment",
+        "requestId": "holding", "pointId": "invalid-time", "pointKey": "invalid_time",
+        "pointName": "Invalid time", "dataType": "uint16", "unit": "",
+        "raw": [1], "value": 1, "numericValue": 1,
+        "displayValue": "1", "quality": "good", "reason": null, "createdAt": -1
+      }
+    },
+    {
+      "name": "missing endpoint",
+      "row": {
+        "endpointId": "missing-endpoint", "requestGroupId": "environment",
+        "requestId": "holding", "pointId": "missing-endpoint", "pointKey": "missing_endpoint",
+        "pointName": "Missing endpoint", "dataType": "uint16", "unit": "",
+        "raw": [1], "value": 1, "numericValue": 1,
+        "displayValue": "1", "quality": "good", "reason": null, "createdAt": 1040
+      }
+    }
+  ],
+  "expected": {
+    "firstPageDisplayValues": ["20.5", "B", "ON", "—"],
+    "numericSample": {
+      "bucket": 0, "firstAt": 1000, "firstValue": 10.5,
+      "lastAt": 1030, "lastValue": 20.5,
+      "minAt": 1000, "minValue": 10.5, "maxAt": 1010, "maxValue": 30.5,
+      "goodCount": 3, "abnormalCount": 1, "worstQuality": "bad-communication",
+      "marker": { "createdAt": 1020, "quality": "bad-communication", "reason": "timeout" }
+    },
+    "booleanChanges": [
+      { "createdAt": 1000, "value": false },
+      { "createdAt": 1020, "value": true }
+    ],
+    "stringChanges": [
+      { "createdAt": 1000, "value": "A" },
+      { "createdAt": 1020, "value": "B" }
+    ]
+  },
+  "retention": {
+    "values": ["7-days", "30-days", "90-days", "forever"],
+    "referenceTime": 1780100000000
+  },
+  "csv": {
+    "row": {
+      "endpointId": "fixture-master", "requestGroupId": "environment",
+      "requestId": "holding", "pointId": "csv", "pointKey": "csv",
+      "pointName": "Flow, \"A\"\nLine", "dataType": "string", "unit": "m3/h",
+      "raw": [1], "value": "42,\nnext", "numericValue": null,
+      "displayValue": "42,\nnext", "quality": "bad-value",
+      "reason": "quoted \"reason\"", "createdAt": 1050
+    },
+    "escapedFields": {
+      "pointName": "\"Flow, \"\"A\"\"\nLine\"",
+      "value": "\"\"\"42,\\nnext\"\"\"",
+      "reason": "\"quoted \"\"reason\"\"\""
+    }
+  },
+  "legacyUpgrade": {
+    "sourceSchemaVersion": 2,
+    "targetSchemaVersion": 3,
+    "preserveTables": ["endpoint_profiles", "transfer_frames", "runtime_logs", "send_history"]
+  }
+}

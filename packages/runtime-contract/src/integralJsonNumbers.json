@@ -1,0 +1,31 @@
+{
+  "accepted": [
+    { "lexeme": "0e-3", "value": 0 },
+    { "lexeme": "2000", "value": 2000 },
+    { "lexeme": "2000.0", "value": 2000 },
+    { "lexeme": "2e3", "value": 2000 },
+    { "lexeme": "2e+3", "value": 2000 },
+    { "lexeme": "20000e-1", "value": 2000 },
+    { "lexeme": "1.5e1", "value": 15 },
+    { "lexeme": "9007199254740991", "value": 9007199254740991 },
+    { "lexeme": "9007199254740991.0", "value": 9007199254740991 },
+    { "lexeme": "9.007199254740991e15", "value": 9007199254740991 },
+    { "lexeme": "90071992547409910e-1", "value": 9007199254740991 }
+  ],
+  "rejected": [
+    { "lexeme": "1.5", "reason": "fractional" },
+    { "lexeme": "1.5e0", "reason": "fractional exponent" },
+    { "lexeme": "20001e-1", "reason": "fractional negative exponent" },
+    { "lexeme": "2e-3", "reason": "fractional negative exponent" },
+    { "lexeme": "4503599627370495.5", "reason": "rounded fractional probe" },
+    { "lexeme": "9007199254740991.1", "reason": "fractional safe-boundary probe" },
+    { "lexeme": "-0", "reason": "negative zero" },
+    { "lexeme": "-0.0", "reason": "negative zero decimal" },
+    { "lexeme": "-0e3", "reason": "negative zero exponent" },
+    { "lexeme": "-1", "reason": "negative" },
+    { "lexeme": "-2e3", "reason": "negative exponent form" },
+    { "lexeme": "9007199254740992", "reason": "unsafe" },
+    { "lexeme": "9007199254740992.0", "reason": "unsafe decimal" },
+    { "lexeme": "9.007199254740992e15", "reason": "unsafe exponent" }
+  ]
+}

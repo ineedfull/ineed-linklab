@@ -1,0 +1,156 @@
+{
+  "testedAt": "2026-10-13",
+  "platform": "macOS arm64",
+  "status": "verified locally, not committed or released",
+  "electronRed": {
+    "expected": "Ineed LinkLab",
+    "windowTitles": [
+      "Electron"
+    ],
+    "passed": false,
+    "bundle": "/Users/pangzhigang/develop/com.ineedfull/ineed-linklab/node_modules/electron/dist/Electron.app",
+    "menus": [
+      "Apple",
+      "Electron",
+      "编辑"
+    ],
+    "pid": 45621,
+    "name": "Electron",
+    "runtime": {
+      "internalName": "Ineed LinkLab",
+      "userData": "/tmp/linklab-brand-red-yHGfsO",
+      "visible": true,
+      "title": "Ineed LinkLab"
+    },
+    "errors": []
+  },
+  "electronGreen": {
+    "bundle": "/Users/pangzhigang/develop/com.ineedfull/ineed-linklab/artifacts/electron-dev/43.1.0-arm64-015d1a6286f6/Ineed LinkLab.app",
+    "name": "Ineed LinkLab",
+    "expected": "Ineed LinkLab",
+    "passed": true,
+    "windowTitles": [
+      "Ineed LinkLab"
+    ],
+    "menus": [
+      "Apple",
+      "Ineed LinkLab",
+      "编辑"
+    ],
+    "pid": 45728,
+    "runtime": {
+      "internalName": "Ineed LinkLab",
+      "userData": "/tmp/linklab-brand-green-4xbOly",
+      "visible": true,
+      "title": "Ineed LinkLab"
+    },
+    "errors": [],
+    "iconSha256": "02e2a54103285af3d3db9078551bf7caf0be0acfd06e4b3044cc26baeb00a552"
+  },
+  "limitations": [
+    "Production installation and signing not revalidated",
+    "Other operating systems not revalidated",
+    "This branding task does not replace prolonged soak or MQTT memory investigation"
+  ],
+  "tauriRed": {
+    "pid": 56641,
+    "menus": [
+      "Apple",
+      "Ineed LinkLab",
+      "编辑"
+    ],
+    "bundle": "/Users/pangzhigang/develop/com.ineedfull/ineed-linklab/apps/tauri/src-tauri/target/debug/ineed-linklab-tauri",
+    "passed": false,
+    "name": "ineed-linklab-tauri",
+    "expected": "Ineed LinkLab",
+    "windowTitles": [
+      "Ineed LinkLab"
+    ]
+  },
+  "tauriHotReload": {
+    "passed": true,
+    "identifier": "com.ineedfull.linklab.branding1791897927955",
+    "initial": {
+      "pid": 56027,
+      "brand": {
+        "windowTitles": [
+          "Ineed LinkLab"
+        ],
+        "name": "Ineed LinkLab",
+        "pid": 56027,
+        "passed": true,
+        "expected": "Ineed LinkLab",
+        "menus": [
+          "Apple",
+          "Ineed LinkLab",
+          "编辑"
+        ],
+        "bundle": "/Users/pangzhigang/develop/com.ineedfull/ineed-linklab/artifacts/tauri-dev/com.ineedfull.linklab.branding1791897927955/Ineed LinkLab.app"
+      }
+    },
+    "reloaded": {
+      "pid": 56803,
+      "brand": {
+        "bundle": "/Users/pangzhigang/develop/com.ineedfull/ineed-linklab/artifacts/tauri-dev/com.ineedfull.linklab.branding1791897927955/Ineed LinkLab.app",
+        "name": "Ineed LinkLab",
+        "pid": 56803,
+        "menus": [
+          "Apple",
+          "Ineed LinkLab",
+          "编辑"
+        ],
+        "passed": true,
+        "windowTitles": [
+          "Ineed LinkLab"
+        ],
+        "expected": "Ineed LinkLab"
+      }
+    },
+    "iconMatches": true,
+    "previousProcessExited": true
+  },
+  "tauriStop": {
+    "appPid": 56803,
+    "survivors": [],
+    "passed": true
+  },
+  "soak": [
+    {
+      "runtime": "electron",
+      "success": true,
+      "elapsedMs": 19341,
+      "sent": {
+        "soak-tcp": 800,
+        "soak-udp": 160,
+        "soak-pty": 160
+      },
+      "modbusTransactions": 16,
+      "invalidRejected": 1,
+      "errors": []
+    },
+    {
+      "runtime": "tauri",
+      "success": true,
+      "elapsedMs": 30614,
+      "sent": {
+        "soak-tcp": 700,
+        "soak-udp": 140,
+        "soak-pty": 140
+      },
+      "modbusTransactions": 14,
+      "invalidRejected": 1,
+      "errors": []
+    }
+  ],
+  "checks": {
+    "boundaryAndUserData": {
+      "passed": 66,
+      "failed": 0
+    },
+    "release": {
+      "passed": 21,
+      "failed": 0
+    },
+    "lint": "passed"
+  }
+}

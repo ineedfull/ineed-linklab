@@ -1,0 +1,62 @@
+
+> ineed-linklab@0.1.0 build
+> npm run build -w @ineed-linklab/electron && npm run build -w @ineed-linklab/tauri
+
+
+> @ineed-linklab/electron@0.1.0 build
+> vite build
+
+vite v8.1.4 building client environment for production...
+[2K
+transforming...✓ 2246 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                             0.74 kB │ gzip:   0.44 kB
+dist/assets/ineed-linklab-ZcXdiIIh.svg      0.93 kB │ gzip:   0.50 kB
+dist/assets/index-CvbQ8TbO.css            119.92 kB │ gzip:  19.28 kB
+dist/assets/PayloadEditor-yn_ZcKq8.js       4.28 kB │ gzip:   2.04 kB
+dist/assets/dist-lGvEZdX8.js               16.14 kB │ gzip:   6.16 kB
+dist/assets/dist-lHSWnVFp.js               20.47 kB │ gzip:   6.91 kB
+dist/assets/dist-CApiZSaX.js               28.52 kB │ gzip:  10.02 kB
+dist/assets/dist-kAnerhAy.js               28.73 kB │ gzip:   9.52 kB
+dist/assets/dist-CvDlhT_S.js               49.23 kB │ gzip:  16.48 kB
+dist/assets/dist-lOh9Xmub.js               64.71 kB │ gzip:  22.10 kB
+dist/assets/dist-rGBB0aHW.js              199.71 kB │ gzip:  64.51 kB
+dist/assets/index-CMgBbP2y.js             470.21 kB │ gzip: 140.90 kB
+dist/assets/echarts-CMPo6_zd.js         1,118.43 kB │ gzip: 370.95 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 522ms
+
+> @ineed-linklab/tauri@0.1.0 build
+> vite build
+
+vite v8.1.4 building client environment for production...
+[2K
+transforming...✓ 2249 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                             0.73 kB │ gzip:   0.44 kB
+dist/assets/ineed-linklab-ZcXdiIIh.svg      0.93 kB │ gzip:   0.50 kB
+dist/assets/index-CvbQ8TbO.css            119.92 kB │ gzip:  19.28 kB
+dist/assets/PayloadEditor-Dy1ooLTj.js       4.28 kB │ gzip:   2.04 kB
+dist/assets/dist-lGvEZdX8.js               16.14 kB │ gzip:   6.16 kB
+dist/assets/dist-lHSWnVFp.js               20.47 kB │ gzip:   6.91 kB
+dist/assets/dist-CApiZSaX.js               28.52 kB │ gzip:  10.02 kB
+dist/assets/dist-kAnerhAy.js               28.73 kB │ gzip:   9.52 kB
+dist/assets/dist-CvDlhT_S.js               49.23 kB │ gzip:  16.48 kB
+dist/assets/dist-lOh9Xmub.js               64.71 kB │ gzip:  22.10 kB
+dist/assets/dist-rGBB0aHW.js              199.71 kB │ gzip:  64.51 kB
+dist/assets/index-D5fR8jIN.js             470.23 kB │ gzip: 141.17 kB
+dist/assets/echarts-CMPo6_zd.js         1,118.43 kB │ gzip: 370.95 kB
+
+✓ built in 407ms
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.

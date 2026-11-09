@@ -1,0 +1,4 @@
+/* Keep protocol controls aligned in WebKit; arrow styling lives in select-controls.css. */
+:is(.opcua-panel, .stomp-panel) select:not([multiple]):not([size]) {
+  height: var(--control-height, 32px);
+}

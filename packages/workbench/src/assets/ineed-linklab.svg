@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title">
+  <title id="title">LinkLab — Ineed 品牌图标 v1</title>
+  <defs><linearGradient id="brand-gradient" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07CFE5"/><stop offset=".55" stop-color="#3159DA"/><stop offset="1" stop-color="#BD35EF"/></linearGradient></defs>
+  <rect width="256" height="256" rx="58" fill="url(#brand-gradient)"/>
+  <g transform="translate(128 128) scale(1.2) translate(-128 -128)" fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="69" cy="78" r="12" fill="#FFFFFF" stroke="none"/>
+    <path d="M69 119v60" stroke-width="22"/>
+    <path d="M109 172h15v-66h29v53h28v-31h18" stroke-width="14"/>
+    <g fill="#FFFFFF" stroke="none">
+      <circle cx="109" cy="172" r="8"/>
+      <circle cx="199" cy="128" r="8"/>
+    </g>
+  </g>
+</svg>

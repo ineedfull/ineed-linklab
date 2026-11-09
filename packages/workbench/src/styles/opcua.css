@@ -1,0 +1,57 @@
+.opcua-panel { display: flex; flex-direction: column; flex: 1; min-width: 0; min-height: 0; color: var(--text); background: var(--surface); font-size: var(--font-size); }
+.opcua-header { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--line); }
+.opcua-header > div { flex: 1; min-width: 160px; overflow-wrap: anywhere; }
+.opcua-panel h1 { font-size: var(--font-size-title); margin: 0 0 4px; }
+.opcua-panel h2 { font-size: var(--font-size-heading); margin: 0; }
+.opcua-panel p { margin: 0; line-height: 1.6; }
+.opcua-muted { color: var(--text-muted); font-size: var(--font-size-small); }
+.opcua-status { padding: 5px 9px; border-radius: 6px; background: var(--surface-muted); white-space: nowrap; }
+.opcua-status[data-status="connected"] { color: var(--success); }
+.opcua-tabs { display: flex; gap: 6px; padding: 10px 20px; border-bottom: 1px solid var(--line); }
+.opcua-panel button, .opcua-panel input, .opcua-panel select, .opcua-panel textarea { font: inherit; color: var(--text); background: var(--surface-control); border: 1px solid var(--line); border-radius: 6px; min-height: var(--control-height, 32px); padding: 6px 10px; box-sizing: border-box; }
+.opcua-panel button { cursor: pointer; white-space: nowrap; }
+.opcua-panel button:hover:not(:disabled), .opcua-tabs button[aria-pressed="true"] { color: var(--accent); background: var(--accent-soft); border-color: var(--accent); }
+.opcua-panel button:disabled { opacity: .5; cursor: default; }
+.opcua-panel :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.opcua-panel button.opcua-primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.opcua-notices { padding: 0 20px; overflow-wrap: anywhere; }
+.opcua-notices:not(:empty) { padding-top: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.opcua-error { color: var(--danger); }
+.opcua-body { flex: 1; min-height: 0; overflow: auto; padding: 20px; }
+.opcua-stack { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.opcua-card { padding: 16px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+.opcua-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.opcua-panel label { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.opcua-panel input:not([type="checkbox"]), .opcua-panel select, .opcua-panel textarea { width: 100%; min-width: 0; }
+.opcua-address { display: flex; gap: 8px; align-items: end; }
+.opcua-address > label { flex: 1; }
+.opcua-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.opcua-actions > label { max-width: 190px; }
+.opcua-file { font-size: var(--font-size-small); }
+.opcua-file input { max-width: 230px; }
+.opcua-table { overflow: auto; max-height: 390px; border: 1px solid var(--line-soft); border-radius: 6px; }
+.opcua-table table { width: 100%; border-collapse: collapse; font-size: var(--font-size); }
+.opcua-table th { position: sticky; top: 0; background: var(--surface-muted); text-align: left; white-space: nowrap; font-size: var(--font-size-control); }
+.opcua-table th, .opcua-table td { padding: 9px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+.opcua-table td { max-width: 300px; overflow-wrap: anywhere; }
+.opcua-table time { font-size: var(--font-size-small); }
+.opcua-values table { table-layout: fixed; min-width: 860px; }
+.opcua-values { font-variant-numeric: tabular-nums; }
+.opcua-values time { white-space: nowrap; }
+.opcua-value-node { width: 24%; }
+.opcua-value-data { width: 23%; }
+.opcua-value-quality { width: 16%; }
+.opcua-value-time { width: 25%; }
+.opcua-value-actions { width: 12%; }
+.opcua-values--server table { min-width: 760px; }
+.opcua-values--server .opcua-value-node { width: 28%; }
+.opcua-values--server .opcua-value-data { width: 28%; }
+.opcua-values--server .opcua-value-quality { width: 18%; }
+.opcua-values--server .opcua-value-time { width: 26%; }
+.opcua-table p { padding: 14px; }
+.opcua-panel code { display: block; font-size: var(--font-size-code); white-space: pre-wrap; overflow-wrap: anywhere; }
+.opcua-panel .opcua-check { flex-direction: row; align-items: center; }
+.opcua-panel input[type="checkbox"] { min-height: 18px; width: 18px; height: 18px; flex: none; accent-color: var(--accent); }
+.linklab-shell__opcua-nav { display: flex; align-items: center; gap: 8px; margin: 8px; padding: 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface-control); color: var(--text); white-space: nowrap; font: inherit; cursor: pointer; }
+.linklab-shell__opcua-nav[aria-pressed="true"] { color: var(--accent); background: var(--accent-soft); }
+@media (max-width: 1000px) { .opcua-body { padding: 12px; } .opcua-card { padding: 12px; } .opcua-grid { grid-template-columns: 1fr; } .opcua-header { padding: 12px; } .opcua-address { flex-wrap: wrap; } .opcua-address > label { flex-basis: 100%; } }

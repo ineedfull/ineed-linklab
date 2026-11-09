@@ -1,0 +1,108 @@
+/* Desktop type scale. Keep roles consistent across protocols and windows. */
+:root {
+  --font-size: 13px;
+  --font-size-small: 11px;
+  --font-size-control: 12px;
+  --font-size-heading: 14px;
+  --font-size-title: 15px;
+  --font-size-display: 20px;
+  --font-size-code: 13px;
+}
+:root.large-font {
+  --font-size: 14px;
+  --font-size-small: 12px;
+  --font-size-control: 13px;
+  --font-size-heading: 15px;
+  --font-size-title: 16px;
+  --font-size-display: 21px;
+  --font-size-code: 16px;
+}
+
+/* Form controls, table headings and code share the same roles everywhere. */
+:is(.linklab-shell, .dialog-backdrop, .history-window) :is(input, select, textarea, label, .segmented-control button, .command-button, .text-button, .field-control) {
+  font-size: var(--font-size-control);
+}
+:where(.linklab-shell, .dialog-backdrop, .history-window) :where(small) {
+  font-size: var(--font-size-small);
+}
+:where(.linklab-shell, .dialog-backdrop, .history-window) :where(code) {
+  font-size: inherit;
+}
+.linklab-shell .message-columns,
+.history-window .history-table th {
+  font-size: var(--font-size-control);
+}
+.linklab-shell .frame-preview pre,
+.linklab-shell .message-inspector pre,
+.history-window .history-detail pre {
+  font-size: var(--font-size-code);
+}
+
+/* About's layout is shared with MQTT; apply LinkLab's scale locally. */
+.dialog-backdrop .about-panel.desktop-about { font-size: var(--font-size); }
+.dialog-backdrop .desktop-about > header h2 { font-size: var(--font-size-title); }
+.dialog-backdrop .desktop-about .about-panel__product strong { font-size: var(--font-size-display); }
+.dialog-backdrop .desktop-about :is(.about-panel__product span, .about-panel__note, .about-panel__button) { font-size: var(--font-size-control); }
+.dialog-backdrop .desktop-about .about-panel__body small { font-size: var(--font-size-small); }
+
+/* Shared type scale for DL/T 645 and Modbus, including large-font mode.
+   Body/data: 13px; controls/headings: 12px; supporting text: 11px.
+   Use the desktop font variables so both protocols scale together. */
+.linklab-shell :is(.dlt645-panel, .dlt645-simulator, .modbus-master-panel, .modbus-panel) {
+  --protocol-font-body: var(--font-size);
+  --protocol-font-control: var(--font-size-control);
+  --protocol-font-note: var(--font-size-small);
+  font-size: var(--protocol-font-body);
+}
+
+.linklab-shell :is(.dlt645-tabs, .dlt645-simulator__tabs, .modbus-master-tabs, .modbus-panel__tabs) button {
+  font-size: var(--protocol-font-control);
+}
+
+.linklab-shell :is(.dlt645-panel, .dlt645-simulator, .modbus-master-panel, .modbus-panel) :is(input, select, textarea, .command-button, .text-button, label) {
+  font-size: var(--protocol-font-control);
+}
+
+.linklab-shell :is(.dlt645-table, .modbus-result-table) th {
+  font-size: var(--protocol-font-control);
+}
+
+.linklab-shell :is(.dlt645-table, .modbus-result-table) td,
+.linklab-shell .dlt645-table td > code,
+.linklab-shell .dlt645-table .dlt645-value,
+.linklab-shell .simulator-data-row__identity strong {
+  font-size: var(--protocol-font-body);
+}
+
+.linklab-shell :is(.dlt645-table, .modbus-result-table) td small,
+.linklab-shell :is(.dlt645-panel, .dlt645-simulator, .modbus-master-panel, .modbus-panel) :is(.quality, .quality-badge, .status-indicator) {
+  font-size: var(--protocol-font-note);
+}
+
+.linklab-shell :is(.dlt645-live-group__identity, .simulator-data-group__identity, .modbus-master-live-group__identity, .modbus-request-group__identity) > strong,
+.linklab-shell .modbus-business-group__header > strong {
+  font-size: var(--protocol-font-body);
+}
+
+.linklab-shell :is(.dlt645-live-group__address, .simulator-data-group__address, .dlt645-live-group__summary, .simulator-data-group__meta, .modbus-master-live-group__summary, .modbus-request-group__counts),
+.linklab-shell .modbus-business-group__header > div,
+.linklab-shell .modbus-master-live-group__identity > span,
+.linklab-shell .simulator-data-row__identity span,
+.linklab-shell .simulator-data-row__reads,
+.linklab-shell .simulator-data-row__reads small,
+.linklab-shell .modbus-business-address {
+  font-size: var(--protocol-font-note);
+}
+
+.linklab-shell :is(.dlt645-live-group__address, .simulator-data-group__address) code,
+.linklab-shell .modbus-master-live-group__identity code,
+.linklab-shell :is(.dlt645-panel__header, .dlt645-simulator__header) span,
+.linklab-shell .dlt645-simulator__toolbar > span {
+  font-size: var(--protocol-font-control);
+}
+
+@media (max-width: 900px) {
+  .linklab-shell .dlt645-table tbody td::before {
+    font-size: var(--protocol-font-control);
+  }
+}

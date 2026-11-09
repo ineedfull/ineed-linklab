@@ -1,0 +1,57 @@
+{
+  "name": "ineed-linklab",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "bootstrap": "npm run install:deps",
+    "icons:generate": "node scripts/generate-app-icons.mjs",
+    "install:deps": "node scripts/install-dependencies.mjs",
+    "test": "node --test scripts/*.test.mjs packages/*/tests/*.test.js apps/electron/tests/*.test.js apps/tauri/tests/*.test.js && npm run test:components -w @ineed-linklab/workbench",
+    "test:e2e": "npm run test:e2e -w @ineed-linklab/workbench",
+    "test:artifacts": "npm run build && cross-env INEED_VERIFY_BUILD=1 node --test apps/electron/tests/electronBoundary.test.js apps/tauri/tests/tauriBoundary.test.js",
+    "lint": "eslint . --max-warnings 0",
+    "build": "npm run build -w @ineed-linklab/electron && npm run build -w @ineed-linklab/tauri",
+    "package:mac:electron:arm64": "npm run package:mac:arm64 -w @ineed-linklab/electron",
+    "package:mac:electron:x64": "npm run package:mac:x64 -w @ineed-linklab/electron",
+    "package:mac:electron": "npm run package:mac:electron:arm64 && npm run package:mac:electron:x64",
+    "package:mac:tauri:arm64": "npm run tauri:build -w @ineed-linklab/tauri -- --target aarch64-apple-darwin --bundles app,dmg --no-sign --ci",
+    "package:mac:tauri:x64": "npm run tauri:build -w @ineed-linklab/tauri -- --target x86_64-apple-darwin --bundles app,dmg --no-sign --ci",
+    "package:mac:tauri": "npm run package:mac:tauri:arm64 && npm run package:mac:tauri:x64",
+    "package:mac": "npm run package:mac:electron && npm run package:mac:tauri && node scripts/collect-macos-dmgs.mjs",
+    "verify:package:mac:electron": "node scripts/verify-electron-macos-package.mjs",
+    "verify:package:mac:tauri": "node scripts/verify-tauri-macos-package.mjs",
+    "verify:package:mac": "node scripts/verify-macos-packages.mjs",
+    "verify:phase-02": "npm test && npm run lint && npm run build && cargo test --manifest-path apps/tauri/src-tauri/Cargo.toml && npm run test:e2e && git diff --check",
+    "verify:phase-03": "npm test && npm run lint && npm run build && cargo fmt --manifest-path apps/tauri/src-tauri/Cargo.toml --check && cargo test --manifest-path apps/tauri/src-tauri/Cargo.toml && npm run test:e2e && cross-env INEED_ALLOW_PTY_SKIP=0 node tooling/serial-test/pty-loopback.mjs && git diff --check",
+    "verify:phase-04": "npm run verify:phase-03 && node tooling/tcp-test/localhost-loopback.mjs && git diff --check",
+    "verify:phase-05": "npm run verify:phase-04 && node tooling/udp-test/localhost-loopback.mjs && git diff --check",
+    "dev:electron": "npm run dev -w @ineed-linklab/electron",
+    "dev:tauri": "node scripts/dev-tauri.mjs",
+    "release:plan": "node scripts/desktop-release.mjs plan",
+    "release:build": "node scripts/desktop-release.mjs build",
+    "release:verify": "node scripts/desktop-release.mjs verify",
+    "release:upload": "node scripts/release-upload.mjs",
+    "test:release": "node --test scripts/desktop-release.test.mjs scripts/release-upload.test.mjs",
+    "package:win": "node scripts/desktop-release.mjs build --platform=windows --arch=x64",
+    "package:linux": "node scripts/desktop-release.mjs build --platform=linux --arch=x64",
+    "package:desktop:mac": "node scripts/desktop-release.mjs build --platform=macos --arch=all"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.7.0",
+    "eslint-plugin-vue": "^10.9.2",
+    "globals": "^16.5.0",
+    "js-yaml": "4.3.0",
+    "parse5": "7.3.0"
+  }
+}

@@ -1,0 +1,461 @@
+
+> ineed-linklab@0.1.0 test:e2e
+> npm run test:e2e -w @ineed-linklab/workbench
+
+
+> @ineed-linklab/workbench@0.1.0 test:e2e
+> playwright test -c playwright.config.js
+
+
+[WebServer] (node:15923) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:16096) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:16224) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:16260) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 114 tests using 1 worker
+
+
+(node:16279) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/114] [desktop-1440x900] › e2e/about.spec.js:5:3 › electron About preserves the workbench and restores keyboard focus
+  1) [desktop-1440x900] › e2e/about.spec.js:5:3 › electron About preserves the workbench and restores keyboard focus
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('dialog', { name: '关于', exact: true })
+    Expected substring: "开发与调试小助手"
+    Received string:    " 关于 Ineed LinkLab多协议通信调试助手版本0.1.0运行环境electron支持协议串口 · TCP / UDP · Modbus · DL/T645本地存储SQLite 连接、收发、协议解析与设备模拟。让日常通信调试更顺手。 版权所有 © 2026 Ineed 关闭 "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for getByRole('dialog', { name: '关于', exact: true })
+        14 × locator resolved to <section role="dialog" aria-modal="true" aria-labelledby="about-title" class="about-panel desktop-about">…</section>
+           - unexpected value " 关于 Ineed LinkLab多协议通信调试助手版本0.1.0运行环境electron支持协议串口 · TCP / UDP · Modbus · DL/T645本地存储SQLite 连接、收发、协议解析与设备模拟。让日常通信调试更顺手。 版权所有 © 2026 Ineed 关闭 "
+
+
+      12 |     const dialog = page.getByRole('dialog', { name: '关于', exact: true });
+      13 |     await expect(dialog).toContainText('Ineed LinkLab');
+    > 14 |     await expect(dialog).toContainText('开发与调试小助手');
+         |                          ^
+      15 |     await expect(dialog.locator('.about-panel__runtime')).toHaveText(new RegExp(runtime, 'i'));
+      16 |     const close = dialog.getByRole('button', { name: '关闭关于' });
+      17 |     await expect(close).toBeFocused();
+        at /Users/pangzhigang/develop/com.ineedfull/ineed-linklab/packages/workbench/e2e/about.spec.js:14:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/about-electron-About-prese-35ed9-and-restores-keyboard-focus-desktop-1440x900/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/about-electron-About-prese-35ed9-and-restores-keyboard-focus-desktop-1440x900/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/about-electron-About-prese-35ed9-and-restores-keyboard-focus-desktop-1440x900/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/about-electron-About-prese-35ed9-and-restores-keyboard-focus-desktop-1440x900/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+
+(node:16784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[2/114] [desktop-1440x900] › e2e/about.spec.js:5:3 › tauri About preserves the workbench and restores keyboard focus
+  2) [desktop-1440x900] › e2e/about.spec.js:5:3 › tauri About preserves the workbench and restores keyboard focus
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('dialog', { name: '关于', exact: true })
+    Expected substring: "开发与调试小助手"
+    Received string:    " 关于 Ineed LinkLab多协议通信调试助手版本0.1.0运行环境tauri支持协议串口 · TCP / UDP · Modbus · DL/T645本地存储SQLite 连接、收发、协议解析与设备模拟。让日常通信调试更顺手。 版权所有 © 2026 Ineed 关闭 "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for getByRole('dialog', { name: '关于', exact: true })
+        14 × locator resolved to <section role="dialog" aria-modal="true" aria-labelledby="about-title" class="about-panel desktop-about">…</section>
+           - unexpected value " 关于 Ineed LinkLab多协议通信调试助手版本0.1.0运行环境tauri支持协议串口 · TCP / UDP · Modbus · DL/T645本地存储SQLite 连接、收发、协议解析与设备模拟。让日常通信调试更顺手。 版权所有 © 2026 Ineed 关闭 "
+
+
+      12 |     const dialog = page.getByRole('dialog', { name: '关于', exact: true });
+      13 |     await expect(dialog).toContainText('Ineed LinkLab');
+    > 14 |     await expect(dialog).toContainText('开发与调试小助手');
+         |                          ^
+      15 |     await expect(dialog.locator('.about-panel__runtime')).toHaveText(new RegExp(runtime, 'i'));
+      16 |     const close = dialog.getByRole('button', { name: '关闭关于' });
+      17 |     await expect(close).toBeFocused();
+        at /Users/pangzhigang/develop/com.ineedfull/ineed-linklab/packages/workbench/e2e/about.spec.js:14:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/about-tauri-About-preserve-1eb5e-and-restores-keyboard-focus-desktop-1440x900/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/about-tauri-About-preserve-1eb5e-and-restores-keyboard-focus-desktop-1440x900/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/about-tauri-About-preserve-1eb5e-and-restores-keyboard-focus-desktop-1440x900/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/about-tauri-About-preserve-1eb5e-and-restores-keyboard-focus-desktop-1440x900/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+
+(node:17092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[3/114] [desktop-1440x900] › e2e/desktopInteractions.spec.js:6:3 › electron retains layout and supports pause, raw copy and keyboard settings
+[4/114] [desktop-1440x900] › e2e/desktopInteractions.spec.js:6:3 › tauri retains layout and supports pause, raw copy and keyboard settings
+[5/114] [desktop-1440x900] › e2e/modalKeyboard.spec.js:5:1 › settings keep every Tab stop inside, skip disabled save, and restore their trigger
+[6/114] [desktop-1440x900] › e2e/workbench.spec.js:16:1 › runs with the Playwright 1.61.1 bundled Chromium
+[7/114] [desktop-1440x900] › e2e/workbench.spec.js:21:3 › electron preview injects only its own runtime bridge
+[8/114] [desktop-1440x900] › e2e/workbench.spec.js:21:3 › tauri preview injects only its own runtime bridge
+[9/114] [desktop-1440x900] › e2e/workbench.spec.js:36:3 › electron completes a DL/T 645 meter read with full frame diagnostics
+[10/114] [desktop-1440x900] › e2e/workbench.spec.js:64:3 › electron simulates a DL/T 645 meter and returns complete response frames
+[11/114] [desktop-1440x900] › e2e/workbench.spec.js:36:3 › tauri completes a DL/T 645 meter read with full frame diagnostics
+[12/114] [desktop-1440x900] › e2e/workbench.spec.js:64:3 › tauri simulates a DL/T 645 meter and returns complete response frames
+[13/114] [desktop-1440x900] › e2e/workbench.spec.js:97:3 › electron completes the Modbus point history workflow
+[14/114] [desktop-1440x900] › e2e/workbench.spec.js:133:3 › electron manages and confirms saved Modbus write commands
+[15/114] [desktop-1440x900] › e2e/workbench.spec.js:231:3 › electron runs nested Modbus master requests and slave business points
+[16/114] [desktop-1440x900] › e2e/workbench.spec.js:341:3 › electron shows a deterministic active protocol workbench and sends data
+[17/114] [desktop-1440x900] › e2e/workbench.spec.js:399:3 › electron keeps send editor resize bounds inside the layout
+[18/114] [desktop-1440x900] › e2e/workbench.spec.js:417:3 › electron saves templates and restores successful send history without auto-send
+[19/114] [desktop-1440x900] › e2e/workbench.spec.js:446:3 › electron uses stable collapsed endpoint controls
+[20/114] [desktop-1440x900] › e2e/workbench.spec.js:487:3 › electron opens endpoint-scoped history from the active stream toolbar
+[21/114] [desktop-1440x900] › e2e/workbench.spec.js:520:3 › electron shows active settings and deterministic storage state
+[22/114] [desktop-1440x900] › e2e/workbench.spec.js:539:3 › electron edits serial receive framing and runs the shared scheduled sender
+[23/114] [desktop-1440x900] › e2e/workbench.spec.js:97:3 › tauri completes the Modbus point history workflow
+[24/114] [desktop-1440x900] › e2e/workbench.spec.js:133:3 › tauri manages and confirms saved Modbus write commands
+[25/114] [desktop-1440x900] › e2e/workbench.spec.js:231:3 › tauri runs nested Modbus master requests and slave business points
+[26/114] [desktop-1440x900] › e2e/workbench.spec.js:341:3 › tauri shows a deterministic active protocol workbench and sends data
+[27/114] [desktop-1440x900] › e2e/workbench.spec.js:399:3 › tauri keeps send editor resize bounds inside the layout
+[28/114] [desktop-1440x900] › e2e/workbench.spec.js:417:3 › tauri saves templates and restores successful send history without auto-send
+[29/114] [desktop-1440x900] › e2e/workbench.spec.js:446:3 › tauri uses stable collapsed endpoint controls
+[30/114] [desktop-1440x900] › e2e/workbench.spec.js:487:3 › tauri opens endpoint-scoped history from the active stream toolbar
+[31/114] [desktop-1440x900] › e2e/workbench.spec.js:520:3 › tauri shows active settings and deterministic storage state
+[32/114] [desktop-1440x900] › e2e/workbench.spec.js:539:3 › tauri edits serial receive framing and runs the shared scheduled sender
+[33/114] [desktop-1440x900] › e2e/workbench.spec.js:584:3 › electron configures TCP resilience and cancels a pending retry
+[34/114] [desktop-1440x900] › e2e/workbench.spec.js:584:3 › tauri configures TCP resilience and cancels a pending retry
+[35/114] [desktop-1440x900] › e2e/workbench.spec.js:606:1 › shows selected frame and log history rows in both renderer previews
+[36/114] [desktop-1440x900] › e2e/workbench.spec.js:634:1 › matches Electron and Tauri active workbench visuals excluding the runtime footer
+[desktop-1440x900] › e2e/workbench.spec.js:634:1 › matches Electron and Tauri active workbench visuals excluding the runtime footer
+[visual parity] desktop-1440x900: 0/1296000 pixels differ (0.000000%)
+
+[37/114] [desktop-1440x900] › e2e/workbench.spec.js:687:1 › matches Electron and Tauri nested Modbus master visuals excluding the runtime footer
+[desktop-1440x900] › e2e/workbench.spec.js:687:1 › matches Electron and Tauri nested Modbus master visuals excluding the runtime footer
+[nested Modbus visual parity] desktop-1440x900: 0/1296000 pixels differ (0.000000%)
+
+[38/114] [desktop-1440x900] › e2e/workbench.spec.js:722:1 › matches saved Modbus write commands across Electron and Tauri with only runtime footer masked
+[desktop-1440x900] › e2e/workbench.spec.js:722:1 › matches saved Modbus write commands across Electron and Tauri with only runtime footer masked
+[saved Modbus groups visual parity] desktop-1440x900: 0/1296000 pixels differ (0.000000%)
+
+[saved Modbus writes visual parity] desktop-1440x900: 0/1296000 pixels differ (0.000000%)
+
+
+(node:19745) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[39/114] [compact-1120x720] › e2e/about.spec.js:5:3 › electron About preserves the workbench and restores keyboard focus
+  3) [compact-1120x720] › e2e/about.spec.js:5:3 › electron About preserves the workbench and restores keyboard focus
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('dialog', { name: '关于', exact: true })
+    Expected substring: "开发与调试小助手"
+    Received string:    " 关于 Ineed LinkLab多协议通信调试助手版本0.1.0运行环境electron支持协议串口 · TCP / UDP · Modbus · DL/T645本地存储SQLite 连接、收发、协议解析与设备模拟。让日常通信调试更顺手。 版权所有 © 2026 Ineed 关闭 "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for getByRole('dialog', { name: '关于', exact: true })
+        14 × locator resolved to <section role="dialog" aria-modal="true" aria-labelledby="about-title" class="about-panel desktop-about">…</section>
+           - unexpected value " 关于 Ineed LinkLab多协议通信调试助手版本0.1.0运行环境electron支持协议串口 · TCP / UDP · Modbus · DL/T645本地存储SQLite 连接、收发、协议解析与设备模拟。让日常通信调试更顺手。 版权所有 © 2026 Ineed 关闭 "
+
+
+      12 |     const dialog = page.getByRole('dialog', { name: '关于', exact: true });
+      13 |     await expect(dialog).toContainText('Ineed LinkLab');
+    > 14 |     await expect(dialog).toContainText('开发与调试小助手');
+         |                          ^
+      15 |     await expect(dialog.locator('.about-panel__runtime')).toHaveText(new RegExp(runtime, 'i'));
+      16 |     const close = dialog.getByRole('button', { name: '关闭关于' });
+      17 |     await expect(close).toBeFocused();
+        at /Users/pangzhigang/develop/com.ineedfull/ineed-linklab/packages/workbench/e2e/about.spec.js:14:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/about-electron-About-prese-35ed9-and-restores-keyboard-focus-compact-1120x720/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/about-electron-About-prese-35ed9-and-restores-keyboard-focus-compact-1120x720/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/about-electron-About-prese-35ed9-and-restores-keyboard-focus-compact-1120x720/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/about-electron-About-prese-35ed9-and-restores-keyboard-focus-compact-1120x720/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+
+(node:19955) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[40/114] [compact-1120x720] › e2e/about.spec.js:5:3 › tauri About preserves the workbench and restores keyboard focus
+  4) [compact-1120x720] › e2e/about.spec.js:5:3 › tauri About preserves the workbench and restores keyboard focus
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('dialog', { name: '关于', exact: true })
+    Expected substring: "开发与调试小助手"
+    Received string:    " 关于 Ineed LinkLab多协议通信调试助手版本0.1.0运行环境tauri支持协议串口 · TCP / UDP · Modbus · DL/T645本地存储SQLite 连接、收发、协议解析与设备模拟。让日常通信调试更顺手。 版权所有 © 2026 Ineed 关闭 "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for getByRole('dialog', { name: '关于', exact: true })
+        14 × locator resolved to <section role="dialog" aria-modal="true" aria-labelledby="about-title" class="about-panel desktop-about">…</section>
+           - unexpected value " 关于 Ineed LinkLab多协议通信调试助手版本0.1.0运行环境tauri支持协议串口 · TCP / UDP · Modbus · DL/T645本地存储SQLite 连接、收发、协议解析与设备模拟。让日常通信调试更顺手。 版权所有 © 2026 Ineed 关闭 "
+
+
+      12 |     const dialog = page.getByRole('dialog', { name: '关于', exact: true });
+      13 |     await expect(dialog).toContainText('Ineed LinkLab');
+    > 14 |     await expect(dialog).toContainText('开发与调试小助手');
+         |                          ^
+      15 |     await expect(dialog.locator('.about-panel__runtime')).toHaveText(new RegExp(runtime, 'i'));
+      16 |     const close = dialog.getByRole('button', { name: '关闭关于' });
+      17 |     await expect(close).toBeFocused();
+        at /Users/pangzhigang/develop/com.ineedfull/ineed-linklab/packages/workbench/e2e/about.spec.js:14:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/about-tauri-About-preserve-1eb5e-and-restores-keyboard-focus-compact-1120x720/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/about-tauri-About-preserve-1eb5e-and-restores-keyboard-focus-compact-1120x720/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/about-tauri-About-preserve-1eb5e-and-restores-keyboard-focus-compact-1120x720/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/about-tauri-About-preserve-1eb5e-and-restores-keyboard-focus-compact-1120x720/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+
+(node:20295) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[41/114] [compact-1120x720] › e2e/desktopInteractions.spec.js:6:3 › electron retains layout and supports pause, raw copy and keyboard settings
+[42/114] [compact-1120x720] › e2e/desktopInteractions.spec.js:6:3 › tauri retains layout and supports pause, raw copy and keyboard settings
+[43/114] [compact-1120x720] › e2e/modalKeyboard.spec.js:5:1 › settings keep every Tab stop inside, skip disabled save, and restore their trigger
+[44/114] [compact-1120x720] › e2e/workbench.spec.js:16:1 › runs with the Playwright 1.61.1 bundled Chromium
+[45/114] [compact-1120x720] › e2e/workbench.spec.js:21:3 › electron preview injects only its own runtime bridge
+[46/114] [compact-1120x720] › e2e/workbench.spec.js:21:3 › tauri preview injects only its own runtime bridge
+[47/114] [compact-1120x720] › e2e/workbench.spec.js:36:3 › electron completes a DL/T 645 meter read with full frame diagnostics
+[48/114] [compact-1120x720] › e2e/workbench.spec.js:64:3 › electron simulates a DL/T 645 meter and returns complete response frames
+[49/114] [compact-1120x720] › e2e/workbench.spec.js:36:3 › tauri completes a DL/T 645 meter read with full frame diagnostics
+[50/114] [compact-1120x720] › e2e/workbench.spec.js:64:3 › tauri simulates a DL/T 645 meter and returns complete response frames
+[51/114] [compact-1120x720] › e2e/workbench.spec.js:97:3 › electron completes the Modbus point history workflow
+[52/114] [compact-1120x720] › e2e/workbench.spec.js:133:3 › electron manages and confirms saved Modbus write commands
+[53/114] [compact-1120x720] › e2e/workbench.spec.js:231:3 › electron runs nested Modbus master requests and slave business points
+[54/114] [compact-1120x720] › e2e/workbench.spec.js:341:3 › electron shows a deterministic active protocol workbench and sends data
+[55/114] [compact-1120x720] › e2e/workbench.spec.js:399:3 › electron keeps send editor resize bounds inside the layout
+[56/114] [compact-1120x720] › e2e/workbench.spec.js:417:3 › electron saves templates and restores successful send history without auto-send
+[57/114] [compact-1120x720] › e2e/workbench.spec.js:446:3 › electron uses stable collapsed endpoint controls
+[58/114] [compact-1120x720] › e2e/workbench.spec.js:487:3 › electron opens endpoint-scoped history from the active stream toolbar
+[59/114] [compact-1120x720] › e2e/workbench.spec.js:520:3 › electron shows active settings and deterministic storage state
+[60/114] [compact-1120x720] › e2e/workbench.spec.js:539:3 › electron edits serial receive framing and runs the shared scheduled sender
+[61/114] [compact-1120x720] › e2e/workbench.spec.js:97:3 › tauri completes the Modbus point history workflow
+[62/114] [compact-1120x720] › e2e/workbench.spec.js:133:3 › tauri manages and confirms saved Modbus write commands
+[63/114] [compact-1120x720] › e2e/workbench.spec.js:231:3 › tauri runs nested Modbus master requests and slave business points
+[64/114] [compact-1120x720] › e2e/workbench.spec.js:341:3 › tauri shows a deterministic active protocol workbench and sends data
+[65/114] [compact-1120x720] › e2e/workbench.spec.js:399:3 › tauri keeps send editor resize bounds inside the layout
+[66/114] [compact-1120x720] › e2e/workbench.spec.js:417:3 › tauri saves templates and restores successful send history without auto-send
+[67/114] [compact-1120x720] › e2e/workbench.spec.js:446:3 › tauri uses stable collapsed endpoint controls
+[68/114] [compact-1120x720] › e2e/workbench.spec.js:487:3 › tauri opens endpoint-scoped history from the active stream toolbar
+[69/114] [compact-1120x720] › e2e/workbench.spec.js:520:3 › tauri shows active settings and deterministic storage state
+[70/114] [compact-1120x720] › e2e/workbench.spec.js:539:3 › tauri edits serial receive framing and runs the shared scheduled sender
+[71/114] [compact-1120x720] › e2e/workbench.spec.js:584:3 › electron configures TCP resilience and cancels a pending retry
+[72/114] [compact-1120x720] › e2e/workbench.spec.js:584:3 › tauri configures TCP resilience and cancels a pending retry
+[73/114] [compact-1120x720] › e2e/workbench.spec.js:606:1 › shows selected frame and log history rows in both renderer previews
+[74/114] [compact-1120x720] › e2e/workbench.spec.js:634:1 › matches Electron and Tauri active workbench visuals excluding the runtime footer
+[compact-1120x720] › e2e/workbench.spec.js:634:1 › matches Electron and Tauri active workbench visuals excluding the runtime footer
+[visual parity] compact-1120x720: 0/806400 pixels differ (0.000000%)
+
+[75/114] [compact-1120x720] › e2e/workbench.spec.js:687:1 › matches Electron and Tauri nested Modbus master visuals excluding the runtime footer
+[compact-1120x720] › e2e/workbench.spec.js:687:1 › matches Electron and Tauri nested Modbus master visuals excluding the runtime footer
+[nested Modbus visual parity] compact-1120x720: 0/806400 pixels differ (0.000000%)
+
+[76/114] [compact-1120x720] › e2e/workbench.spec.js:722:1 › matches saved Modbus write commands across Electron and Tauri with only runtime footer masked
+[compact-1120x720] › e2e/workbench.spec.js:722:1 › matches saved Modbus write commands across Electron and Tauri with only runtime footer masked
+[saved Modbus groups visual parity] compact-1120x720: 0/806400 pixels differ (0.000000%)
+
+[saved Modbus writes visual parity] compact-1120x720: 0/806400 pixels differ (0.000000%)
+
+
+(node:21502) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[77/114] [portrait-820x1180] › e2e/about.spec.js:5:3 › electron About preserves the workbench and restores keyboard focus
+  5) [portrait-820x1180] › e2e/about.spec.js:5:3 › electron About preserves the workbench and restores keyboard focus
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('dialog', { name: '关于', exact: true })
+    Expected substring: "开发与调试小助手"
+    Received string:    " 关于 Ineed LinkLab多协议通信调试助手版本0.1.0运行环境electron支持协议串口 · TCP / UDP · Modbus · DL/T645本地存储SQLite 连接、收发、协议解析与设备模拟。让日常通信调试更顺手。 版权所有 © 2026 Ineed 关闭 "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for getByRole('dialog', { name: '关于', exact: true })
+        14 × locator resolved to <section role="dialog" aria-modal="true" aria-labelledby="about-title" class="about-panel desktop-about">…</section>
+           - unexpected value " 关于 Ineed LinkLab多协议通信调试助手版本0.1.0运行环境electron支持协议串口 · TCP / UDP · Modbus · DL/T645本地存储SQLite 连接、收发、协议解析与设备模拟。让日常通信调试更顺手。 版权所有 © 2026 Ineed 关闭 "
+
+
+      12 |     const dialog = page.getByRole('dialog', { name: '关于', exact: true });
+      13 |     await expect(dialog).toContainText('Ineed LinkLab');
+    > 14 |     await expect(dialog).toContainText('多协议通信调试助手');
+         |                          ^
+      15 |     await expect(dialog.locator('.about-panel__runtime')).toHaveText(new RegExp(runtime, 'i'));
+      16 |     const close = dialog.getByRole('button', { name: '关闭关于' });
+      17 |     await expect(close).toBeFocused();
+        at /Users/pangzhigang/develop/com.ineedfull/ineed-linklab/packages/workbench/e2e/about.spec.js:14:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/about-electron-About-prese-35ed9-and-restores-keyboard-focus-portrait-820x1180/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/about-electron-About-prese-35ed9-and-restores-keyboard-focus-portrait-820x1180/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/about-electron-About-prese-35ed9-and-restores-keyboard-focus-portrait-820x1180/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/about-electron-About-prese-35ed9-and-restores-keyboard-focus-portrait-820x1180/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+
+(node:22417) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[78/114] [portrait-820x1180] › e2e/about.spec.js:5:3 › tauri About preserves the workbench and restores keyboard focus
+  6) [portrait-820x1180] › e2e/about.spec.js:5:3 › tauri About preserves the workbench and restores keyboard focus
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('dialog', { name: '关于', exact: true })
+    Expected substring: "开发与调试小助手"
+    Received string:    " 关于 Ineed LinkLab多协议通信调试助手版本0.1.0运行环境tauri支持协议串口 · TCP / UDP · Modbus · DL/T645本地存储SQLite 连接、收发、协议解析与设备模拟。让日常通信调试更顺手。 版权所有 © 2026 Ineed 关闭 "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for getByRole('dialog', { name: '关于', exact: true })
+        14 × locator resolved to <section role="dialog" aria-modal="true" aria-labelledby="about-title" class="about-panel desktop-about">…</section>
+           - unexpected value " 关于 Ineed LinkLab多协议通信调试助手版本0.1.0运行环境tauri支持协议串口 · TCP / UDP · Modbus · DL/T645本地存储SQLite 连接、收发、协议解析与设备模拟。让日常通信调试更顺手。 版权所有 © 2026 Ineed 关闭 "
+
+
+      12 |     const dialog = page.getByRole('dialog', { name: '关于', exact: true });
+      13 |     await expect(dialog).toContainText('Ineed LinkLab');
+    > 14 |     await expect(dialog).toContainText('多协议通信调试助手');
+         |                          ^
+      15 |     await expect(dialog.locator('.about-panel__runtime')).toHaveText(new RegExp(runtime, 'i'));
+      16 |     const close = dialog.getByRole('button', { name: '关闭关于' });
+      17 |     await expect(close).toBeFocused();
+        at /Users/pangzhigang/develop/com.ineedfull/ineed-linklab/packages/workbench/e2e/about.spec.js:14:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/about-tauri-About-preserve-1eb5e-and-restores-keyboard-focus-portrait-820x1180/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/about-tauri-About-preserve-1eb5e-and-restores-keyboard-focus-portrait-820x1180/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/about-tauri-About-preserve-1eb5e-and-restores-keyboard-focus-portrait-820x1180/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/about-tauri-About-preserve-1eb5e-and-restores-keyboard-focus-portrait-820x1180/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+
+(node:22710) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[79/114] [portrait-820x1180] › e2e/desktopInteractions.spec.js:6:3 › electron retains layout and supports pause, raw copy and keyboard settings
+[80/114] [portrait-820x1180] › e2e/desktopInteractions.spec.js:6:3 › tauri retains layout and supports pause, raw copy and keyboard settings
+[81/114] [portrait-820x1180] › e2e/modalKeyboard.spec.js:5:1 › settings keep every Tab stop inside, skip disabled save, and restore their trigger
+[82/114] [portrait-820x1180] › e2e/workbench.spec.js:16:1 › runs with the Playwright 1.61.1 bundled Chromium
+[83/114] [portrait-820x1180] › e2e/workbench.spec.js:21:3 › electron preview injects only its own runtime bridge
+[84/114] [portrait-820x1180] › e2e/workbench.spec.js:21:3 › tauri preview injects only its own runtime bridge
+[85/114] [portrait-820x1180] › e2e/workbench.spec.js:36:3 › electron completes a DL/T 645 meter read with full frame diagnostics
+[86/114] [portrait-820x1180] › e2e/workbench.spec.js:64:3 › electron simulates a DL/T 645 meter and returns complete response frames
+[87/114] [portrait-820x1180] › e2e/workbench.spec.js:36:3 › tauri completes a DL/T 645 meter read with full frame diagnostics
+[88/114] [portrait-820x1180] › e2e/workbench.spec.js:64:3 › tauri simulates a DL/T 645 meter and returns complete response frames
+[89/114] [portrait-820x1180] › e2e/workbench.spec.js:97:3 › electron completes the Modbus point history workflow
+[90/114] [portrait-820x1180] › e2e/workbench.spec.js:133:3 › electron manages and confirms saved Modbus write commands
+[91/114] [portrait-820x1180] › e2e/workbench.spec.js:231:3 › electron runs nested Modbus master requests and slave business points
+[92/114] [portrait-820x1180] › e2e/workbench.spec.js:341:3 › electron shows a deterministic active protocol workbench and sends data
+[93/114] [portrait-820x1180] › e2e/workbench.spec.js:399:3 › electron keeps send editor resize bounds inside the layout
+[94/114] [portrait-820x1180] › e2e/workbench.spec.js:417:3 › electron saves templates and restores successful send history without auto-send
+[95/114] [portrait-820x1180] › e2e/workbench.spec.js:446:3 › electron uses stable collapsed endpoint controls
+[96/114] [portrait-820x1180] › e2e/workbench.spec.js:487:3 › electron opens endpoint-scoped history from the active stream toolbar
+[97/114] [portrait-820x1180] › e2e/workbench.spec.js:520:3 › electron shows active settings and deterministic storage state
+[98/114] [portrait-820x1180] › e2e/workbench.spec.js:539:3 › electron edits serial receive framing and runs the shared scheduled sender
+[99/114] [portrait-820x1180] › e2e/workbench.spec.js:97:3 › tauri completes the Modbus point history workflow
+[100/114] [portrait-820x1180] › e2e/workbench.spec.js:133:3 › tauri manages and confirms saved Modbus write commands
+[101/114] [portrait-820x1180] › e2e/workbench.spec.js:231:3 › tauri runs nested Modbus master requests and slave business points
+[102/114] [portrait-820x1180] › e2e/workbench.spec.js:341:3 › tauri shows a deterministic active protocol workbench and sends data
+[103/114] [portrait-820x1180] › e2e/workbench.spec.js:399:3 › tauri keeps send editor resize bounds inside the layout
+[104/114] [portrait-820x1180] › e2e/workbench.spec.js:417:3 › tauri saves templates and restores successful send history without auto-send
+[105/114] [portrait-820x1180] › e2e/workbench.spec.js:446:3 › tauri uses stable collapsed endpoint controls
+[106/114] [portrait-820x1180] › e2e/workbench.spec.js:487:3 › tauri opens endpoint-scoped history from the active stream toolbar
+[107/114] [portrait-820x1180] › e2e/workbench.spec.js:520:3 › tauri shows active settings and deterministic storage state
+[108/114] [portrait-820x1180] › e2e/workbench.spec.js:539:3 › tauri edits serial receive framing and runs the shared scheduled sender
+[109/114] [portrait-820x1180] › e2e/workbench.spec.js:584:3 › electron configures TCP resilience and cancels a pending retry
+[110/114] [portrait-820x1180] › e2e/workbench.spec.js:584:3 › tauri configures TCP resilience and cancels a pending retry
+[111/114] [portrait-820x1180] › e2e/workbench.spec.js:606:1 › shows selected frame and log history rows in both renderer previews
+[112/114] [portrait-820x1180] › e2e/workbench.spec.js:634:1 › matches Electron and Tauri active workbench visuals excluding the runtime footer
+[portrait-820x1180] › e2e/workbench.spec.js:634:1 › matches Electron and Tauri active workbench visuals excluding the runtime footer
+[visual parity] portrait-820x1180: 0/967600 pixels differ (0.000000%)
+
+[113/114] [portrait-820x1180] › e2e/workbench.spec.js:687:1 › matches Electron and Tauri nested Modbus master visuals excluding the runtime footer
+[portrait-820x1180] › e2e/workbench.spec.js:687:1 › matches Electron and Tauri nested Modbus master visuals excluding the runtime footer
+[nested Modbus visual parity] portrait-820x1180: 0/967600 pixels differ (0.000000%)
+
+[114/114] [portrait-820x1180] › e2e/workbench.spec.js:722:1 › matches saved Modbus write commands across Electron and Tauri with only runtime footer masked
+[portrait-820x1180] › e2e/workbench.spec.js:722:1 › matches saved Modbus write commands across Electron and Tauri with only runtime footer masked
+[saved Modbus groups visual parity] portrait-820x1180: 0/967600 pixels differ (0.000000%)
+
+[saved Modbus writes visual parity] portrait-820x1180: 0/967600 pixels differ (0.000000%)
+
+  6 failed
+    [desktop-1440x900] › e2e/about.spec.js:5:3 › electron About preserves the workbench and restores keyboard focus
+    [desktop-1440x900] › e2e/about.spec.js:5:3 › tauri About preserves the workbench and restores keyboard focus
+    [compact-1120x720] › e2e/about.spec.js:5:3 › electron About preserves the workbench and restores keyboard focus
+    [compact-1120x720] › e2e/about.spec.js:5:3 › tauri About preserves the workbench and restores keyboard focus
+    [portrait-820x1180] › e2e/about.spec.js:5:3 › electron About preserves the workbench and restores keyboard focus
+    [portrait-820x1180] › e2e/about.spec.js:5:3 › tauri About preserves the workbench and restores keyboard focus
+  108 passed (2.4m)
+npm error Lifecycle script `test:e2e` failed with error:
+npm error code 1
+npm error path /Users/pangzhigang/develop/com.ineedfull/ineed-linklab/packages/workbench
+npm error workspace @ineed-linklab/workbench@0.1.0
+npm error location /Users/pangzhigang/develop/com.ineedfull/ineed-linklab/packages/workbench
+npm error command failed
+npm error command sh -c playwright test -c playwright.config.js

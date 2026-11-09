@@ -1,0 +1,105 @@
+[
+  {
+    "file": "workbench.webp",
+    "sourceRepository": "ineed-linklab-website",
+    "sourcePath": "public/images/app/2026-11-02/workbench.webp",
+    "capturedAt": "2026-11-02",
+    "runtime": "Electron 原生开发宿主",
+    "productVersion": "0.1.0",
+    "data": "隔离演示数据；原生宿主截图不代表所有平台或安装包验收",
+    "transformation": "原文件复制，未修改像素",
+    "width": 3040,
+    "height": 2080,
+    "sha256": "55b6861def5aa4215312e8ea963c02fc1ffa07caba3eea9429ee70c22529c877"
+  },
+  {
+    "file": "modbus-live.webp",
+    "sourceRepository": "ineed-linklab-website",
+    "sourcePath": "public/images/app/2026-11-02/modbus-live.webp",
+    "capturedAt": "2026-11-02",
+    "runtime": "Electron 原生开发宿主",
+    "productVersion": "0.1.0",
+    "data": "隔离演示数据；原生宿主截图不代表所有平台或安装包验收",
+    "transformation": "原文件复制，未修改像素",
+    "width": 3040,
+    "height": 2080,
+    "sha256": "2261137ec284e1ebd6d3c4e0ee4d9ec696deffb53c7dc0b3670b6ca8a2ab2626"
+  },
+  {
+    "file": "modbus-simulator.webp",
+    "sourceRepository": "ineed-linklab-website",
+    "sourcePath": "public/images/app/2026-11-02/modbus-simulator.webp",
+    "capturedAt": "2026-11-02",
+    "runtime": "Electron 原生开发宿主",
+    "productVersion": "0.1.0",
+    "data": "隔离演示数据；原生宿主截图不代表所有平台或安装包验收",
+    "transformation": "原文件复制，未修改像素",
+    "width": 3040,
+    "height": 2080,
+    "sha256": "1ffbacc435f2cce40478643bc2c0c821cb165d61078755da42f68187544008df"
+  },
+  {
+    "file": "meter-master.webp",
+    "sourceRepository": "ineed-linklab-website",
+    "sourcePath": "public/images/app/2026-11-02/meter-master.webp",
+    "capturedAt": "2026-11-02",
+    "runtime": "Electron 原生开发宿主",
+    "productVersion": "0.1.0",
+    "data": "隔离演示数据；原生宿主截图不代表所有平台或安装包验收",
+    "transformation": "原文件复制，未修改像素",
+    "width": 3040,
+    "height": 2080,
+    "sha256": "92aec7aa583240e0556b0d62dbadb766e9b66d450e8c4bf7b1b951e3b37b6f47"
+  },
+  {
+    "file": "device-templates.webp",
+    "sourceRepository": "ineed-linklab-website",
+    "sourcePath": "public/images/app/2026-11-02/device-templates.webp",
+    "capturedAt": "2026-11-02",
+    "runtime": "Electron 原生开发宿主",
+    "productVersion": "0.1.0",
+    "data": "隔离演示数据；原生宿主截图不代表所有平台或安装包验收",
+    "transformation": "原文件复制，未修改像素",
+    "width": 2720,
+    "height": 1656,
+    "sha256": "e22e1731a1391fcb5761315c6bfe015e78377bb24fd0ab978cfe1f8fc9b66888"
+  },
+  {
+    "file": "acceptance-checks.webp",
+    "sourceRepository": "ineed-linklab-website",
+    "sourcePath": "public/images/app/2026-11-02/acceptance-checks.webp",
+    "capturedAt": "2026-11-02",
+    "runtime": "Electron 原生开发宿主",
+    "productVersion": "0.1.0",
+    "data": "隔离演示数据；原生宿主截图不代表所有平台或安装包验收",
+    "transformation": "原文件复制，未修改像素",
+    "width": 3040,
+    "height": 2080,
+    "sha256": "fde698a50b10c88db8431dc3f46e8ebc6211fc493fb27f4b6aefb7a44bbb18ce"
+  },
+  {
+    "file": "workspace-tools.webp",
+    "sourceRepository": "ineed-linklab-website",
+    "sourcePath": "docs/captures/2026-11-02/workspace-tools.png",
+    "capturedAt": "2026-11-02",
+    "runtime": "Electron 原生开发宿主",
+    "data": "隔离演示数据",
+    "transformation": "PNG 无损转 WebP",
+    "width": 3040,
+    "height": 2080,
+    "sha256": "52d575b42370a14217d935e15986a48a23a07f9117b24fb3c13e0f46bafa2264"
+  },
+  {
+    "file": "wechat-qr.png",
+    "sourceRepository": "ineed-mqtt-website",
+    "sourcePath": "public/images/wechat-qr.png",
+    "purpose": "扫码加微信，非公众号二维码",
+    "sha256": "e28ce35e9bd504f878ed7f17d4b5acbf2da817e24a3fe9eb9bacac78a5fccfd0",
+    "transformation": "原文件复制，未缩小或重绘"
+  },
+  {
+    "file": "logo.svg",
+    "source": "本产品现用 SVG 品牌副本",
+    "sha256": "1beb0b44f62f29245faee8b5ecb1df3dae788b342ad0ce978b0d7442a0e6f782"
+  }
+]

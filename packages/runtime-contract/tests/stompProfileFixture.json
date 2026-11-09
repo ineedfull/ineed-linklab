@@ -1,0 +1,20 @@
+[
+  {
+    "id": "local-stomp",
+    "name": "本地 STOMP",
+    "mode": "client",
+    "config": {
+      "url": "ws://127.0.0.1:61614/stomp",
+      "host": "localhost",
+      "autoReconnect": true,
+      "heartbeatOutgoing": 10000,
+      "heartbeatIncoming": 0,
+      "listenHost": "127.0.0.1",
+      "listenPort": 61614,
+      "path": "/stomp"
+    },
+    "subscriptions": [
+      { "id": "topic-1", "destination": "/topic/测试", "ack": "client-individual" }
+    ]
+  }
+]

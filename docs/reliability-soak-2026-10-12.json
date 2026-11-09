@@ -1,0 +1,442 @@
+{
+  "electron": {
+    "success": true,
+    "elapsedMs": 1200135,
+    "cycle": 284,
+    "sent": {
+      "soak-tcp": 28400,
+      "soak-udp": 5680,
+      "soak-pty": 5680
+    },
+    "opens": 61,
+    "invalidRejected": 14,
+    "modbusTransactions": 568,
+    "stats": {
+      "frameCount": 79520,
+      "logCount": 229,
+      "sendHistoryCount": 0,
+      "modbusPointHistoryCount": 0,
+      "modbusPointHistoryEstimatedBytes": 0,
+      "modbusPointHistoryLastCleanupAt": 1791810774280,
+      "totalCount": 79749,
+      "diskBytes": 19955792
+    },
+    "errors": [],
+    "assetDiagnostics": [
+      {
+        "src": "file:///Users/pangzhigang/develop/com.ineedfull/ineed-linklab/apps/electron/dist/assets/ineed-linklab-ZcXdiIIh.svg",
+        "complete": true,
+        "naturalWidth": 256,
+        "naturalHeight": 256
+      }
+    ],
+    "historyVerification": {
+      "success": true,
+      "runtime": "electron",
+      "elapsedMs": 1200135,
+      "integrity": "ok",
+      "results": [
+        {
+          "endpointId": "soak-tcp",
+          "direction": "in",
+          "frames": 28400,
+          "payloadBytes": 454400,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-tcp",
+          "direction": "out",
+          "frames": 28400,
+          "payloadBytes": 454400,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-udp",
+          "direction": "in",
+          "frames": 5680,
+          "payloadBytes": 90880,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-udp",
+          "direction": "out",
+          "frames": 5680,
+          "payloadBytes": 90880,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-pty",
+          "direction": "in",
+          "frames": 5680,
+          "payloadBytes": 90880,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-pty",
+          "direction": "out",
+          "frames": 5680,
+          "payloadBytes": 90880,
+          "mismatches": 0
+        }
+      ],
+      "unexpectedErrors": []
+    }
+  },
+  "tauri": {
+    "success": true,
+    "elapsedMs": 1205539,
+    "cycle": 236,
+    "sent": {
+      "soak-tcp": 23600,
+      "soak-udp": 4720,
+      "soak-pty": 4720
+    },
+    "opens": 49,
+    "invalidRejected": 11,
+    "modbusTransactions": 472,
+    "stats": {
+      "diskBytes": 19128424,
+      "frameCount": 66080,
+      "logCount": 184,
+      "modbusPointHistoryCount": 0,
+      "modbusPointHistoryEstimatedBytes": 0,
+      "modbusPointHistoryLastCleanupAt": 1791810780135,
+      "sendHistoryCount": 0,
+      "totalCount": 66264
+    },
+    "errors": [],
+    "assetDiagnostics": [
+      {
+        "src": "http://127.0.0.1:58532/assets/ineed-linklab-ZcXdiIIh.svg",
+        "complete": true,
+        "naturalWidth": 256,
+        "naturalHeight": 256
+      }
+    ],
+    "historyVerification": {
+      "success": true,
+      "runtime": "tauri",
+      "elapsedMs": 1205539,
+      "integrity": "ok",
+      "results": [
+        {
+          "endpointId": "soak-tcp",
+          "direction": "in",
+          "frames": 23600,
+          "payloadBytes": 377600,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-tcp",
+          "direction": "out",
+          "frames": 23600,
+          "payloadBytes": 377600,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-udp",
+          "direction": "in",
+          "frames": 4720,
+          "payloadBytes": 75520,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-udp",
+          "direction": "out",
+          "frames": 4720,
+          "payloadBytes": 75520,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-pty",
+          "direction": "in",
+          "frames": 4720,
+          "payloadBytes": 75520,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-pty",
+          "direction": "out",
+          "frames": 4720,
+          "payloadBytes": 75520,
+          "mismatches": 0
+        }
+      ],
+      "unexpectedErrors": []
+    }
+  },
+  "electron-ui-verified": {
+    "success": true,
+    "elapsedMs": 62487,
+    "cycle": 20,
+    "sent": {
+      "soak-tcp": 2000,
+      "soak-udp": 400,
+      "soak-pty": 400
+    },
+    "opens": 21,
+    "invalidRejected": 4,
+    "modbusTransactions": 40,
+    "stats": {
+      "frameCount": 5600,
+      "logCount": 79,
+      "sendHistoryCount": 0,
+      "modbusPointHistoryCount": 0,
+      "modbusPointHistoryEstimatedBytes": 0,
+      "modbusPointHistoryLastCleanupAt": 1791811879375,
+      "totalCount": 5679,
+      "diskBytes": 5041728
+    },
+    "errors": [],
+    "assetDiagnostics": [
+      {
+        "src": "file:///Users/pangzhigang/develop/com.ineedfull/ineed-linklab/apps/electron/dist/assets/ineed-linklab-ZcXdiIIh.svg",
+        "complete": true,
+        "naturalWidth": 256,
+        "naturalHeight": 256
+      }
+    ],
+    "historyVerification": {
+      "success": true,
+      "runtime": "electron",
+      "elapsedMs": 62487,
+      "integrity": "ok",
+      "results": [
+        {
+          "endpointId": "soak-tcp",
+          "direction": "in",
+          "frames": 2000,
+          "payloadBytes": 32000,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-tcp",
+          "direction": "out",
+          "frames": 2000,
+          "payloadBytes": 32000,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-udp",
+          "direction": "in",
+          "frames": 400,
+          "payloadBytes": 6400,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-udp",
+          "direction": "out",
+          "frames": 400,
+          "payloadBytes": 6400,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-pty",
+          "direction": "in",
+          "frames": 400,
+          "payloadBytes": 6400,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-pty",
+          "direction": "out",
+          "frames": 400,
+          "payloadBytes": 6400,
+          "mismatches": 0
+        }
+      ],
+      "unexpectedErrors": []
+    }
+  },
+  "tauri-ui-verified": {
+    "success": true,
+    "elapsedMs": 60878,
+    "cycle": 14,
+    "sent": {
+      "soak-tcp": 1400,
+      "soak-udp": 280,
+      "soak-pty": 280
+    },
+    "opens": 13,
+    "invalidRejected": 2,
+    "modbusTransactions": 28,
+    "stats": {
+      "diskBytes": 5074784,
+      "frameCount": 3920,
+      "logCount": 49,
+      "modbusPointHistoryCount": 0,
+      "modbusPointHistoryEstimatedBytes": 0,
+      "modbusPointHistoryLastCleanupAt": 1791811884906,
+      "sendHistoryCount": 0,
+      "totalCount": 3969
+    },
+    "errors": [],
+    "assetDiagnostics": [
+      {
+        "src": "http://127.0.0.1:50436/assets/ineed-linklab-ZcXdiIIh.svg",
+        "complete": true,
+        "naturalWidth": 256,
+        "naturalHeight": 256
+      }
+    ],
+    "historyVerification": {
+      "success": true,
+      "runtime": "tauri",
+      "elapsedMs": 60878,
+      "integrity": "ok",
+      "results": [
+        {
+          "endpointId": "soak-tcp",
+          "direction": "in",
+          "frames": 1400,
+          "payloadBytes": 22400,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-tcp",
+          "direction": "out",
+          "frames": 1400,
+          "payloadBytes": 22400,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-udp",
+          "direction": "in",
+          "frames": 280,
+          "payloadBytes": 4480,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-udp",
+          "direction": "out",
+          "frames": 280,
+          "payloadBytes": 4480,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-pty",
+          "direction": "in",
+          "frames": 280,
+          "payloadBytes": 4480,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-pty",
+          "direction": "out",
+          "frames": 280,
+          "payloadBytes": 4480,
+          "mismatches": 0
+        }
+      ],
+      "unexpectedErrors": []
+    }
+  },
+  "native": {
+    "success": true,
+    "elapsedMs": 1201824,
+    "cycle": 105,
+    "gates": 315
+  },
+  "memory": {
+    "Browser": {
+      "firstMiB": 209.671875,
+      "peakMiB": 260.953125,
+      "lastMiB": 237.09375
+    },
+    "Tab": {
+      "firstMiB": 154.203125,
+      "peakMiB": 206.234375,
+      "lastMiB": 182.296875
+    },
+    "TauriHost": {
+      "firstMiB": 149.03125,
+      "peakMiB": 151.421875,
+      "lastMiB": 118.09375,
+      "includesWebkit": false
+    }
+  },
+  "adversarial": {
+    "electronOversizedPeers": 30,
+    "tauriOverflowRuns": 10,
+    "limitBytes": 1048576
+  },
+  "baseCommit": "06041df",
+  "platform": "macOS arm64",
+  "productChanges": false,
+  "hiddenWindow": {
+    "success": true,
+    "elapsedMs": 361921,
+    "cycle": 71,
+    "sent": {
+      "soak-tcp": 7100,
+      "soak-udp": 1420,
+      "soak-pty": 1420
+    },
+    "opens": 17,
+    "invalidRejected": 3,
+    "modbusTransactions": 142,
+    "stats": {
+      "diskBytes": 8585416,
+      "frameCount": 19880,
+      "logCount": 64,
+      "modbusPointHistoryCount": 0,
+      "modbusPointHistoryEstimatedBytes": 0,
+      "modbusPointHistoryLastCleanupAt": 1791815939821,
+      "sendHistoryCount": 0,
+      "totalCount": 19944
+    },
+    "errors": [],
+    "historyVerification": {
+      "success": true,
+      "runtime": "tauri",
+      "elapsedMs": 361921,
+      "integrity": "ok",
+      "results": [
+        {
+          "endpointId": "soak-tcp",
+          "direction": "in",
+          "frames": 7100,
+          "payloadBytes": 113600,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-tcp",
+          "direction": "out",
+          "frames": 7100,
+          "payloadBytes": 113600,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-udp",
+          "direction": "in",
+          "frames": 1420,
+          "payloadBytes": 22720,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-udp",
+          "direction": "out",
+          "frames": 1420,
+          "payloadBytes": 22720,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-pty",
+          "direction": "in",
+          "frames": 1420,
+          "payloadBytes": 22720,
+          "mismatches": 0
+        },
+        {
+          "endpointId": "soak-pty",
+          "direction": "out",
+          "frames": 1420,
+          "payloadBytes": 22720,
+          "mismatches": 0
+        }
+      ],
+      "unexpectedErrors": []
+    },
+    "evidence": "/tmp/linklab-soak-hidden-baseline"
+  }
+}

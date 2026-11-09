@@ -1,0 +1,46 @@
+{
+  "name": "@ineed-linklab/workbench",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install:chromium": "cross-env PLAYWRIGHT_DOWNLOAD_HOST=https://npmmirror.com/mirrors/playwright playwright install chromium --no-shell",
+    "test": "vitest run --config vitest.config.js",
+    "test:e2e": "playwright test -c playwright.config.js",
+    "test:components": "vitest run --config vitest.config.js"
+  },
+  "exports": {
+    ".": "./src/createWorkbench.js",
+    "./App.vue": "./src/App.vue",
+    "./base.css": "./src/styles/base.css",
+    "./runtimeContext.js": "./src/runtimeContext.js"
+  },
+  "dependencies": {
+    "@codemirror/commands": "^6.8.1",
+    "@codemirror/lang-json": "^6.0.2",
+    "@codemirror/language": "^6.11.3",
+    "@codemirror/lint": "^6.8.5",
+    "@codemirror/search": "^6.5.10",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.36.0",
+    "@ineed-linklab/codecs": "*",
+    "@ineed-linklab/runtime-contract": "*",
+    "@lezer/highlight": "^1.2.3",
+    "echarts": "^6.1.0",
+    "lucide-vue-next": "^0.468.0",
+    "vue": "^3.5.39"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@stomp/stompjs": "^7.5.0",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "@vue/compiler-sfc": "^3.5.39",
+    "@vue/server-renderer": "^3.5.39",
+    "@vue/test-utils": "^2.4.11",
+    "jsdom": "^26.1.0",
+    "pixelmatch": "7.1.0",
+    "pngjs": "7.0.0",
+    "vitest": "^4.1.10"
+  }
+}

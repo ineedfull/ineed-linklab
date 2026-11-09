@@ -1,0 +1,23 @@
+{
+  "fixture": "/var/folders/1p/8trwjmld3q131crnsq356t_80000gn/T/ineed-linklab-native-B1yjtp",
+  "runs": [
+    {
+      "name": "Ineed LinkLab",
+      "userData": "/var/folders/1p/8trwjmld3q131crnsq356t_80000gn/T/ineed-linklab-native-B1yjtp/app-data/Ineed DevTool",
+      "sessionData": "/var/folders/1p/8trwjmld3q131crnsq356t_80000gn/T/ineed-linklab-native-B1yjtp/app-data/Ineed DevTool",
+      "title": "Ineed LinkLab",
+      "pageErrors": [],
+      "exitCode": 0,
+      "passed": true
+    },
+    {
+      "name": "Ineed LinkLab",
+      "userData": "/var/folders/1p/8trwjmld3q131crnsq356t_80000gn/T/ineed-linklab-native-B1yjtp/app-data/Ineed DevTool",
+      "sessionData": "/var/folders/1p/8trwjmld3q131crnsq356t_80000gn/T/ineed-linklab-native-B1yjtp/app-data/Ineed DevTool",
+      "title": "Ineed LinkLab",
+      "pageErrors": [],
+      "exitCode": 0,
+      "passed": true
+    }
+  ]
+}

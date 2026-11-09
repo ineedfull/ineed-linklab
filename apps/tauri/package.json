@@ -1,0 +1,24 @@
+{
+  "name": "@ineed-linklab/tauri",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "node ../../scripts/dev-tauri.mjs",
+    "dev:renderer": "vite --host 127.0.0.1 --port 5174 --strictPort",
+    "tauri:build": "tauri build"
+  },
+  "dependencies": {
+    "@ineed-linklab/workbench": "*",
+    "@tauri-apps/api": "^2.8.0",
+    "vue": "^3.5.39"
+  },
+  "devDependencies": {
+    "@ineed-linklab/runtime-contract": "*",
+    "@tauri-apps/cli": "^2.11.4",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "vite": "^8.1.4"
+  }
+}

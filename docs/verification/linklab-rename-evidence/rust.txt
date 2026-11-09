@@ -1,0 +1,180 @@
+   Compiling tauri-build v2.6.3
+   Compiling tauri-plugin v2.6.3
+   Compiling tauri-plugin-fs v2.5.1
+   Compiling tauri-plugin-dialog v2.7.1
+   Compiling tauri v2.11.5
+   Compiling ineed-linklab-tauri v0.1.0 (/Users/pangzhigang/develop/com.ineedfull/ineed-linklab/apps/tauri/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 18.58s
+     Running unittests src/lib.rs (apps/tauri/src-tauri/target/debug/deps/ineed_linklab_tauri-58aa81710364ad84)
+
+running 156 tests
+test database::tests::database_file_size_treats_only_not_found_as_zero ... ok
+test database::tests::modbus_point_history_csv_escapes_delimiters_quotes_and_line_breaks ... ok
+test database::tests::integral_json_lexical_forms_match_settings_and_timestamp_contract ... ok
+test database::tests::modbus_point_series_preserves_extrema_and_change_events ... ok
+test database::tests::modbus_point_history_round_trips_lossless_rows_and_rolls_back_batches ... ok
+test database::tests::history_batch_inserts_round_trip_blob_json_null_and_milliseconds ... ok
+test database::tests::clone_contract_and_template_target_shape_match_shared_behavior ... ok
+test database::tests::modbus_point_retention_and_clear_leave_existing_history_untouched ... ok
+test database::tests::public_persistence_inputs_reject_unknown_fields_without_mutation ... ok
+test database::tests::history_batches_prevalidate_all_rows_and_roll_back_foreign_key_failures ... ok
+test database::tests::empty_history_batches_are_no_ops ... ok
+test database::tests::modbus_point_history_matches_shared_cross_runtime_acceptance_fixture ... ok
+test database::tests::native_settings_schema_rejects_invalid_values_and_recovers_unknown_rows ... ok
+test database::tests::history_batch_sql_failures_roll_back_earlier_rows_in_the_transaction ... ok
+test database::tests::workspace_files_are_bounded_regular_and_not_symlinks ... ok
+test database::tests::workspace_export_atomically_replaces_destination_and_rejects_symlinks ... ok
+test modbus::tests::config_rejects_explicit_invalid_values_instead_of_using_defaults ... ok
+test database::tests::workspace_import_descriptor_survives_path_swap_and_detects_growth ... ok
+test modbus::tests::data_store_and_requests_enforce_ranges_and_value_types ... ok
+test modbus::tests::electron_and_rust_cross_runtime_tcp_and_rtu ... ignored, requires Node.js, modbus-serial, and socat; run explicitly for cross-runtime verification
+test modbus::tests::execute_request_validates_timeout_and_correlates_transactions_to_groups_and_requests ... ok
+test modbus::tests::macos_numeric_ptys_skip_unsupported_baud_ioctl ... ok
+test modbus::tests::rtu_capture_preserves_exact_wire_bytes_instead_of_rebuilding_the_request ... ok
+test modbus::tests::rtu_server_publishes_exact_frames_only_after_the_response_is_written ... ok
+test modbus::tests::rtu_server_stops_before_processing_another_buffered_frame_after_cancel ... ok
+test modbus::tests::slave_failure_before_session_commit_is_retired_when_reporting_is_armed ... ok
+test modbus::tests::slave_runtime_failure_retires_the_matching_session_and_emits_terminal_statuses ... ok
+test modbus::tests::tcp_capture_pairs_fragmented_and_coalesced_wire_frames_after_response_write ... ok
+test persistence::tests::a_failed_frame_write_is_reported_without_blocking_log_persistence ... ok
+test persistence::tests::bounded_row_buffers_independently_drop_oldest_rows_and_report_the_overflow ... ok
+test database::tests::database_crud_settings_templates_and_cascade_use_real_sqlite ... ok
+test persistence::tests::deadline_flushes_while_the_command_channel_stays_nonempty ... ok
+test database::tests::concurrent_endpoint_saves_are_atomic_and_preserve_creation_time ... ok
+test database::tests::normal_saves_accept_listed_rows_and_validate_optional_timestamps ... ok
+test persistence::tests::exhausted_flush_retries_are_finite_report_once_and_return_failure ... ok
+test persistence::tests::deterministic_tick_flushes_small_frame_and_log_batches ... ok
+test persistence::tests::exhausted_shutdown_retries_return_failure_after_worker_cleanup ... ok
+test modbus::tests::real_tcp_master_and_slave_execute_saved_fc05_and_fc16_request_shapes ... ok
+test persistence::tests::failure_count_saturates_without_growing_the_summary ... ok
+test persistence::tests::explicit_flush_and_idempotent_shutdown_drain_pending_rows ... ok
+test persistence::tests::frame_snapshots_preserve_tcp_peer_identity ... ok
+test persistence::tests::log_snapshots_preserve_tcp_peer_identity ... ok
+test persistence::tests::snapshots_events_as_fifo_hex_frames_and_nonnull_logs ... ok
+test persistence::tests::transient_frame_and_log_failures_retry_without_losing_rows ... ok
+test persistence::tests::writes_are_serialized_across_frame_and_log_batches ... ok
+test persistence::tests::forwarding_happens_before_database_ack_and_a_full_channel_never_blocks_it ... ok
+test persistence::tests::udp_snapshots_preserve_peer_identity_source_and_exact_timestamps ... ok
+test runtime::tests::every_command_maps_to_its_dotted_runtime_method ... ok
+test runtime::tests::history_endpoint_validation_matches_cross_runtime_cases ... ok
+test runtime::tests::history_window_authorization_allows_only_queries_and_settings_reads ... ok
+test runtime::tests::history_window_boundary_creates_then_focuses_without_duplicates ... ok
+test runtime::tests::history_window_boundary_returns_focus_and_create_failures ... ok
+test runtime::tests::history_window_failures_use_controlled_command_envelopes ... ok
+test runtime::tests::history_window_specs_validate_kind_and_endpoint_bounds_before_encoding ... ok
+test runtime::tests::read_envelopes_have_phase_one_defaults ... ok
+test runtime::tests::history_window_specs_have_injective_labels_and_round_trip_queries ... ok
+test runtime::tests::unavailable_envelope_serializes_consistent_camel_case_metadata ... ok
+test persistence::tests::writes_each_queue_immediately_at_two_hundred_rows ... ok
+test runtime::tests::window_authorization_rejects_unowned_labels_and_accepts_main_commands ... ok
+test serial::tests::batching_flushes_at_two_hundred_frames ... ok
+test serial::tests::automatic_failure_close_success_removes_session_and_allows_immediate_reopen ... ok
+test serial::tests::automatic_io_failure_close_failure_stays_open_for_retry_without_closed_status ... ok
+test serial::tests::cancel_acknowledges_before_late_open_and_shutdown_waits_for_terminal_cleanup ... ok
+test serial::tests::config_maps_all_supported_values_and_rejects_unsupported_mark_and_one_point_five ... ok
+test serial::tests::cancelled_late_open_close_failure_stays_retryable_without_closed_status ... ok
+test serial::tests::cancelled_late_open_success_emits_terminal_without_normal_close_log ... ok
+test serial::tests::disconnect_event_sink_releases_service_owned_sink ... ok
+test serial::tests::device_removal_emits_one_error_closed_cycle_and_read_loop_exits ... ok
+test serial::tests::device_removed_remains_primary_when_automatic_close_fails ... ok
+test serial::tests::failure_status_logs_match_electron_intent_and_suppress_closed_info ... ok
+test database::tests::migration_runner_rejects_malformed_ledgers_and_reopens_applied_schema ... ok
+test serial::tests::force_shutdown_during_open_completion_has_one_close_owner ... ok
+test serial::tests::force_shutdown_makes_a_late_open_force_close_its_returned_connection ... ok
+test serial::tests::force_shutdown_removes_and_force_closes_known_sessions ... ok
+test serial::tests::force_shutdown_reports_handles_left_for_process_exit_fallback ... ok
+test serial::tests::framers_support_raw_delimiter_fixed_idle_and_default_raw ... ok
+test serial::tests::lifecycle_status_logs_match_the_electron_contract ... ok
+test persistence::tests::sustained_batch_failures_keep_bounded_state_and_shutdown_cleanly ... ok
+test serial::tests::macos_numeric_ptys_skip_unsupported_baud_ioctl ... ok
+test serial::tests::open_rejects_a_reader_failure_that_terminalizes_the_session_before_commit ... ok
+test serial::tests::posix_eio_maps_to_device_removed_after_open ... ok
+test serial::tests::pty_history_cleanup_removes_temp_directory_during_unwind ... ok
+test serial::tests::read_failure_flushes_residual_frames_before_error_and_closed ... ok
+test serial::tests::reader_join_failure_reports_error_without_closed_and_remains_retryable ... ok
+test serial::tests::real_pty_transport_contract ... ignored, requires env-provided socat PTYs; run through tooling/serial-test/pty-loopback.mjs
+test serial::tests::scan_preserves_strict_nullable_metadata ... ok
+test serial::tests::close_waits_for_the_active_session_write_owner ... ok
+test serial::tests::shutdown_cannot_pass_an_open_inside_the_reservation_boundary ... ok
+test serial::tests::failed_close_is_retained_and_retry_has_single_close_owner ... ok
+test serial::tests::shutdown_during_open_completion_cannot_return_a_closed_session_as_open ... ok
+test serial::tests::shutdown_retries_a_retained_close_failure_before_returning ... ok
+test serial::tests::shutdown_wakes_and_retries_when_late_open_cleanup_close_fails ... ok
+test shutdown_tests::bounded_shutdown_forces_cleanup_after_retry_errors ... ok
+test database::tests::runtime_history_rejects_seconds_before_any_batch_row_is_written ... ok
+test shutdown_tests::bounded_shutdown_preserves_unrecovered_force_handles_for_exit_logging ... ok
+test shutdown_tests::bounded_shutdown_retries_once_then_finishes_gracefully ... ok
+test database::tests::reading_and_normalizing_a_version_two_modbus_master_leaves_its_sqlite_row_unchanged ... ok
+test shutdown_tests::transport_shutdown_orders_cleanup_and_isolates_persistence_errors ... ok
+test database::tests::send_templates_and_send_history_support_product_management ... ok
+test tcp::tests::configure_stream_applies_enabled_and_disabled_keepalive ... ok
+test tcp::tests::failed_client_setup_removes_registered_session ... ok
+test serial::tests::send_publishes_strict_outbound_frame_and_close_flushes_it ... ok
+test shutdown_tests::renderer_shutdown_handshake_joins_requests_and_accepts_only_the_matching_id ... ok
+test tcp::tests::real_tcp_transport_contract ... ignored
+test tcp::tests::open_after_shutdown_is_rejected_and_detached_sink_drops_events ... ok
+test tcp::tests::force_shutdown_reports_active_open_fallback_without_waiting ... ok
+test tcp::tests::tcp_client_connects_to_localhost_echo_server_and_emits_frames ... ok
+test tcp::tests::tcp_client_disconnect_peer_returns_controlled_io_error ... ok
+test database::tests::tcp_server_peer_history_preserves_peer_source_and_exact_timestamps ... ok
+test tcp::tests::tcp_config_enforces_client_and_server_shapes ... ok
+test tcp::tests::tcp_config_normalizes_and_validates_keepalive ... ok
+test serial::tests::multiple_sessions_are_independent_and_writes_serialize_per_session ... ok
+test database::tests::runtime_history_millisecond_boundary_and_partial_batches_are_atomic ... ok
+test database::tests::udp_endpoint_receive_mode_is_always_datagram ... ok
+test transport::tests::clear_and_import_mutations_run_after_their_required_transport_barriers ... ok
+test transport::tests::close_flush_failure_is_reported_without_reopening_serial ... ok
+test database::tests::workspace_import_preserves_ids_and_rolls_back_on_failure ... ok
+test database::tests::workspace_import_rejects_unsafe_timestamps_without_mutation ... ok
+test tcp::tests::tcp_client_remote_close_removes_session_and_emits_terminal_log ... ok
+test transport::tests::close_returns_only_after_final_frames_and_logs_are_queryable ... ok
+test shutdown_tests::bounded_shutdown_forces_cleanup_at_deadline_without_hanging ... ok
+test tcp::tests::shutdown_during_in_flight_open_prevents_late_success_and_session_leak ... ok
+test transport::tests::flush_failure_isolated_from_mutation ... ok
+test serial::tests::successful_send_commits_outbound_frame_before_failure_closed_terminal ... ok
+test tcp::tests::shutdown_after_open_commit_check_cannot_return_late_success ... ok
+test transport::tests::coordinator_reports_udp_close_as_controlled_unavailable_error ... ok
+test udp::tests::real_udp_transport_contract ... ignored
+test database::tests::version_two_modbus_master_upgrades_without_changing_history_rows_or_bytes ... ok
+test udp::tests::udp_bind_failure_emits_error_and_releases_endpoint_reservation ... ok
+test transport::tests::coordinator_routes_dlt645_master_lifecycle_to_serial_service ... ok
+test serial::tests::force_shutdown_calls_force_close_after_close_owner_deadline ... ok
+test transport::tests::coordinator_reports_udp_transport_as_controlled_unavailable_error ... ok
+test udp::tests::udp_config_ignores_legacy_stream_framing_for_clients_and_servers ... ok
+test udp::tests::udp_disconnect_peer_is_unavailable ... ok
+test udp::tests::udp_close_emits_closing_before_closed ... ok
+test udp::tests::udp_read_failure_terminalizes_and_removes_the_session ... ok
+test serial::tests::force_shutdown_calls_force_close_after_write_owner_deadline ... ok
+test transport::tests::coordinator_routes_dlt645_simulator_lifecycle_to_serial_service ... ok
+test transport::tests::coordinator_routes_tcp_open_to_tcp_service ... ok
+test transport::tests::setup_wiring_shares_one_persistence_between_sink_and_coordinator ... ok
+test udp::tests::udp_shutdown_rejects_new_opens_and_emits_no_late_success ... ok
+test tcp::tests::tcp_server_peer_disconnect_flushes_pending_delimiter_frame ... ok
+test tcp::tests::tcp_server_multi_peer_send_reports_partial_failures ... ok
+test udp::tests::reader_failure_during_open_cannot_publish_success_after_closed ... ok
+test udp::tests::shutdown_during_in_flight_open_prevents_late_success_and_session_leak ... ok
+test tcp::tests::accepted_stream_setup_failure_logs_warning_and_keeps_listener_active ... ok
+test udp::tests::udp_duplicate_open_is_rejected_without_replacing_the_live_session ... ok
+test transport::tests::registered_endpoint_close_releases_udp_sessions ... ok
+test tcp::tests::tcp_server_accepts_peer_sends_to_target_and_disconnects_peer ... ok
+test udp::tests::udp_client_sends_and_receives_through_localhost_echo ... ok
+test udp::tests::udp_server_discovers_peers_and_sends_back ... ok
+test udp::tests::udp_client_resolves_hostname_target_for_bound_socket_family ... ok
+test udp::tests::udp_server_preserves_datagrams_with_legacy_delimiter_framing ... ok
+test udp::tests::udp_server_preserves_datagrams_with_legacy_fixed_framing ... ok
+test udp::tests::udp_server_emits_datagram_immediately_with_legacy_idle_framing ... ok
+test database::tests::history_queries_order_page_and_clear_preserves_configuration ... ok
+
+test result: ok. 152 passed; 0 failed; 4 ignored; 0 measured; 0 filtered out; finished in 5.31s
+
+     Running unittests src/main.rs (apps/tauri/src-tauri/target/debug/deps/ineed_linklab_tauri-4277f741e0e09124)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ineed_linklab_tauri
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

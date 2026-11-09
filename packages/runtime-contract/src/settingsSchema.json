@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "settings": {
+    "logLevel": {
+      "type": "string",
+      "enum": [
+        "debug",
+        "info",
+        "warn",
+        "error"
+      ],
+      "default": "info"
+    },
+    "realtimeFrameLimit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50000,
+      "default": 2000
+    },
+    "realtimeLogLimit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50000,
+      "default": 1000
+    },
+    "previewByteLimit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16777216,
+      "default": 4096
+    },
+    "defaultFraming": {
+      "type": "string",
+      "enum": [
+        "none",
+        "line",
+        "length-prefix"
+      ],
+      "default": "none"
+    },
+    "autoScroll": {
+      "type": "boolean",
+      "default": true
+    },
+    "theme": {
+      "type": "string",
+      "enum": [
+        "system",
+        "light",
+        "dark"
+      ],
+      "default": "system"
+    },
+    "largeFont": {
+      "type": "boolean",
+      "default": false
+    },
+    "modbusPointHistoryRetention": {
+      "type": "string",
+      "enum": [
+        "7-days",
+        "30-days",
+        "90-days",
+        "forever"
+      ],
+      "default": "30-days"
+    },
+    "stompProfiles": {
+      "type": "stomp-profiles",
+      "maxItems": 50,
+      "maxSubscriptions": 100,
+      "default": []
+    },
+    "acceptanceWorkspace": {
+      "type": "acceptance-document",
+      "maximumBytes": 2097152,
+      "default": "{\"version\":1,\"plans\":[],\"reports\":[]}"
+    }
+  }
+}
