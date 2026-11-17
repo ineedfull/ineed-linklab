@@ -4,8 +4,15 @@ const fs = require('node:fs');
 const assert = require('node:assert/strict');
 const { setTimeout: pause } = require('node:timers/promises');
 const originalRead = fs.read;
+const originalReadSync = fs.readSync;
 let reads = 0;
 let emptyReads = 0;
+fs.readSync = function (...args) {
+  reads++;
+  const bytesRead = originalReadSync.apply(this, args);
+  if (bytesRead === 0) emptyReads++;
+  return bytesRead;
+};
 fs.read = function (...args) {
   reads++;
   const callback = args.at(-1);

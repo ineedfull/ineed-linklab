@@ -4,6 +4,7 @@ import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { createFramePresenter, formatFrameForCopy, originalFrameContent } from '../model/framePresentation.js';
 import { formatTimestamp } from '../model/dateTime.js';
 import { useStreamFollow } from '../model/useStreamFollow.js';
+import { useFrameViewport } from '../model/useFrameViewport.js';
 import FrameRow from './FrameRow.vue';
 const props = defineProps({
   frames: { type: Array, required: true },
@@ -23,9 +24,13 @@ let detailTrigger = null;
 let copyTimer;
 const presenter = createFramePresenter();
 const rows = computed(() => presenter.present(props.frames, { previewByteLimit: props.previewByteLimit }));
-const { following, unread, toggle, resume, onScroll, onWheel, onKeydown } = useStreamFollow({
+const { following, unread, toggle, resume, onScroll: followScroll, onWheel, onKeydown } = useStreamFollow({
   element: listRef, keys: () => rows.value.map(row => row.key), enabled: () => props.autoScroll, context: () => props.contextKey,
 });
+const { visibleRows, virtualized, beforeHeight, afterHeight, setRowElement, onScroll: viewportScroll } = useFrameViewport({
+  rows, element: listRef, following, context: () => props.contextKey, refreshFollow: resume,
+});
+function onScroll() { followScroll(); viewportScroll(); }
 watch(following, value => emit('follow-change', value), { immediate: true });
 watch(() => props.contextKey, () => { selected.value = null; });
 const detail = computed(() => selected.value ? presenter.present([{ ...selected.value.frame, format: detailFormat.value }], { previewByteLimit: props.previewByteLimit })[0] : null);
@@ -73,15 +78,28 @@ defineExpose({ toggleFollow: toggle, resume });
       @wheel.passive="onWheel"
       @keydown="onKeydown"
     >
+      <div
+        v-if="beforeHeight"
+        aria-hidden="true"
+        class="frame-list__spacer"
+        :style="{ height: `${beforeHeight}px` }"
+      />
       <FrameRow
-        v-for="row in rows"
-        :key="row.key"
+        v-for="(row, index) in visibleRows"
+        :key="virtualized ? index : row.key"
+        :ref="component => setRowElement(index, row.key, component)"
         :row="row"
         :peer="framePeer(row.frame)"
         :copied="copiedFrame === row.key"
         :copy-error="copyError === row.key"
-        @inspect="inspect(row, $event)"
-        @copy="copyFrame(row)"
+        @inspect="inspect"
+        @copy="copyFrame"
+      />
+      <div
+        v-if="afterHeight"
+        aria-hidden="true"
+        class="frame-list__spacer"
+        :style="{ height: `${afterHeight}px` }"
       />
       <div
         v-if="!rows.length"

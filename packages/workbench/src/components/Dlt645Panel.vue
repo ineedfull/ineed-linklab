@@ -785,9 +785,10 @@ function fieldError(path) {
 .dlt645-meter { border: 1px solid var(--line); border-radius: 5px; overflow: hidden; background: var(--surface); }
 .dlt645-meter > header { min-height: 54px; padding: 8px 10px; display: grid; grid-template-columns: minmax(150px, 1fr) minmax(180px, 1fr) auto 32px; gap: 10px; align-items: end; background: var(--surface-control); border-bottom: 1px solid var(--line-soft); }
 .dlt645-meter label { display: grid; gap: 4px; font-size: var(--font-size-control); color: var(--text-muted); }
-.dlt645-meter input, .dlt645-meter select { min-width: 0; height: 30px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--text); padding: 0 7px; }
+.dlt645-meter input:not([type="checkbox"]), .dlt645-meter select { min-width: 0; height: 30px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--text); padding: 0 7px; font: inherit; }
+.dlt645-meter > header input:not([type="checkbox"]) { width: 100%; }
 .dlt645-meter .dlt645-toggle { display: flex; align-items: center; align-self: end; min-height: 30px; gap: 6px; }
-.dlt645-toggle input { width: 16px; height: 16px; }
+.dlt645-meter input[type="checkbox"] { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
 .dlt645-task-table input, .dlt645-task-table select { width: 100%; }
 .dlt645-task-table .dlt645-di-input { width: 90px; font-family: ui-monospace, monospace; }
 .dlt645-task-table .dlt645-short-input { width: 62px; }
@@ -804,7 +805,6 @@ function fieldError(path) {
   .dlt645-live-group__header { align-items: flex-start; flex-direction: column; gap: 6px; }
   .dlt645-live-group__identity { width: 100%; grid-template-columns: minmax(120px, auto) auto minmax(100px, 1fr); }
   .dlt645-live-group__summary { width: 100%; justify-content: flex-start; }
-  .dlt645-meter > header { grid-template-columns: 1fr 1fr; }
   .dlt645-table thead { display: none; }
   .dlt645-table tbody, .dlt645-table tr { display: block; }
   .dlt645-table tbody tr { padding: 8px; border-bottom: 1px solid var(--line); }
@@ -819,6 +819,9 @@ function fieldError(path) {
   .dlt645-task-table .dlt645-period-input { width: 100%; }
 }
 @media (max-width: 700px) {
+  .dlt645-meter > header { grid-template-columns: minmax(0, 1fr) auto 32px; }
+  .dlt645-meter > header > label:first-child { grid-column: 1 / -1; }
+  .dlt645-meter > header > label:nth-child(2) { grid-column: 1; }
   .dlt645-live-group__identity { grid-template-columns: minmax(0, 1fr) auto; }
   .dlt645-live-group__error { grid-column: 1 / -1; }
 }

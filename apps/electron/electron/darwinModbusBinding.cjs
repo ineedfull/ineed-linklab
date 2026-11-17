@@ -1,8 +1,6 @@
-const { read } = require('node:fs');
-const { promisify } = require('node:util');
+const { readSync } = require('node:fs');
 const { setTimeout: pause } = require('node:timers/promises');
 
-const readAsync = promisify(read);
 const RETRYABLE = new Set(['EAGAIN', 'EWOULDBLOCK', 'EINTR']);
 const DISCONNECTED = new Set(['EBADF', 'ENXIO', 'UNKNOWN']);
 let modbusBinding;
@@ -12,8 +10,15 @@ function cancelledRead() {
 }
 
 // The serialport binding option is per port. Keep native open/close/write and
-// replace only Darwin's recursive empty-read path; never patch fs or globals.
-function createDarwinModbusBinding(nativeBinding, { read = readAsync, wait = pause } = {}) {
+// replace only Darwin's read path; never patch fs or globals. bindings-cpp opens
+// its Unix descriptors with O_NONBLOCK and keeps that flag during setup. One
+// readSync therefore returns available bytes/empty/EAGAIN without waiting for
+// input or libuv's shared worker pool. Idle retries still yield to the event loop.
+function readAvailable(fd, buffer, offset, length, position) {
+  return { bytesRead: readSync(fd, buffer, offset, length, position), buffer };
+}
+
+function createDarwinModbusBinding(nativeBinding, { read = readAvailable, wait = pause } = {}) {
   return {
     list: (...args) => nativeBinding.list(...args),
     async open(options) {

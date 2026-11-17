@@ -31,7 +31,15 @@ test('Tauri persistence embeds migration 001 and uses rusqlite behind spawn_bloc
 });
 
 test('Tauri persistence declares the same versioned workspace fields and operations', async () => {
-  const database = await read('src-tauri/src/database.rs');
+  const database = (await Promise.all([
+    'database.rs',
+    'database/configuration.rs',
+    'database/history.rs',
+    'database/point_history.rs',
+    'database/settings.rs',
+    'database/schema.rs',
+    'database/file_io.rs',
+  ].map(file => read(`src-tauri/src/${file}`)))).join('\n');
 
   for (const operation of [
     'list_endpoints',

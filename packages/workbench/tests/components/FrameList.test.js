@@ -42,6 +42,24 @@ describe('FrameList rendering bounds', () => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('B'.repeat(6_000));
   });
 
+  test('binary messages default to HEX in the list and inspector while allowing Text view', async () => {
+    const wrapper = mount(FrameList, { props: { frames: [{
+      id: 'binary', createdAt: 1, direction: 'in', messageType: 'binary',
+      bytes: Uint8Array.of(255, 0, 68, 49),
+    }] } });
+    expect(wrapper.get('.frame-preview pre').text()).toBe('FF 00 44 31');
+    await wrapper.get('[aria-label="复制消息"]').trigger('click');
+    await flushPromises();
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith('FF 00 44 31');
+    await wrapper.get('.frame-preview').trigger('click');
+    expect(wrapper.get('.message-inspector select').element.value).toBe('hex');
+    expect(wrapper.get('.message-inspector pre').text()).toBe('FF 00 44 31');
+    await wrapper.get('.message-inspector select').setValue('text');
+    expect(wrapper.get('.message-inspector pre').text()).toContain('�');
+    expect(wrapper.get('.frame-preview pre').text()).toBe('FF 00 44 31');
+    wrapper.unmount();
+  });
+
   test('preview, timestamp, and auto-scroll preferences update existing rows', async () => {
     const timestamp = new Date(2024, 6, 3, 17, 46, 40, 123).getTime();
     const frame = {

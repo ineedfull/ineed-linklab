@@ -1,9 +1,8 @@
 const WORKSPACE_SCHEMA_VERSION = 1;
 const MAX_WORKSPACE_BYTES = 10 * 1024 * 1024;
 const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER;
-const { randomUUID } = require('node:crypto');
+const { createSafeExportWriter } = require('./safeExport.cjs');
 const { constants: fileConstants, readFileSync } = require('node:fs');
-const path = require('node:path');
 const { contractAssetPath } = require('./contractAssets.cjs');
 const SETTINGS_RULES = JSON.parse(readFileSync(contractAssetPath(
   'runtime-contract', 'src', 'settingsSchema.json',
@@ -47,7 +46,8 @@ function buildHistoryWindowTitle(request) {
   return kind === 'frames' ? '历史消息' : '历史日志';
 }
 
-function createWorkspaceFileHandlers({ BrowserWindow, dialog, files, database }) {
+function createWorkspaceFileHandlers({ BrowserWindow, dialog, files, database, protectedDirectories }) {
+  const writeExport = createSafeExportWriter({ files, protectedDirectories });
   function senderWindow(event) {
     if (!event?.sender || typeof BrowserWindow?.fromWebContents !== 'function') return null;
     try {
@@ -60,47 +60,6 @@ function createWorkspaceFileHandlers({ BrowserWindow, dialog, files, database })
   function showDialog(method, event, options) {
     const parent = senderWindow(event);
     return parent ? dialog[method](parent, options) : dialog[method](options);
-  }
-
-  async function assertSafeTarget(filePath, { allowMissing = false } = {}) {
-    let metadata;
-    try {
-      metadata = await files.lstat(filePath);
-    } catch (error) {
-      if (allowMissing && error?.code === 'ENOENT') return;
-      throw error;
-    }
-    if (metadata.isSymbolicLink()) throw new TypeError('Workspace path must not be a symbolic link');
-    if (!metadata.isFile()) throw new TypeError('Workspace path must be a regular file');
-  }
-
-  async function atomicWrite(destination, contents) {
-    await assertSafeTarget(destination, { allowMissing: true });
-    const temporary = path.join(
-      path.dirname(destination),
-      `.${path.basename(destination)}.${process.pid}.${randomUUID()}.tmp`,
-    );
-    let handle;
-    try {
-      handle = await files.open(temporary, 'wx', 0o600);
-      await handle.writeFile(contents, 'utf8');
-      await handle.sync();
-      await handle.close();
-      handle = null;
-      await files.rename(temporary, destination);
-      const directory = await files.open(path.dirname(destination), 'r');
-      try {
-        await directory.sync();
-      } finally {
-        await directory.close();
-      }
-    } catch (error) {
-      await handle?.close().catch(() => {});
-      await files.unlink(temporary).catch((cleanupError) => {
-        if (cleanupError?.code !== 'ENOENT') throw cleanupError;
-      });
-      throw error;
-    }
   }
 
   async function readBoundedImport(selectedPath) {
@@ -146,7 +105,7 @@ function createWorkspaceFileHandlers({ BrowserWindow, dialog, files, database })
       if (Buffer.byteLength(contents, 'utf8') > MAX_WORKSPACE_BYTES) {
         throw new RangeError('Workspace export exceeds 10 MiB');
       }
-      await atomicWrite(selected.filePath, contents);
+      await writeExport(selected.filePath, contents);
       return { canceled: false, path: selected.filePath };
     },
     async importWorkspace(event, beforeImport = async () => {}) {

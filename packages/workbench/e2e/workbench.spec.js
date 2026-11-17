@@ -15,16 +15,29 @@ test.beforeEach(async ({ context }) => {
 
 async function assertMeterToggleAlignment(page, header) {
   const wasLarge = await page.locator('html').evaluate(node => node.classList.contains('large-font'));
-  for (const large of [false, true]) {
-    await page.locator('html').evaluate((node, value) => node.classList.toggle('large-font', value), large);
-    const delta = await header.evaluate(node => {
-      const input = node.querySelector('label:nth-child(2) input').getBoundingClientRect();
-      const checkbox = node.querySelector('input[type=checkbox]').getBoundingClientRect();
-      return Math.abs(input.y + input.height / 2 - checkbox.y - checkbox.height / 2);
-    });
-    expect(delta, `meter enable checkbox aligns with address input, large=${large}`).toBeLessThanOrEqual(1);
+  const viewport = page.viewportSize();
+  try {
+    for (const width of [viewport.width, 680]) {
+      await page.setViewportSize({ ...viewport, width });
+      for (const large of [false, true]) {
+        await page.locator('html').evaluate((node, value) => node.classList.toggle('large-font', value), large);
+        const geometry = await header.evaluate(node => {
+          const name = node.querySelector('label:first-child input').getBoundingClientRect();
+          const input = node.querySelector('label:nth-child(2) input').getBoundingClientRect();
+          const checkbox = node.querySelector('input[type=checkbox]').getBoundingClientRect();
+          return { delta: Math.abs(input.y + input.height / 2 - checkbox.y - checkbox.height / 2),
+            checkboxWidth: checkbox.width, checkboxHeight: checkbox.height, nameBottom: name.bottom, addressTop: input.top };
+        });
+        expect(geometry.delta, `meter toggle alignment, width=${width}, large=${large}`).toBeLessThanOrEqual(1);
+        expect(geometry.checkboxWidth).toBeLessThanOrEqual(18);
+        expect(geometry.checkboxHeight).toBeLessThanOrEqual(18);
+        if (width === 680) expect(geometry.addressTop).toBeGreaterThan(geometry.nameBottom);
+      }
+    }
+  } finally {
+    await page.setViewportSize(viewport);
+    await page.locator('html').evaluate((node, value) => node.classList.toggle('large-font', value), wasLarge);
   }
-  await page.locator('html').evaluate((node, value) => node.classList.toggle('large-font', value), wasLarge);
 }
 
 test('runs with the Playwright 1.61.1 bundled Chromium', async ({ browser }) => {
@@ -65,6 +78,9 @@ for (const runtime of ['electron', 'tauri']) {
 
     await page.getByRole('button', { name: '电表与抄读项', exact: true }).click();
     await assertMeterToggleAlignment(page, page.locator('.dlt645-meter > header').first());
+    const taskToggle = await page.locator('.dlt645-task-table input[type="checkbox"]').first().boundingBox();
+    expect(taskToggle.width).toBe(16);
+    expect(taskToggle.height).toBe(16);
 
     await page.getByRole('button', { name: '报文诊断', exact: true }).click();
     await expect(page.locator('.dlt645-transaction-list > button')).toHaveCount(1);

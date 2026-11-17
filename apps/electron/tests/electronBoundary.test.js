@@ -1,3 +1,4 @@
+import * as fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { mkdtemp, readFile, readdir, rm } from 'node:fs/promises';
@@ -780,23 +781,12 @@ test('main window close waits for the renderer shutdown handshake and joins repe
   assert.equal(closeCalls, 1);
 });
 
-test('native Modbus history CSV export pages the active query and escapes unsafe fields', async () => {
+test('native Modbus history CSV export pages the active query and escapes unsafe fields', async t => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'modbus-csv-export-'));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const selected = path.join(directory, 'history.csv');
   const { exports } = loadMain(await read('electron/main.cjs'));
-  const writes = [];
   const queries = [];
-  const files = {
-    async lstat() { const error = new Error('missing'); error.code = 'ENOENT'; throw error; },
-    async open(filename) {
-      if (filename === '/tmp') return { async sync() {}, async close() {} };
-      return {
-        async writeFile(value) { writes.push(value); },
-        async sync() {},
-        async close() {},
-      };
-    },
-    async rename(from, to) { writes.push(`rename:${from}:${to}`); },
-    async unlink() {},
-  };
   const database = {
     queryModbusPointHistoryRows(query) {
       queries.push(query);
@@ -814,8 +804,8 @@ test('native Modbus history CSV export pages the active query and escapes unsafe
   };
   const exporter = exports.createModbusPointHistoryCsvExporter({
     BrowserWindow: { fromWebContents: () => null },
-    dialog: { showSaveDialog: async () => ({ canceled: false, filePath: '/tmp/history.csv' }) },
-    files,
+    dialog: { showSaveDialog: async () => ({ canceled: false, filePath: selected }) },
+    files: fs,
     database,
   });
   const query = {
@@ -826,18 +816,24 @@ test('native Modbus history CSV export pages the active query and escapes unsafe
   };
 
   assert.deepEqual(normalize(await exporter.exportCsv({ sender: 'main' }, query)), {
-    canceled: false, path: '/tmp/history.csv', exportedCount: 1,
+    canceled: false, path: selected, exportedCount: 1,
   });
   assert.deepEqual(normalize(queries), [
     { ...query, page: 1, pageSize: 200 },
     { ...query, page: 2, pageSize: 200 },
   ]);
-  assert.equal(writes[0], 'timestamp,endpointId,requestGroupId,requestId,pointId,pointKey,pointName,rawValue,engineeringValue,unit,quality,reason\r\n');
-  assert.equal(
-    writes[1],
-    '1720000000123,master-1,environment,holding,temperature,temp,"Boiler, ""A""\nTemp","[16384,0]",2,degC,bad,"line 1\r\nline 2"\r\n',
-  );
-  assert.match(writes.at(-1), /^rename:\/tmp\/\.history\.csv\./);
+  assert.equal(await fs.readFile(selected, 'utf8'),
+    'timestamp,endpointId,requestGroupId,requestId,pointId,pointKey,pointName,rawValue,engineeringValue,unit,quality,reason\r\n'
+    + '1720000000123,master-1,environment,holding,temperature,temp,"Boiler, ""A""\nTemp","[16384,0]",2,degC,bad,"line 1\r\nline 2"\r\n');
+  assert.deepEqual((await readdir(directory)).filter(name => name.endsWith('.tmp')), []);
+  const protectedExporter = exports.createModbusPointHistoryCsvExporter({
+    files: fs, database, protectedDirectories: [directory],
+    dialog: { showSaveDialog: async () => ({ filePath: selected }) },
+  });
+  const before = await fs.readFile(selected);
+  await assert.rejects(protectedExporter.exportCsv({}, query), /导出位置不安全/);
+  assert.deepEqual(await fs.readFile(selected), before);
+
 });
 
 test('transport event sink queues persistence before renderer forwarding and isolates persistence errors', async () => {
@@ -2258,6 +2254,7 @@ function executeCommonJs(source, requireMap, {
       }
       if (specifier === './stompTransport.cjs' && !(specifier in requireMap)) return { StompTransport: class { execute() { return Promise.resolve({}); } shutdown() { return Promise.resolve(); } } };
       if (specifier === './opcuaService.cjs' && !(specifier in requireMap)) return { OpcuaService: class { execute() { return Promise.resolve({}); } shutdown() { return Promise.resolve(); } } };
+      if (specifier === './safeExport.cjs' && !(specifier in requireMap)) return require('../electron/safeExport.cjs');
       if (!(specifier in requireMap)) throw new Error(`Unexpected require: ${specifier}`);
       return requireMap[specifier];
     },

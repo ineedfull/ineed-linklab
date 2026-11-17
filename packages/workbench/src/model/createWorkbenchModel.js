@@ -1,3 +1,6 @@
+import { createHistoryRetentionController } from './historyRetentionController.js';
+import { createStateNotifier } from './workbenchNotifier.js';
+import { subscribeTransaction, safeUnsubscribe } from './workbenchSubscriptions.js';
 import { isWebSocketTransport, snapshotWebSocketHeaders } from './websocketConfig.js';
 import { assertRuntimeAdapter } from '@ineed-linklab/runtime-contract';
 
@@ -21,7 +24,6 @@ import {
 } from './workbenchSnapshots.js';
 
 const endpointFilters = new Set(['all', 'serial', 'tcp', 'udp', 'modbus', 'dlt645', 'websocket']);
-const RETENTION_INTERVAL_MS = 86_400_000;
 
 export class WorkbenchDisposedError extends Error {
   constructor() {
@@ -96,12 +98,7 @@ export function createWorkbenchModel(runtimeAdapter, {
   let scheduledSender = null;
   let modbusMasterScheduler = null;
   let modbusSlaveSimulation = null;
-  let retentionTimerId = null;
-  let retentionGeneration = 0;
   let retentionLoaded = false;
-  let retentionCleanupRunning = false;
-  let retentionLastCleanupAt = null;
-  let retentionCleanupError = null;
   const reconcileSchedulers = (options = {}) => {
     const context = {
       endpoints: state.endpoints,
@@ -123,7 +120,15 @@ export function createWorkbenchModel(runtimeAdapter, {
   const unsubscribePointHistory = modbusPointHistoryCollector.subscribe(() => {
     if (!disposed) notifier.notify();
   });
-  const retentionTimers = timers ?? globalThis;
+  const retentionController = createHistoryRetentionController({
+    cleanup: (retention) => runtimeAdapter.modbusHistory.cleanup(retention),
+    getRetention: () => state.preferences.modbusPointHistoryRetention,
+    isDisposed: () => disposed,
+    notify: () => notifier.notify(),
+    clock,
+    timers,
+  });
+  const { cancel: cancelRetentionCleanup, apply: applyRetentionPolicy, run: runRetentionCleanup } = retentionController;
   // endpointId owns saved configuration; operationId identifies one open intent.
   // The runtime creates sessionId for the actual connection. The coordinator
   // invalidates superseded intents and binds the first accepted session so old
@@ -395,9 +400,7 @@ export function createWorkbenchModel(runtimeAdapter, {
     get modbusPointHistoryStatus() {
       return {
         ...modbusPointHistoryCollector.getStatus(),
-        cleanupRunning: retentionCleanupRunning,
-        lastCleanupAt: retentionLastCleanupAt,
-        cleanupError: retentionCleanupError,
+        ...retentionController.getStatus(),
       };
     },
     async flushModbusPointHistory() {
@@ -457,61 +460,7 @@ export function createWorkbenchModel(runtimeAdapter, {
   reconcileSchedulers();
   return model;
 
-  function cancelRetentionCleanup() {
-    retentionGeneration += 1;
-    retentionCleanupRunning = false;
-    if (retentionTimerId !== null) {
-      retentionTimers.clearTimeout(retentionTimerId);
-      retentionTimerId = null;
-    }
-  }
 
-  async function applyRetentionPolicy(retention) {
-    try {
-      return await runRetentionCleanup(retention);
-    } catch {
-      return null;
-    }
-  }
-
-  function runRetentionCleanup(retention) {
-    cancelRetentionCleanup();
-    const currentGeneration = retentionGeneration;
-    if (retention === 'forever') {
-      retentionCleanupError = null;
-      notifier.notify();
-      return Promise.resolve({ deletedCount: 0, completedAt: null, skipped: true });
-    }
-    retentionCleanupRunning = true;
-    retentionCleanupError = null;
-    notifier.notify();
-    return Promise.resolve(runtimeAdapter.modbusHistory.cleanup(retention))
-      .then((result) => {
-        if (!disposed && currentGeneration === retentionGeneration) {
-          retentionLastCleanupAt = Number.isSafeInteger(result?.completedAt)
-            ? result.completedAt
-            : (typeof clock === 'function' ? clock() : Date.now());
-          retentionCleanupError = null;
-        }
-        return result;
-      })
-      .catch((error) => {
-        if (!disposed && currentGeneration === retentionGeneration) {
-          retentionCleanupError = error instanceof Error ? error.message : String(error);
-        }
-        throw error;
-      })
-      .finally(() => {
-        if (disposed || currentGeneration !== retentionGeneration) return;
-        retentionCleanupRunning = false;
-        retentionTimerId = retentionTimers.setTimeout(() => {
-          retentionTimerId = null;
-          void applyRetentionPolicy(state.preferences.modbusPointHistoryRetention);
-        }, RETENTION_INTERVAL_MS);
-        retentionTimerId?.unref?.();
-        notifier.notify();
-      });
-  }
 }
 
 function logRank(level) {
@@ -899,76 +848,6 @@ function clearCommandError(state, resource) {
   return true;
 }
 
-function createStateNotifier(state, beforeNotify = () => {}) {
-  const listeners = new Set();
-  let dispatching = false;
-  let pending = false;
-  let finished = false;
-
-  function subscribe(listener) {
-    if (typeof listener !== 'function') throw new TypeError('listener must be a function');
-    if (finished) return () => {};
-    listeners.add(listener);
-    return once(() => listeners.delete(listener));
-  }
-
-  function notify() {
-    if (finished) return;
-    beforeNotify();
-    pending = true;
-    if (dispatching) return;
-    dispatching = true;
-    try {
-      while (pending && !finished) {
-        pending = false;
-        for (const listener of [...listeners]) {
-          if (!listeners.has(listener)) continue;
-          try {
-            listener(state);
-          } catch {
-            // A listener cannot block model delivery to other subscribers.
-          }
-        }
-      }
-    } finally {
-      dispatching = false;
-    }
-  }
-
-  function finish() {
-    if (finished) return;
-    finished = true;
-    pending = false;
-    for (const listener of [...listeners]) {
-      try {
-        listener(state);
-      } catch {
-        // Dispose still completes when a listener fails.
-      }
-    }
-    listeners.clear();
-  }
-
-  return { finish, notify, subscribe };
-}
-
-function subscribeTransaction(subscriptions) {
-  const unsubscribes = [];
-  try {
-    for (const [subscribe, callback, label] of subscriptions) {
-      const unsubscribe = subscribe(callback);
-      if (typeof unsubscribe !== 'function') {
-        throw new TypeError(`${label} must return an unsubscribe function`);
-      }
-      unsubscribes.push(once(unsubscribe));
-    }
-    return unsubscribes;
-  } catch (error) {
-    for (const unsubscribe of unsubscribes) safeUnsubscribe(unsubscribe);
-    throw error;
-  }
-}
-
 function applyValidatedEvent(snapshot, apply, isDisposed) {
   return (payload) => {
     if (isDisposed()) return;
@@ -980,23 +859,6 @@ function applyValidatedEvent(snapshot, apply, isDisposed) {
     }
     apply(event);
   };
-}
-
-function once(operation) {
-  let called = false;
-  return () => {
-    if (called) return undefined;
-    called = true;
-    return operation();
-  };
-}
-
-function safeUnsubscribe(unsubscribe) {
-  try {
-    Promise.resolve(unsubscribe()).catch(() => {});
-  } catch {
-    // Continue cleanup when one subscription cannot be removed cleanly.
-  }
 }
 
 function statusLogSourceMatchesEndpoint(state, event) {

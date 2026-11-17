@@ -19,7 +19,12 @@ const panelStyles = [
   '../../src/styles/base.css',
   '../../src/styles/workbench.css',
   '../../src/styles/desktop.css',
-].map((relativePath) => readFileSync(new URL(relativePath, import.meta.url), 'utf8')).join('\n');
+].map((relativePath) => readStylesheet(new URL(relativePath, import.meta.url))).join('\n');
+
+function readStylesheet(url) {
+  return readFileSync(url, 'utf8').replace(/@import\s+["']([^"']+)["'];/g,
+    (_match, target) => readStylesheet(new URL(target, url)));
+}
 
 describe('ModbusMasterPanel', () => {
   test('editor saves show busy state and retryable persistence errors inside the active modal', async () => {

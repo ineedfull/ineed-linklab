@@ -169,3 +169,35 @@ test('persisted passed Modbus scalar evidence is rejected while failed scalar ev
   forged.results[0].error = '';
   assert.throws(() => normalizeAcceptanceReport(forged), /Modbus|evidence/);
 });
+
+for (const end of ['passed', 'stopped', 'invalidated']) {
+  test(`clock rollback keeps ${end} report and all row timestamps valid`, async () => {
+    const times = [0, 2000, 2001, 1500, 1400, 1300];
+    const p = plan();
+    p.checks.push({ ...structuredClone(p.checks[0]), id: 'check-2' });
+    let current = true;
+    let reads = 0;
+    const runner = fixture({
+      now: () => times.shift() ?? 1200,
+      isCurrent: () => current,
+      read: async () => {
+        reads++;
+        if (reads === 2) {
+          if (end === 'stopped') runner.stop();
+          if (end === 'invalidated') current = false;
+        }
+        return { actual: [7], quality: 'Good' };
+      },
+    });
+    const report = await runner.run(p, 'e1');
+    assert.equal(report.startedAt, 0);
+    assert.equal(report.status, end);
+    normalizeAcceptanceReport(report);
+    assert(report.endedAt >= 2001);
+    assert(report.results[1].startedAt >= report.results[0].endedAt);
+    assert(report.results[1].endedAt >= report.results[1].startedAt);
+    assert.equal(report.results[0].status, 'passed');
+    assert.deepEqual(report.results[0].actual, [7]);
+    assert.equal(report.results[1].status, end === 'passed' ? 'passed' : 'failed');
+  });
+}

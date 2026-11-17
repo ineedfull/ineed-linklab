@@ -8,7 +8,7 @@ const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 const sourceRoot = path.join(packageRoot, 'src');
 
 test('all visible workbench SFCs use Chinese UI copy and accessible labels', async () => {
-  const componentNames = await readdir(path.join(sourceRoot, 'components'));
+  const componentNames = await readdir(path.join(sourceRoot, 'components'), { recursive: true });
   const sources = await Promise.all([
     readFile(path.join(sourceRoot, 'App.vue'), 'utf8'),
     readFile(path.join(sourceRoot, 'layouts', 'LinkLabShell.vue'), 'utf8'),

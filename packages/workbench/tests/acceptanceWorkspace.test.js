@@ -1,3 +1,6 @@
+import * as files from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
@@ -427,29 +430,21 @@ function markdownEvidence(text) {
   return payloads;
 }
 async function exportThroughNativeBoundary(fileName, content) {
-  const writes = [];
-  const exporter = createOpcuaExporter({
-    getWindow: () => ({ isDestroyed: () => false }),
-    dialog: {
-      showSaveDialog: async () => ({
-        canceled: false,
-        filePath: '/native-selected/report',
-      }),
-    },
-    files: { writeFile: async (...args) => writes.push(args) },
-  });
-  assert.deepEqual(await exporter({ fileName, content }), { saved: true });
-  assert.equal(writes.length, 1);
-  assert.equal(writes[0][1], content);
-  await assert.rejects(
-    exporter({ fileName, content: 'x'.repeat(1024 * 1024 + 1) }),
-    /1 MiB/,
-  );
-  assert.equal(
-    writes.length,
-    1,
-    'native boundary continues rejecting oversized content',
-  );
+  const root = await files.mkdtemp(join(tmpdir(), 'acceptance-native-export-'));
+  const selected = join(root, 'report');
+  try {
+    const exporter = createOpcuaExporter({
+      getWindow: () => ({ isDestroyed: () => false }),
+      dialog: { showSaveDialog: async () => ({ canceled: false, filePath: selected }) },
+      files,
+    });
+    assert.deepEqual(await exporter({ fileName, content }), { saved: true });
+    assert.equal(await files.readFile(selected, 'utf8'), content);
+    await assert.rejects(exporter({ fileName, content: 'x'.repeat(1024 * 1024 + 1) }), /1 MiB/);
+    assert.equal(await files.readFile(selected, 'utf8'), content, 'oversized export preserves the previous file');
+  } finally {
+    await files.rm(root, { recursive: true, force: true });
+  }
 }
 for (const scenario of ['array', 'nested-array', 'backticks']) {
   test(`large ${scenario} JSON and Markdown reports preserve complete evidence and pass the actual Electron export boundary`, async () => {
@@ -503,3 +498,25 @@ for (const scenario of ['array', 'nested-array', 'backticks']) {
     );
   });
 }
+
+test('clock rollback report persists and does not block flush or subsequent plan saves', async () => {
+  const runtime = runtimeFixture();
+  const times = [1000, 2000, 2001, 1500];
+  const runner = createAcceptanceRunner({
+    captureTarget: () => ({ endpointId: 'e1', name: 'Local', protocol: 'modbus', identity: 'localhost', sessionId: 's1' }),
+    isCurrent: () => true,
+    now: () => times.shift() ?? 1500,
+    read: async () => ({ actual: [7], quality: 'Good' }),
+  });
+  const ws = createAcceptanceWorkspace(runtime, { runner });
+  await ws.load();
+  await ws.run(plan(), 'e1');
+  await ws.flush();
+  await ws.savePlan(plan());
+  const restored = createAcceptanceWorkspace(runtime, { runner: runnerFixture() });
+  await restored.load();
+  assert.equal(restored.state.reports.length, 1);
+  assert.equal(restored.state.reports[0].endedAt, 2001);
+  assert.deepEqual(restored.state.reports[0].results[0].actual, [7]);
+  assert.equal(restored.state.plans.length, 1);
+});

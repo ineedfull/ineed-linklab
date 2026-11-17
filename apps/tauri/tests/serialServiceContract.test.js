@@ -20,7 +20,9 @@ test('native serial wiring has one service, main-only events, snapshots, and shu
     readFile(path.join(packageRoot, 'src-tauri/src/lib.rs'), 'utf8'),
     readFile(path.join(packageRoot, 'src-tauri/src/serial.rs'), 'utf8'),
     readFile(path.join(packageRoot, 'src-tauri/src/transport.rs'), 'utf8'),
-    readFile(path.join(packageRoot, 'src-tauri/src/database.rs'), 'utf8'),
+    Promise.all(['database.rs', 'database/history.rs'].map(file =>
+      readFile(path.join(packageRoot, 'src-tauri/src', file), 'utf8'),
+    )).then(sources => sources.join('\n')),
     readFile(path.join(packageRoot, 'src-tauri/src/persistence.rs'), 'utf8'),
   ]);
   assert.equal((lib.match(/SerialService::new\(/g) ?? []).length, 1);

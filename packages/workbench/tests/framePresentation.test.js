@@ -3,6 +3,30 @@ import test from 'node:test';
 
 const presentationModule = await import('../src/model/framePresentation.js').catch(() => null);
 
+test('WebSocket binary previews and copies default to HEX without decoding wire bytes', () => {
+  const frame = Object.freeze({ messageType: 'binary', bytes: Uint8Array.of(255, 0, 68, 49) });
+  const presenter = presentationModule.createFramePresenter();
+  const [row] = presenter.present([frame]);
+  assert.equal(row.format, 'hex');
+  assert.equal(row.text, 'FF 00 44 31');
+  assert.equal(presentationModule.formatFrameForCopy(frame), row.text);
+  assert.equal(presenter.present([frame])[0], row);
+  assert.deepEqual([...frame.bytes], [255, 0, 68, 49]);
+});
+
+test('valid UTF-8 binary frames also default to HEX and allow explicit text inspection', () => {
+  const frame = { messageType: 'binary', bytes: new TextEncoder().encode('你好') };
+  const presenter = presentationModule.createFramePresenter({ previewByteLimit: 3 });
+  const [row] = presenter.present([frame]);
+  assert.equal(row.format, 'hex');
+  assert.equal(row.text, 'E4 BD A0');
+  assert.equal(row.truncated, true);
+  assert.equal(presentationModule.formatFrameForCopy(frame), 'E4 BD A0 E5 A5 BD');
+  assert.equal(presenter.present([{ ...frame, format: 'text' }], { previewByteLimit: 4096 })[0].text, '你好');
+  assert.equal(presentationModule.formatFrameForCopy({ ...frame, format: 'text' }), '你好');
+  assert.equal(presenter.present([{ ...frame, messageType: 'text' }], { previewByteLimit: 4096 })[0].format, 'text');
+});
+
 test('frame previews bound large payloads and report truncation', () => {
   assert.ok(presentationModule, 'frame presentation module must exist');
   const presenter = presentationModule.createFramePresenter({ previewByteLimit: 32 });

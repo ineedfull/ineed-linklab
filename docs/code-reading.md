@@ -7,6 +7,9 @@ Electron 与 Tauri 共享 `packages/workbench` 的界面、模型、协议配置
 ## 端点表单与工作区工具
 
 `components/EndpointDialog.vue` 拥有弹窗焦点、串口扫描选择、表单校验和保存代次；
+`components/endpoint-fields/` 按协议呈现字段，接收父层稳定的单一草稿与错误映射。
+串口字段由 `SerialEndpointFields.vue` 共用；WebSocket、网络地址、Modbus、TCP 恢复
+及 OPC UA/STOMP 各有明确子表单。子表单不保存数据库或自行持有 runtime。
 `model/endpointDialogForm.js` 负责端点快照与可编辑字段的双向转换。串口连接字段集中
 复用，Modbus 主站保留请求组与写入指令，从站调整数据区时保留已有值的前缀。
 WebSocket 临时请求头单独传入表单，保存配置不包含它们。转换可以因非法 HEX
@@ -24,7 +27,32 @@ WebSocket 临时请求头单独传入表单，保存配置不包含它们。转�
 `e2e/dialog-sections.spec.js`、`workspace-tools.spec.js` 和模板/验收业务 E2E。
 本轮整理与清理依据见[可读性审查](reviews/2026-11-02-readability.md)。
 
+## 原生数据与协议模块（2026-11-17）
+
+Electron 的 `electron/database.cjs` 保留数据库工厂、连接和公开 API，
+`electron/database/` 的 `migrations.cjs` 负责结构迁移，`configuration.cjs` 处理端点、模板
+和工作区交换，`history.cjs` 处理帧/日志，`pointHistory.cjs` 处理点位查询、聚合与导出。
+`contracts.cjs`、`validation.cjs`、`settings.cjs` 为下层契约；它们不反向加载数据库入口。
+
+Tauri 的 `src-tauri/src/database.rs` 保留数据库连接、类型及命令边界；`database/` 下
+`schema.rs`、`settings.rs`、`configuration.rs`、`history.rs`、`point_history.rs`、`file_io.rs`
+分别处理结构、设置、配置交换、历史、点位和文件安全。子模块的方法继续使用同一个
+`ConfigurationDatabase`，不新开连接或跨越已有事务/flush 屏障。
+
+串口服务的 `serial.rs` 拥有打开、读取、关闭与会话；`serial/config.rs` 校验配置，
+`serial/framing.rs` 负责有界分帧与批次。`modbus/wire.rs` 提供 RTU/TCP 帧提取和 PDU
+转换；Modbus 的连接、事务与从站生命周期仍在 `modbus.rs`。数据库与串口的 `tests.rs`
+保留原测试模块身份，验证路径和函数可见性只开放到需要的父层。
+
+`styles/workbench.css` 保留有序入口，`styles/workbench/` 分为外壳、端点、收发、端点弹窗、
+协议面板、响应式覆盖与历史/设置。分组保留完整规则及 cascade 顺序；局部表单规范仍在
+原来的 `dialog-forms.css` 等文件。
+
 ## 打开端点与接收事件
+
+`model/workbenchSubscriptions.js` 负责原子订阅和回滚，`workbenchNotifier.js` 处理可重入通知
+及监听器异常隔离。`historyRetentionController.js` 拥有历史保留计时器、清理代次和状态；
+`createWorkbenchModel.js` 负责组装并在 dispose 时统一取消。子模块不创建第二套端点集合。
 
 1. `apps/{electron,tauri}/renderer/main.js` 创建 adapter 和工作台；`packages/workbench/src/layouts/LinkLabShell.vue` 提供打开、关闭等界面入口。
 2. `model/createWorkbenchModel.js` 的命令捕获当前端点与打开意图，再通过 `endpointLifecycleCoordinator.js` 排队、取消与检查结果是否仍有效。
@@ -49,6 +77,10 @@ WebSocket 临时请求头单独传入表单，保存配置不包含它们。转�
 ## Modbus 主站读取、写入与诊断
 
 从 `components/ModbusMasterPanel.vue` 开始：组件保留请求组编辑、保存、弹窗、页签与渲染；配置校验分别在 `model/modbusMasterConfig.js`、`modbusWriteCommands.js`。
+
+`components/modbus-master/` 中 `MasterConnectionSummary.vue`、`MasterLiveReadings.vue`、
+`MasterTransactionDiagnostics.vue` 分别展示连接摘要、实时读数和事务诊断；当前页签、
+配置编辑与异步操作由父组件负责，子视图只发出配置请求或更新所选事务。
 
 读取和轮询进入 `model/modbusMasterScheduler.js`，再调用 adapter 的 `modbus.execute`。scheduler 负责端点/会话的执行队列与结果有效性，自动和手动请求都参与连接失效协调。发给原生的请求携带 `expectedSessionId`，原生发送前拒绝旧会话；自动启动每个会话只执行一次，用户停止后普通通知不会恢复轮询；`modbusPointHistoryCollector.js` 接收点位结果、批量写入历史。模型在导入、清除、导出历史前刷新 renderer 与 native 队列。
 

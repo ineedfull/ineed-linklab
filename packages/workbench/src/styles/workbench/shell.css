@@ -1,0 +1,213 @@
+:root {
+  --endpoint-tree-width: 255px;
+  --endpoint-tree-collapsed-width: 58px;
+  --status-bar-height: 55px;
+  --frame-toolbar-height: 39px;
+  --send-panel-height: 190px;
+  --line: #c8d1d7;
+  --line-soft: #dce2e6;
+  --surface: #ffffff;
+  --surface-muted: #f4f7f8;
+  --surface-control: #eef2f4;
+  --text: #26323c;
+  --text-muted: #667681;
+  --accent: #287da7;
+  --accent-soft: #e4f0f6;
+  --success: #23865b;
+  --warning: #b87816;
+  --danger: #b54848;
+  --control-height: 28px;
+  letter-spacing: 0;
+}
+
+:root.ui-preferences-loading {
+  --line: #465158;
+  --line-soft: #343d42;
+  --surface: #202629;
+  --surface-muted: #181d20;
+  --surface-control: #2b3337;
+  --text: #dbe3e6;
+  --text-muted: #a6b2b8;
+  --accent: #65add0;
+  --accent-soft: #263b45;
+  --success: #52b986;
+  --warning: #d4a14a;
+  --danger: #e47b7b;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  color: var(--text);
+  background: var(--surface-muted);
+  font-size: var(--font-size);
+  letter-spacing: 0;
+}
+
+button,
+input,
+select {
+  letter-spacing: 0;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid #5796b6;
+  outline-offset: 1px;
+}
+
+button:disabled,
+input:disabled,
+select:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.linklab-shell {
+  display: grid;
+  grid-template-columns: var(--endpoint-tree-width) minmax(0, 1fr);
+  width: 100vw;
+  min-width: 760px;
+  height: 100vh;
+  min-height: 480px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.linklab-shell.tree-collapsed {
+  grid-template-columns: var(--endpoint-tree-collapsed-width) minmax(0, 1fr);
+}
+
+.linklab-shell__tree {
+  display: grid;
+  width: var(--endpoint-tree-width);
+  min-width: 0;
+  grid-template-rows: 54px auto minmax(0, 1fr) 34px;
+  overflow: hidden;
+  background: #edf2f4;
+  border-right: 1px solid #b8c3ca;
+}
+
+.tree-collapsed .linklab-shell__tree {
+  width: var(--endpoint-tree-collapsed-width);
+  grid-template-rows: 54px minmax(0, 1fr) auto;
+}
+
+.linklab-shell__brand,
+.linklab-shell__tree-heading,
+.linklab-shell__runtime,
+.session-status-bar,
+.frame-toolbar,
+.send-panel__toolbar,
+.send-panel__footer,
+.endpoint-dialog > header,
+.endpoint-dialog > footer {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.linklab-shell__brand {
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 9px 0 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: var(--font-size-title);
+  font-weight: 700;
+}
+
+.linklab-shell__identity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.linklab-shell__identity > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.linklab-shell__icon {
+  display: block;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+}
+
+.tree-collapsed .linklab-shell__icon {
+  width: 24px;
+  height: 24px;
+}
+
+.tree-collapsed .linklab-shell__brand {
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  padding: 2px;
+  font-size: var(--font-size-small);
+}
+
+.linklab-shell__tree-heading {
+  height: 38px;
+  justify-content: space-between;
+  padding: 4px 8px 2px 12px;
+  color: var(--text-muted);
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.linklab-shell__runtime {
+  justify-content: flex-start;
+  gap: 1px;
+  padding: 0 8px;
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  background: #e7edef;
+}
+
+.linklab-shell__runtime .workbench__runtime {
+  min-width: 0;
+  margin-left: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tree-collapsed .linklab-shell__runtime {
+  display: grid;
+  height: auto;
+  justify-content: center;
+  padding: 3px 0;
+}
+
+.icon-button {
+  display: inline-flex;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: #52636e;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.icon-button:hover:not(:disabled) {
+  color: #1d5f81;
+  background: #dde8ed;
+  border-color: #b9c9d1;
+}

@@ -1,5 +1,7 @@
+const { createSafeExportWriter } = require('./safeExport.cjs');
 // The renderer supplies bounded content, never a filesystem destination.
-function createOpcuaExporter({ dialog, files, getWindow }) {
+function createOpcuaExporter({ dialog, files, getWindow, protectedDirectories }) {
+  const writeExport = createSafeExportWriter({ files, protectedDirectories });
   return async function exportOpcua(request) {
     if (
       !request ||
@@ -34,10 +36,7 @@ function createOpcuaExporter({ dialog, files, getWindow }) {
       ],
     });
     if (result.canceled || !result.filePath) return { saved: false };
-    await files.writeFile(result.filePath, request.content, {
-      encoding: 'utf8',
-      mode: 0o600,
-    });
+    await writeExport(result.filePath, request.content);
     return { saved: true };
   };
 }

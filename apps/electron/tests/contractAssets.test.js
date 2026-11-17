@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { copyFile, mkdtemp, mkdir, rm } from 'node:fs/promises';
+import { copyFile, cp, mkdtemp, mkdir, rm } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -88,7 +88,8 @@ test('packaged database and management modules load contracts and initialize all
     mkdir(path.dirname(settingsSchemaPath), { recursive: true }),
   ]);
   await Promise.all([
-    ...['contractAssets.cjs', 'database.cjs', 'management.cjs'].map((filename) => copyFile(
+    cp(path.join(packageRoot, 'electron', 'database'), path.join(electronPath, 'database'), { recursive: true }),
+    ...['contractAssets.cjs', 'database.cjs', 'management.cjs', 'safeExport.cjs'].map((filename) => copyFile(
       path.join(packageRoot, 'electron', filename),
       path.join(electronPath, filename),
     )),

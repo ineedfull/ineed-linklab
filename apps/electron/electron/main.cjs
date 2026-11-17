@@ -65,7 +65,6 @@ let rendererRestoreTimer = null;
 let rendererShutdownHandshake = null;
 const trustedRenderers = new Map();
 const historyWindows = new Map();
-let modbusHistoryExportSequence = 0;
 const HISTORY_METHODS = new Set([
   'history.queryFrames',
   'history.queryLogs',
@@ -232,7 +231,9 @@ function csvField(value) {
   return /[",\r\n]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
 
-function createModbusPointHistoryCsvExporter({ BrowserWindow: Window, dialog: nativeDialog, files, database }) {
+function createModbusPointHistoryCsvExporter({ BrowserWindow: Window, dialog: nativeDialog, files, database, protectedDirectories }) {
+  const { createSafeExportWriter } = require('./safeExport.cjs');
+  const writeExport = createSafeExportWriter({ files, protectedDirectories });
   const showSaveDialog = (event, options) => {
     let parent = null;
     try {
@@ -243,15 +244,6 @@ function createModbusPointHistoryCsvExporter({ BrowserWindow: Window, dialog: na
     return parent
       ? nativeDialog.showSaveDialog(parent, options)
       : nativeDialog.showSaveDialog(options);
-  };
-  const assertSafeTarget = async (filePath) => {
-    try {
-      const metadata = await files.lstat(filePath);
-      if (metadata.isSymbolicLink()) throw new TypeError('CSV path must not be a symbolic link');
-      if (!metadata.isFile()) throw new TypeError('CSV path must be a regular file');
-    } catch (error) {
-      if (error?.code !== 'ENOENT') throw error;
-    }
   };
   const rowCsv = (row) => [
     row.createdAt,
@@ -277,16 +269,8 @@ function createModbusPointHistoryCsvExporter({ BrowserWindow: Window, dialog: na
         filters: [{ name: 'CSV', extensions: ['csv'] }],
       });
       if (selected.canceled || !selected.filePath) return { canceled: true };
-      await assertSafeTarget(selected.filePath);
-      modbusHistoryExportSequence += 1;
-      const temporary = path.join(
-        path.dirname(selected.filePath),
-        `.${path.basename(selected.filePath)}.${process.pid}.${modbusHistoryExportSequence}.tmp`,
-      );
-      let handle;
       let exportedCount = 0;
-      try {
-        handle = await files.open(temporary, 'wx', 0o600);
+      await writeExport(selected.filePath, async (handle) => {
         await handle.writeFile(
           'timestamp,endpointId,requestGroupId,requestId,pointId,pointKey,pointName,rawValue,engineeringValue,unit,quality,reason\r\n',
           'utf8',
@@ -305,24 +289,8 @@ function createModbusPointHistoryCsvExporter({ BrowserWindow: Window, dialog: na
           if (page * result.pageSize >= result.total || result.rows.length === 0) break;
           page += 1;
         }
-        await handle.sync();
-        await handle.close();
-        handle = null;
-        await files.rename(temporary, selected.filePath);
-        const directory = await files.open(path.dirname(selected.filePath), 'r');
-        try {
-          await directory.sync();
-        } finally {
-          await directory.close();
-        }
-        return { canceled: false, path: selected.filePath, exportedCount };
-      } catch (error) {
-        await handle?.close().catch(() => {});
-        await files.unlink(temporary).catch((cleanupError) => {
-          if (cleanupError?.code !== 'ENOENT') throw cleanupError;
-        });
-        throw error;
-      }
+      });
+      return { canceled: false, path: selected.filePath, exportedCount };
     },
   };
 }
@@ -407,7 +375,7 @@ function registerIpcHandlers(handlers = persistenceHandlers ?? READ_HANDLERS) {
           if (!opcuaService) throw new Error('OPC UA 服务未初始化');
           if (request?.action === 'export') {
             const { createOpcuaExporter } = require('./opcuaExport.cjs');
-            return createOpcuaExporter({ dialog, files: require('node:fs/promises'), getWindow: () => mainWindow })(request);
+            return createOpcuaExporter({ dialog, files: require('node:fs/promises'), getWindow: () => mainWindow, protectedDirectories: [app.getPath('userData')] })(request);
           }
           return opcuaService.execute(request);
         }
@@ -750,12 +718,12 @@ app.whenReady().then(async () => {
       },
     });
     const workspaceFiles = createWorkspaceFileHandlers({
-      BrowserWindow, dialog, files: fs, database: configurationDatabase,
+      BrowserWindow, dialog, files: fs, database: configurationDatabase, protectedDirectories: [app.getPath('userData')],
     });
     const modbusHistoryBoundary = {
       flush: async () => ({ flushed: true }),
       ...createModbusPointHistoryCsvExporter({
-        BrowserWindow, dialog, files: fs, database: configurationDatabase,
+        BrowserWindow, dialog, files: fs, database: configurationDatabase, protectedDirectories: [app.getPath('userData')],
       }),
     };
     rendererShutdownHandshake = createRendererShutdownHandshake({

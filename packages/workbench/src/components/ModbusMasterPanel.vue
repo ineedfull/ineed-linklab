@@ -1,12 +1,15 @@
 <script setup>
+import MasterConnectionSummary from './modbus-master/MasterConnectionSummary.vue';
+import MasterLiveReadings from './modbus-master/MasterLiveReadings.vue';
+import MasterTransactionDiagnostics from './modbus-master/MasterTransactionDiagnostics.vue';
 import {
-  Activity, ArrowDown, ArrowUp, Cable, ChevronDown, ChevronRight, Clock3,
+  ArrowDown, ArrowUp, ChevronDown, ChevronRight,
   Copy, Pencil, Play, Plus, Power, Send, Square, Trash2,
 } from 'lucide-vue-next';
 import { computed, onBeforeUnmount, reactive, ref, toRef, watch } from 'vue';
 
 import {
-  createModbusMasterPresentation, formatRaw, formatTime, successRate,
+  createModbusMasterPresentation, formatRaw, formatTime,
   transactionIdentity, writeAddressRange,
 } from '../model/modbusMasterPresentation.js';
 import {
@@ -47,12 +50,6 @@ const WRITE_FUNCTIONS = Object.freeze({
   5: 'FC05 写入单个线圈', 6: 'FC06 写入单个寄存器',
   15: 'FC15 写入多个线圈', 16: 'FC16 写入多个寄存器',
 });
-const QUALITY_LABELS = Object.freeze({
-  good: '正常', 'bad-communication': '通信异常', 'bad-value': '非法值',
-  'uncertain-overflow': '超出合理范围', disabled: '已停用', waiting: '等待读取',
-});
-const PARITY_LABELS = Object.freeze({ none: '无校验', even: '偶校验', odd: '奇校验' });
-
 const config = ref(normalizeModbusMasterConfig(props.endpoint.config));
 const activeTab = ref(config.value.requestGroups.length ? 'live' : 'groups');
 const schedulerStatus = ref(props.scheduler.getStatus(props.endpoint.id));
@@ -664,104 +661,14 @@ onBeforeUnmount(() => {
     </nav>
 
     <div class="modbus-master-panel__content">
-      <section
+      <MasterConnectionSummary
         v-if="activeTab === 'settings'"
-        class="modbus-master-summary"
-      >
-        <header class="modbus-master-overview">
-          <div class="modbus-master-overview__identity">
-            <span
-              class="modbus-master-overview__icon"
-              aria-hidden="true"
-            ><Activity :size="18" /></span>
-            <div>
-              <span>{{ endpoint.transport === 'modbus-tcp-master' ? 'Modbus TCP 主站' : 'Modbus RTU 主站' }}</span>
-              <h2>{{ endpoint.name }}</h2>
-              <p v-if="config.description">
-                {{ config.description }}
-              </p>
-            </div>
-          </div>
-          <div class="modbus-master-overview__status">
-            <span
-              class="modbus-master-state"
-              :class="{ 'modbus-master-state--active': running }"
-            ><i />{{ running ? '已连接' : '未连接' }}</span>
-            <span><strong>{{ enabledGroupCount }}</strong> / {{ config.requestGroups.length }} 请求组已启用</span>
-          </div>
-        </header>
-
-        <div class="modbus-master-detail-grid">
-          <section
-            class="modbus-master-detail-section modbus-master-detail-section--connection"
-            aria-labelledby="modbus-master-connection-title"
-          >
-            <header>
-              <Cable
-                :size="16"
-                aria-hidden="true"
-              />
-              <div>
-                <h3 id="modbus-master-connection-title">
-                  连接信息
-                </h3><p>{{ connectionAddress }}</p>
-              </div>
-            </header>
-            <dl class="modbus-master-detail-list">
-              <div><dt>通信模式</dt><dd>{{ endpoint.transport === 'modbus-tcp-master' ? 'Modbus TCP' : 'Modbus RTU' }}</dd></div>
-              <template v-if="endpoint.transport === 'modbus-tcp-master'">
-                <div><dt>主机地址</dt><dd>{{ config.host }}</dd></div>
-                <div><dt>端口</dt><dd>{{ config.port }}</dd></div>
-              </template>
-              <template v-else>
-                <div><dt>串口</dt><dd>{{ config.path ?? '未设置' }}</dd></div>
-                <div><dt>波特率</dt><dd>{{ config.baudRate ?? 9600 }} baud</dd></div>
-                <div><dt>线路参数</dt><dd>{{ config.dataBits ?? 8 }} 数据位 · {{ config.stopBits ?? 1 }} 停止位 · {{ PARITY_LABELS[config.parity] ?? config.parity }}</dd></div>
-              </template>
-            </dl>
-          </section>
-
-          <section
-            class="modbus-master-detail-section modbus-master-detail-section--strategy"
-            aria-labelledby="modbus-master-strategy-title"
-          >
-            <header>
-              <Clock3
-                :size="16"
-                aria-hidden="true"
-              />
-              <div>
-                <h3 id="modbus-master-strategy-title">
-                  执行策略
-                </h3><p>请求节奏与故障恢复</p>
-              </div>
-            </header>
-            <dl class="modbus-master-detail-list">
-              <div>
-                <dt>主站状态</dt><dd>
-                  <span
-                    class="modbus-master-detail-state"
-                    :class="{ active: config.enabled }"
-                  ><i />{{ config.enabled ? '已启用' : '已停用' }}</span>
-                </dd>
-              </div>
-              <div><dt>请求超时</dt><dd>{{ config.timeoutMs }} ms</dd></div>
-              <div><dt>失败重试</dt><dd>{{ config.retryCount }} 次</dd></div>
-              <div><dt>重试间隔</dt><dd>{{ config.retryIntervalMs }} ms</dd></div>
-              <div>
-                <dt>断线重连</dt><dd>
-                  <span
-                    class="modbus-master-detail-state"
-                    :class="{ active: config.autoReconnect }"
-                  ><i />{{ config.autoReconnect ? '已启用' : '未启用' }}</span>
-                </dd>
-              </div>
-              <div><dt>最小请求间隔</dt><dd>{{ config.scheduler.minGapMs }} ms</dd></div>
-              <div><dt>自动轮询</dt><dd>{{ config.scheduler.autoStart ? '连接后启动' : '手动启动' }}</dd></div>
-            </dl>
-          </section>
-        </div>
-      </section>
+        :endpoint="endpoint"
+        :config="config"
+        :running="running"
+        :enabled-group-count="enabledGroupCount"
+        :connection-address="connectionAddress"
+      />
 
       <section
         v-else-if="activeTab === 'groups'"
@@ -1100,235 +1007,19 @@ onBeforeUnmount(() => {
         </div>
       </section>
 
-      <section
+      <MasterLiveReadings
         v-else-if="activeTab === 'live'"
-        class="modbus-master-live"
-      >
-        <div
-          v-if="liveGroups.length"
-          class="modbus-master-live-groups"
-        >
-          <article
-            v-for="liveGroup in liveGroups"
-            :key="liveGroup.group.id"
-            class="modbus-master-live-group"
-            :class="{ disabled: !liveGroup.group.enabled }"
-          >
-            <header class="modbus-master-live-group__header">
-              <div class="modbus-master-live-group__identity">
-                <strong>{{ liveGroup.group.name }}</strong>
-                <span>从站地址 <code>{{ liveGroup.group.unitId }}</code></span>
-                <span
-                  class="modbus-master-live-group__error"
-                  :title="liveGroup.lastError"
-                  aria-live="polite"
-                >
-                  {{ liveGroup.lastError ? `通信异常：${liveGroup.lastError}` : '' }}
-                </span>
-              </div>
-              <div class="modbus-master-live-group__summary">
-                <span
-                  class="status-indicator"
-                  :class="liveGroup.group.enabled ? 'status-indicator--enabled' : 'status-indicator--disabled'"
-                ><i />{{ liveGroup.group.enabled ? '已启用' : '已停用' }}</span>
-                <span class="quality quality--good">正常 {{ liveGroup.goodCount }}</span>
-                <span class="quality quality--bad">异常 {{ liveGroup.badCount }}</span>
-                <span class="quality quality--unknown">等待 {{ liveGroup.waitingCount }}</span>
-                <span v-if="liveGroup.disabledCount">停用 {{ liveGroup.disabledCount }}</span>
-                <span>最近 {{ formatTime(liveGroup.lastUpdatedAt) }}</span>
-              </div>
-            </header>
-            <div
-              v-if="liveGroup.rows.length"
-              class="modbus-result-table"
-            >
-              <table>
-                <thead><tr><th>请求</th><th>数据点</th><th>地址</th><th>当前值</th><th>原始值</th><th>质量</th><th>最后成功</th><th>成功率</th></tr></thead>
-                <tbody>
-                  <tr
-                    v-for="row in liveGroup.rows"
-                    :key="`${row.group.id}:${row.request.id}:${row.point.id}`"
-                  >
-                    <td>{{ row.request.name }}</td><td><strong>{{ row.point.name }}</strong><small>{{ row.point.key }}</small></td><td>{{ pointAddressLabel(row.request, row.point) }}</td>
-                    <td>
-                      {{ row.reading.display }}<template v-if="row.point.unit">
-                        {{ row.point.unit }}
-                      </template>
-                    </td><td>{{ formatRaw(row.reading.raw) }}</td>
-                    <td>
-                      <span
-                        class="quality-badge"
-                        :class="`quality-badge--${row.displayQuality}`"
-                        :title="row.reading.reason ?? ''"
-                      >{{ QUALITY_LABELS[row.displayQuality] ?? row.displayQuality }}</span>
-                    </td>
-                    <td>{{ formatTime(row.requestStatus?.lastSuccessAt) }}</td><td>{{ successRate(row.requestStatus) }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p
-              v-else
-              class="table-empty"
-            >
-              该请求组还没有可展示的数据点
-            </p>
-          </article>
-        </div>
-        <div
-          v-else
-          class="table-empty modbus-master-live__empty"
-        >
-          <p>还没有请求组，请先配置读取任务。</p><button
-            type="button"
-            class="command-button"
-            @click="activeTab = 'groups'"
-          >
-            配置读取任务
-          </button>
-        </div>
-      </section>
+        :live-groups="liveGroups"
+        :point-address-label="pointAddressLabel"
+        @configure="activeTab = 'groups'"
+      />
 
-      <section
+      <MasterTransactionDiagnostics
         v-else-if="activeTab === 'records'"
-        class="modbus-master-records"
-      >
-        <section
-          v-if="selectedTransaction"
-          class="modbus-diagnostic-detail"
-          :class="presentation.isTcpTransaction(selectedTransaction) ? 'modbus-diagnostic-detail--tcp' : 'modbus-diagnostic-detail--rtu'"
-          aria-label="Modbus 报文详情"
-        >
-          <header>
-            <div>
-              <span class="modbus-diagnostic-detail__protocol">{{ presentation.transactionProtocolTitle(selectedTransaction) }} · {{ presentation.transactionProtocolDescription(selectedTransaction) }}</span>
-              <strong>{{ presentation.transactionCommand(selectedTransaction).functionLabel }}</strong>
-              <span>{{ presentation.transactionGroupName(selectedTransaction) }} · {{ presentation.transactionRequestName(selectedTransaction) }} · {{ presentation.transactionCommand(selectedTransaction).requestText }}</span>
-            </div>
-            <div class="modbus-diagnostic-detail__status">
-              <span
-                class="quality"
-                :class="selectedTransaction.success ? 'quality--good' : 'quality--bad'"
-              >{{ selectedTransaction.success ? '成功' : '失败' }}</span>
-              <time>{{ formatTime(selectedTransaction.createdAt) }}</time>
-            </div>
-          </header>
-
-          <div class="modbus-diagnostic-frames">
-            <section class="modbus-diagnostic-frame">
-              <header><strong>{{ presentation.transactionFrameHeading(selectedTransaction, 'request') }}</strong><span>{{ presentation.transactionFrameType(selectedTransaction, 'request') }}</span></header>
-              <code
-                v-if="presentation.transactionRequestHex(selectedTransaction)"
-                class="modbus-diagnostic-frame__hex"
-              >{{ presentation.transactionRequestHex(selectedTransaction) }}</code>
-              <p v-else>
-                请求帧不可用
-              </p>
-              <div
-                v-if="presentation.transactionCommand(selectedTransaction).requestSegments.length"
-                class="modbus-diagnostic-segments"
-              >
-                <div
-                  v-for="segment in presentation.transactionCommand(selectedTransaction).requestSegments"
-                  :key="`request:${segment.key}`"
-                >
-                  <span>{{ segment.label }}</span><code>{{ segment.hex }}</code>
-                </div>
-              </div>
-            </section>
-            <section
-              class="modbus-diagnostic-frame"
-              :class="{ failed: !selectedTransaction.success }"
-            >
-              <header><strong>{{ presentation.transactionFrameHeading(selectedTransaction, 'response') }}</strong><span>{{ presentation.transactionFrameType(selectedTransaction, 'response') }}</span></header>
-              <code
-                v-if="presentation.transactionResponseHex(selectedTransaction)"
-                class="modbus-diagnostic-frame__hex"
-              >{{ presentation.transactionResponseHex(selectedTransaction) }}</code>
-              <p v-else>
-                {{ selectedTransaction.success ? '响应帧不可用' : '未收到有效响应帧' }}
-              </p>
-              <div
-                v-if="presentation.transactionCommand(selectedTransaction).responseSegments.length"
-                class="modbus-diagnostic-segments"
-              >
-                <div
-                  v-for="segment in presentation.transactionCommand(selectedTransaction).responseSegments"
-                  :key="`response:${segment.key}`"
-                >
-                  <span>{{ segment.label }}</span><code>{{ segment.hex }}</code>
-                </div>
-              </div>
-            </section>
-          </div>
-
-          <dl class="modbus-diagnostic-metadata">
-            <div><dt>请求组</dt><dd>{{ presentation.transactionGroupName(selectedTransaction) }}</dd></div>
-            <div><dt>请求</dt><dd>{{ presentation.transactionRequestName(selectedTransaction) }}</dd></div>
-            <div><dt>从站地址</dt><dd>{{ selectedTransaction.unitId }}</dd></div>
-            <div><dt>地址 / 数量</dt><dd>{{ selectedTransaction.address }} / {{ selectedTransaction.quantity }}</dd></div>
-            <div><dt>尝试次数</dt><dd>{{ presentation.transactionRecord(selectedTransaction)?.attempt ?? '—' }}</dd></div>
-            <div><dt>响应耗时</dt><dd>{{ selectedTransaction.durationMs === null || selectedTransaction.durationMs === undefined ? '—' : `${selectedTransaction.durationMs} ms` }}</dd></div>
-            <template v-if="presentation.isTcpTransaction(selectedTransaction)">
-              <div><dt>事务 ID</dt><dd><code>{{ presentation.transactionSegmentHex(selectedTransaction, 'request', 'transaction-id') }}</code></dd></div>
-              <div><dt>协议 ID</dt><dd><code>{{ presentation.transactionSegmentHex(selectedTransaction, 'request', 'protocol-id') }}</code></dd></div>
-              <div><dt>请求长度</dt><dd><code>{{ presentation.transactionSegmentHex(selectedTransaction, 'request', 'length') }}</code></dd></div>
-              <div><dt>响应长度</dt><dd><code>{{ presentation.transactionSegmentHex(selectedTransaction, 'response', 'length') }}</code></dd></div>
-            </template>
-            <template v-else>
-              <div>
-                <dt>请求 CRC16</dt><dd class="quality quality--good">
-                  <code>{{ presentation.transactionSegmentHex(selectedTransaction, 'request', 'crc16') }}</code>
-                </dd>
-              </div>
-              <div>
-                <dt>响应 CRC16</dt><dd :class="presentation.transactionResponseHex(selectedTransaction) ? 'quality quality--good' : ''">
-                  <code>{{ presentation.transactionSegmentHex(selectedTransaction, 'response', 'crc16') }}</code>
-                </dd>
-              </div>
-            </template>
-            <div class="modbus-diagnostic-metadata__message">
-              <dt>诊断结果</dt><dd :class="{ failed: !selectedTransaction.success }">
-                {{ selectedTransaction.success ? '通信成功，响应解析正常' : (selectedTransaction.message ?? 'Modbus 通信失败') }}
-              </dd>
-            </div>
-          </dl>
-        </section>
-        <div
-          v-else
-          class="table-empty modbus-diagnostic-empty"
-        >
-          暂无 Modbus 报文
-        </div>
-
-        <div
-          class="modbus-diagnostic-list"
-          aria-label="Modbus 报文列表"
-        >
-          <button
-            v-for="transaction in diagnosticTransactions"
-            :key="transactionIdentity(transaction)"
-            type="button"
-            :class="{ active: selectedTransaction && transactionIdentity(selectedTransaction) === transactionIdentity(transaction), failed: !transaction.success }"
-            @click="selectedTransaction = transaction"
-          >
-            <span class="modbus-diagnostic-list__result">{{ transaction.success ? '成功' : '失败' }}</span>
-            <strong>{{ presentation.transactionCommand(transaction).functionLabel }}</strong>
-            <span>{{ presentation.transactionGroupName(transaction) }} · {{ presentation.transactionRequestName(transaction) }} · {{ presentation.transactionCommand(transaction).requestText }}<template v-if="!transaction.success"> · {{ transaction.message ?? 'Modbus 通信失败' }}</template></span>
-            <time>{{ formatTime(transaction.createdAt) }}</time>
-            <div class="modbus-diagnostic-list__frames">
-              <span>TX</span><code>{{ presentation.transactionRequestHex(transaction) || '—' }}</code>
-              <span>RX</span><code>{{ presentation.transactionResponseHex(transaction) || '—' }}</code>
-            </div>
-          </button>
-          <p
-            v-if="diagnosticTransactions.length === 0"
-            class="table-empty"
-          >
-            暂无收发指令
-          </p>
-        </div>
-      </section>
+        v-model:selected-transaction="selectedTransaction"
+        :presentation="presentation"
+        :diagnostic-transactions="diagnosticTransactions"
+      />
 
       <section
         v-else-if="activeTab === 'write'"

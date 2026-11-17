@@ -3,8 +3,8 @@ import { Check, Copy } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { formatClockTime, formatTimestamp } from '../model/dateTime.js';
 
-// A row keeps its component identity when the 500-message window slides.
-// Stable preview/peer/feedback props avoid rendering the other 499 messages.
+// Short lists retain message identity; long lists reuse the visible row slots.
+// Payload, peer and action state always come from the current presentation row.
 const props = defineProps({
   row: { type: Object, required: true },
   peer: { type: String, required: true },
@@ -38,7 +38,7 @@ const clock = computed(() => formatClockTime(props.row.frame.createdAt));
       type="button"
       class="frame-preview"
       :aria-label="'查看消息 ' + timestamp"
-      @click="emit('inspect', $event)"
+      @click="emit('inspect', row, $event)"
     >
       <pre>{{ row.text }}</pre><span
         v-if="row.truncated"
@@ -51,7 +51,7 @@ const clock = computed(() => formatClockTime(props.row.frame.createdAt));
       class="icon-button"
       aria-label="复制消息"
       title="复制完整消息"
-      @click="emit('copy')"
+      @click="emit('copy', row)"
     >
       <Check
         v-if="copied"

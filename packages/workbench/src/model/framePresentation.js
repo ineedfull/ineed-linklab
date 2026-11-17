@@ -6,6 +6,12 @@ export const DEFAULT_FRAME_ROW_LIMIT = 500;
 const formats = new Set(['hex', 'json', 'text']);
 const fatalTextDecoder = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true });
 
+function displayFormat(frame) {
+  // Native WebSocket frames carry a message type, not a display format.
+  // Keep explicit choices (including the inspector's Text view) authoritative.
+  return formats.has(frame?.format) ? frame.format : frame?.messageType === 'binary' ? 'hex' : 'text';
+}
+
 export function createFramePresenter({
   previewByteLimit = DEFAULT_FRAME_PREVIEW_BYTES,
   rowLimit = DEFAULT_FRAME_ROW_LIMIT,
@@ -29,7 +35,7 @@ export function createFramePresenter({
 
   function present(frames, options = {}) {
     return frames.slice(-rowLimit).map((frame) => {
-      const format = formats.has(frame.format) ? frame.format : 'text';
+      const format = displayFormat(frame);
       const limit = options.previewByteLimit ?? previewByteLimit;
       // Workbench snapshots own their bytes and freeze frame records. Reuse the
       // other 499 previews when a new frame arrives; mutable callers stay fresh.
@@ -57,7 +63,7 @@ export function createFramePresenter({
 
 export function formatFrameForCopy(frame) {
   const bytes = frame?.bytes;
-  const format = formats.has(frame?.format) ? frame.format : 'text';
+  const format = displayFormat(frame);
   try {
     if (format !== 'hex') fatalTextDecoder.decode(bytes);
     const formatted = formatFrame(bytes, format, {

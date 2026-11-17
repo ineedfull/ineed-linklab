@@ -193,11 +193,17 @@ export function createAcceptanceRunner({
     state.report = freezeJson(structuredClone(report));
     publish();
   }
+  function timestamp() {
+    // Keep epoch milliseconds, but never move backwards within one run after
+    // NTP/manual clock correction. Every row and finalizer shares this boundary.
+    active.lastTimestamp = Math.max(now(), active.lastTimestamp);
+    return active.lastTimestamp;
+  }
   function finalize(status, message) {
     if (!active || active.report.status !== 'running') return;
     const report = active.report;
     report.status = status;
-    report.endedAt = Math.max(now(), report.startedAt);
+    report.endedAt = timestamp();
     if (active.index !== null) {
       const row = report.results[active.index];
       row.status = 'failed';
@@ -248,7 +254,7 @@ export function createAcceptanceRunner({
           error: '',
         })),
       };
-      const run = { report, index: null };
+      const run = { report, index: null, lastTimestamp: startedAt };
       active = run;
       state.running = true;
       snapshot(report);
@@ -261,7 +267,7 @@ export function createAcceptanceRunner({
           }
           run.index = i;
           const row = report.results[i];
-          row.startedAt = Math.max(now(), startedAt);
+          row.startedAt = timestamp();
           snapshot(report);
           try {
             const response = await read(target, plan.checks[i]);
@@ -303,7 +309,7 @@ export function createAcceptanceRunner({
               error instanceof Error ? error.message : error,
             ).slice(0, 2048);
           }
-          row.endedAt = Math.max(now(), row.startedAt);
+          row.endedAt = timestamp();
           run.index = null;
           snapshot(report);
         }
@@ -311,7 +317,7 @@ export function createAcceptanceRunner({
           report.status = report.results.every((row) => row.status === 'passed')
             ? 'passed'
             : 'failed';
-          report.endedAt = Math.max(now(), startedAt);
+          report.endedAt = timestamp();
           snapshot(report);
         }
         return state.report;

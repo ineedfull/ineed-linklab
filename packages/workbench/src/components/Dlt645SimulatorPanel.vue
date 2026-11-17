@@ -569,7 +569,8 @@ function fieldError(path) {
   .simulator-data-group__error { grid-column: 1 / -1; }
   .simulator-data-group__meta { width: 100%; justify-content: space-between; }
   .simulator-data-row { grid-template-columns: 1fr; gap: 7px; }
-  .simulator-meter > header { grid-template-columns: 1fr 34px; }
+  .simulator-meter > header { grid-template-columns: minmax(0, 1fr) auto 34px; }
+  .simulator-meter > header > label:first-child { grid-column: 1 / -1; }
   .simulator-meter > header > label:nth-child(2) { grid-column: 1; }
   .simulator-item-row { grid-template-columns: 24px minmax(0, 1fr) 90px 34px; }
   .simulator-item-row > :nth-child(3), .simulator-item-row > :nth-child(4), .simulator-item-row > :nth-child(6), .simulator-item-row > :nth-child(7), .simulator-item-row > :nth-child(8), .simulator-item-row > :nth-child(9) { display: none !important; }

@@ -20,6 +20,15 @@ const componentFiles = [
   'components/LogList.vue',
   'components/SendPanel.vue',
   'components/EndpointDialog.vue',
+  'components/endpoint-fields/ProtocolEndpointFields.vue',
+  'components/endpoint-fields/WebSocketEndpointFields.vue',
+  'components/endpoint-fields/SerialEndpointFields.vue',
+  'components/endpoint-fields/NetworkEndpointFields.vue',
+  'components/endpoint-fields/ModbusEndpointFields.vue',
+  'components/endpoint-fields/TcpResilienceFields.vue',
+  'components/modbus-master/MasterConnectionSummary.vue',
+  'components/modbus-master/MasterLiveReadings.vue',
+  'components/modbus-master/MasterTransactionDiagnostics.vue',
   'components/SettingsPanel.vue',
   'components/StoragePanel.vue',
   'components/WorkspaceActions.vue',
@@ -212,7 +221,9 @@ test('payload editor is a persistent CodeMirror 6 editor with JSON tooling and l
 
 test('opening sessions expose cancel and endpoint editor supports all required transports', async () => {
   const status = await source('components/SessionStatusBar.vue');
-  const dialog = await source('components/EndpointDialog.vue');
+  const dialog = (await Promise.all(componentFiles
+    .filter(file => file === 'components/EndpointDialog.vue' || file.startsWith('components/endpoint-fields/'))
+    .map(source))).join('\n');
 
   assert.match(status, /status === 'opening'/);
   assert.match(status, /取消/);
@@ -305,5 +316,15 @@ test('workbench uses approved dependencies, accessible icon controls, and forbid
 });
 
 async function source(relativePath) {
-  return readFile(path.join(sourceRoot, relativePath), 'utf8');
+  const content = await readFile(path.join(sourceRoot, relativePath), 'utf8');
+  if (!relativePath.endsWith('.css')) return content;
+  // Inspect the actual ordered stylesheet modules after extraction, preserving every assertion.
+  let expanded = '';
+  let offset = 0;
+  for (const match of content.matchAll(/@import\s+["']([^"']+)["'];/g)) {
+    expanded += content.slice(offset, match.index);
+    expanded += await source(path.join(path.dirname(relativePath), match[1]));
+    offset = match.index + match[0].length;
+  }
+  return expanded + content.slice(offset);
 }

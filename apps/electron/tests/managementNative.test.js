@@ -381,7 +381,7 @@ test('workspace export replaces atomically and cleans temporary files after writ
 
   await fs.rm(destination);
   await fs.symlink(path.join(directory, 'other.json'), destination);
-  await assert.rejects(handlers.exportWorkspace(), /symbolic link/i);
+  await assert.rejects(handlers.exportWorkspace(), /导出位置不安全/);
 });
 
 

@@ -75,7 +75,8 @@
 .linklab-shell .follow-button[aria-pressed="true"] { color: var(--accent); background: var(--accent-soft); }
 .linklab-shell .linklab-shell__stream { position: static; display: flex; min-height: 0; background: var(--surface); }
 .linklab-shell .frame-workspace { display: flex; flex-direction: column; flex: 1; min-width: 0; min-height: 0; }
-.linklab-shell .frame-list { overflow: auto; min-height: 0; padding: 0; flex: 1; display: block; }
+.linklab-shell .frame-list { overflow: auto; overflow-anchor: none; min-height: 0; padding: 0; flex: 1; display: block; }
+.linklab-shell .frame-list__spacer { flex: none; pointer-events: none; }
 .linklab-shell .message-columns, .linklab-shell .frame-list__item { display: grid; grid-template-columns: 114px 44px minmax(115px, 23%) minmax(0, 1fr) 42px 28px; align-items: center; gap: 10px; padding: 0 16px; }
 .linklab-shell .message-columns { min-height: 32px; font-size: var(--font-size-small); color: var(--text-muted); background: var(--surface-muted); border-bottom: 1px solid var(--line); }
 .linklab-shell .message-columns span:nth-last-child(2) { text-align: right; }
