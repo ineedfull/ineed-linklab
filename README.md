@@ -2,7 +2,9 @@
 
 # Ineed LinkLab
 
-面向工业设备、协议研发与现场联调的多协议通信桌面工具。在同一个工作台创建多个端点，完成客户端与服务端互测，再把常用设备模型和验收步骤保存下来。
+简体中文 · [English](README.en.md)
+
+**开源串口调试助手与工业协议测试工具。** 支持串口、TCP/UDP、Modbus TCP/RTU、OPC UA、WebSocket、STOMP 和 DL/T 645。在同一个桌面工作台创建多个端点，进行客户端与模拟服务端互测，再把设备模板和验收步骤保存下来，便于现场联调与重复验证。
 
 [产品官网](https://linklab.ineedfull.com/) · [下载安装](https://linklab.ineedfull.com/downloads/) · [设备模板](docs/device-templates.md) · [开发指南](docs/development.md)
 
@@ -102,4 +104,13 @@ macOS / Linux 的测试包含真实 Modbus RTU 伪终端回归，需要安装 `s
 
 也可以发邮件：[xiaopanghhh@163.com](mailto:xiaopanghhh@163.com)。
 
-同系列工具：[MQTT Tool](https://mqtt.ineedfull.com/) · [LinkLab](https://linklab.ineedfull.com/) · [NetTool](https://nettool.ineedfull.com/) · [Ineed 主站](https://www.ineedfull.com/)。
+## 同系列开源工具
+
+| 工具 | 主要用途 | 产品官网 | 源码 |
+| --- | --- | --- | --- |
+| MQTT Tool | MQTT 客户端、按订阅独立显示 JSON/Text/HEX、设备消息场景 | [官网](https://mqtt.ineedfull.com/) | [GitHub](https://github.com/ineedfull/ineed-mqtt-tool) · [Gitee](https://gitee.com/ineedfull/ineed-mqtt-tool) |
+| LinkLab | 串口与工业协议联调、客户端/模拟服务端、设备验收 | [官网](https://linklab.ineedfull.com/) | [GitHub](https://github.com/ineedfull/ineed-linklab) · [Gitee](https://gitee.com/ineedfull/ineed-linklab) |
+| NetTool | IP 地址管理、网络工程规划与诊断、现场交付 | [官网](https://nettool.ineedfull.com/) | [GitHub](https://github.com/ineedfull/ineed-net-tool) · [Gitee](https://gitee.com/ineedfull/ineed-net-tool) |
+| StorageLab | MinIO/S3 与多厂商对象存储管理、目录交付校验 | [官网](https://storagelab.ineedfull.com/) | [GitHub](https://github.com/ineedfull/ineed-storagelab) · [Gitee](https://gitee.com/ineedfull/ineed-storagelab) |
+
+Ineed 主站：[www.ineedfull.com](https://www.ineedfull.com/)。
