@@ -69,7 +69,8 @@ test('Vite and Tauri config separate production CSP from loopback development so
   assert.match(viteSource, /host:\s*['"]127\.0\.0\.1['"]/);
   assert.match(viteSource, /outDir:\s*['"]dist['"]/);
   assert.equal(config.productName, 'Ineed LinkLab');
-  assert.equal(config.version, '0.1.0');
+  const rootManifest = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
+  assert.equal(config.version, rootManifest.version);
   assert.equal(config.identifier, 'com.ineedfull.dev-tool');
   assert.equal(config.build.beforeDevCommand, 'npm run dev:renderer');
   assert.equal(config.build.devUrl, 'http://127.0.0.1:5174');

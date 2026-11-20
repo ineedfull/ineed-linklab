@@ -37,7 +37,8 @@ test('product version comes from one shared workbench constant', async () => {
   const source = await readFile(path.join(sourceRoot, 'product.js'), 'utf8');
   const { APP_VERSION, PRODUCT_NAME } = await import('../src/product.js');
   assert.equal(PRODUCT_NAME, 'Ineed LinkLab');
-  assert.equal(APP_VERSION, '0.1.0');
+  const manifest = JSON.parse(await readFile(path.resolve(packageRoot, '../../package.json'), 'utf8'));
+  assert.equal(APP_VERSION, manifest.version);
   assert.match(source, /package\.json/);
-  assert.doesNotMatch(source, /APP_VERSION\s*=\s*['"]0\.1\.0/);
+  assert.doesNotMatch(source, /APP_VERSION\s*=\s*['"]/);
 });

@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
+import { APP_VERSION } from '../../src/product.js';
 import AboutPanel from '../../src/components/AboutPanel.vue';
 import EndpointDialog from '../../src/components/EndpointDialog.vue';
 
@@ -46,7 +47,7 @@ describe('AboutPanel', () => {
     await wrapper.setProps({ open: true });
     await nextTick();
     expect(document.body.textContent).toContain('Ineed LinkLab');
-    expect(document.body.textContent).toContain('0.1.0');
+    expect(document.body.textContent).toContain(APP_VERSION);
     expect(document.body.textContent).toContain('Electron');
     expect(document.body.textContent).not.toContain('Tauri');
     expect(document.body.textContent).toContain('版权所有');

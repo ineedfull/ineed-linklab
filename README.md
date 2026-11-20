@@ -6,7 +6,7 @@
 
 **开源串口调试助手与工业协议测试工具。** 支持串口、TCP/UDP、Modbus TCP/RTU、OPC UA、WebSocket、STOMP 和 DL/T 645。在同一个桌面工作台创建多个端点，进行客户端与模拟服务端互测，再把设备模板和验收步骤保存下来，便于现场联调与重复验证。
 
-[产品官网](https://linklab.ineedfull.com/) · [下载安装](https://linklab.ineedfull.com/downloads/) · [设备模板](docs/device-templates.md) · [开发指南](docs/development.md)
+[产品官网](https://linklab.ineedfull.com/) · [下载安装](https://linklab.ineedfull.com/downloads/) · [设备模板](docs/device-templates.md) · [开发指南](docs/development.md) · [快速上手](docs/quick-start.md)
 
 [![LinkLab TCP 工作台：本机客户端与服务端双向收发](docs/images/readme/workbench.webp)](docs/images/readme/workbench.webp)
 
@@ -50,6 +50,10 @@
 
 
 ## 开始使用
+
+本轮测试版：`0.1.1`，调整范围见[版本说明](docs/releases/2026-11-20.md)。已可下载的文件及构建标识以官网下载页为准。
+
+第一次使用？先按[快速上手](docs/quick-start.md)完成一个小练习，里面列出了示例参数、成功判断和常见问题排查。
 
 1. 安装桌面版，选择「新建端点」并填写协议参数。
 2. 联调本机客户端与服务端，或打开已经授权的设备连接。

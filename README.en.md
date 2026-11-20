@@ -6,7 +6,7 @@
 
 **An open-source serial port monitor and industrial protocol debugging tool.** Test serial, TCP/UDP, Modbus TCP/RTU, OPC UA, WebSocket, STOMP and DL/T 645 devices in one desktop workbench. Create multiple endpoints, connect clients to test servers, and save device templates and acceptance checks for repeatable commissioning.
 
-[Website](https://linklab.ineedfull.com/) · [Downloads](https://linklab.ineedfull.com/downloads/) · [GitHub](https://github.com/ineedfull/ineed-linklab) · [Gitee](https://gitee.com/ineedfull/ineed-linklab)
+[Website](https://linklab.ineedfull.com/) · [Downloads](https://linklab.ineedfull.com/downloads/) · [GitHub](https://github.com/ineedfull/ineed-linklab) · [Gitee](https://gitee.com/ineedfull/ineed-linklab) · [Quick start (中文)](docs/quick-start.md)
 
 [![LinkLab TCP workbench with client and server endpoints](docs/images/readme/workbench.webp)](docs/images/readme/workbench.webp)
 
